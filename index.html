@@ -243,7 +243,7 @@ function draw(){
  ctx.font=`bold ${fitFont(nm,440,60,24,'Amatic SC')}px "Amatic SC"`;
  ctx.fillText(nm,135,91,440);ctx.restore();
  if(val('keywords')){
-  ctx.fillStyle=cl.deep;ctx.globalAlpha=.94;ctx.fillRect(25,790,560,72);ctx.globalAlpha=1;
+  ctx.fillStyle=cl.deep;ctx.globalAlpha=.94;ctx.fillRect(25,840,560,72);ctx.globalAlpha=1;
   ctx.fillStyle='#fffaf0';ctx.font=`italic ${fitFont(val('keywords'),530,30,15)}px "Cormorant Garamond"`;ctx.textAlign='center';ctx.fillText(val('keywords'),305,826,530);ctx.textAlign='left';
  }
  const ids=['lp','ap','honor','ki','size'],labels=['LP','AP','Honor','Ki','Size'],xs=[61,183,305,427,549],cols=['#b74b4b','#1393e8','#d9a918','#282821','#282821'];
