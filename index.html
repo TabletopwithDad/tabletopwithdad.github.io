@@ -159,8 +159,8 @@ function iconToken(token,x,y,size,color){
  }else if(token==='#'){
   ctx.rotate(-.65);ctx.fillRect(-size*.05,-size*.48,size*.1,size*.85);ctx.beginPath();ctx.moveTo(-size*.14,-size*.25);ctx.lineTo(size*.14,-size*.25);ctx.lineTo(0,-size*.48);ctx.closePath();ctx.fill();ctx.fillRect(-size*.25,size*.1,size*.5,size*.07);
  }else{
-  const symbols={v:'◉',a:'≋',f:'♨',e:'◈',w:'≈'};
-  ctx.font=`bold ${size*.95}px "Cormorant Garamond"`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbols[token]||'•',0,0);
+  const symbols={v:'v',a:'a',f:'f',e:'e',w:'w'};
+  ctx.font=`bold ${size*.95}px "L5RSymbols"`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbols[token]||'•',0,0);
  }
  ctx.restore();
 }
