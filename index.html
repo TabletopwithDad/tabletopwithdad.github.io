@@ -40,7 +40,7 @@ canvas{display:block;width:100%;height:auto;background:#f4f0e6}
 @media(max-width:850px){main{grid-template-columns:1fr;padding:12px}.editor{order:2}.preview-wrap{order:1}header{padding:14px 16px}}
  @font-face {
   font-family: "L5RSymbols";
-  src: url("./L5R RPG Icons (1).ttf") format("ttf");
+  src: url("./L5RSymbols.ttf") format("ttf");
   font-weight: normal;
   font-style: normal;
  }
@@ -118,15 +118,15 @@ const $=id=>document.getElementById(id);
 const canvas=$('card'),ctx=canvas.getContext('2d');
 const W=1500,H=1087,LEFT=610,DIVIDER=14;
 const clans={
- crab:{name:'Crab',bg:'#9eb9c1',deep:'#315b68',pale:'#e7f0ed',mon:'◆',ink:'#273e43'},
- crane:{name:'Crane',bg:'#a9d9e8',deep:'#5a9bb1',pale:'#edf7f7',mon:'✿',ink:'#2d5968'},
- dragon:{name:'Dragon',bg:'#a8c6b1',deep:'#477a65',pale:'#edf2e8',mon:'龍',ink:'#2c5142'},
- lion:{name:'Lion',bg:'#e6c56e',deep:'#9d6b25',pale:'#f8f0d9',mon:'✹',ink:'#61451d'},
- phoenix:{name:'Phoenix',bg:'#e6a17d',deep:'#b65c37',pale:'#fbede0',mon:'♨',ink:'#773d2b'},
- scorpion:{name:'Scorpion',bg:'#d69b9d',deep:'#853d4b',pale:'#f5e9e5',mon:'♏',ink:'#5d2935'},
- unicorn:{name:'Unicorn',bg:'#c9b6df',deep:'#8062a3',pale:'#f3edf7',mon:'❋',ink:'#4e3d69'},
- naga:{name:'Naga',bg:'#b8c8a2',deep:'#58764a',pale:'#eef1e2',mon:'蛇',ink:'#3e5435'},
- mon:{name:'Neutral',bg:'#d5c7b1',deep:'#6b675b',pale:'#f1ece2',mon:'✦',ink:'#3f3c34'}
+ crab:{name:'Crab',bg:'#9eb9c1',deep:'#315b68',pale:'#e7f0ed',mon:'1',ink:'#273e43'},
+ crane:{name:'Crane',bg:'#a9d9e8',deep:'#5a9bb1',pale:'#edf7f7',mon:'2',ink:'#2d5968'},
+ dragon:{name:'Dragon',bg:'#a8c6b1',deep:'#477a65',pale:'#edf2e8',mon:'3',ink:'#2c5142'},
+ lion:{name:'Lion',bg:'#e6c56e',deep:'#9d6b25',pale:'#f8f0d9',mon:'4',ink:'#61451d'},
+ phoenix:{name:'Phoenix',bg:'#e6a17d',deep:'#b65c37',pale:'#fbede0',mon:'5',ink:'#773d2b'},
+ scorpion:{name:'Scorpion',bg:'#d69b9d',deep:'#853d4b',pale:'#f5e9e5',mon:'6',ink:'#5d2935'},
+ unicorn:{name:'Unicorn',bg:'#c9b6df',deep:'#8062a3',pale:'#f3edf7',mon:'7',ink:'#4e3d69'},
+ naga:{name:'Naga',bg:'#b8c8a2',deep:'#58764a',pale:'#eef1e2',mon:'9',ink:'#3e5435'},
+ neutral:{name:'Neutral',bg:'#d5c7b1',deep:'#6b675b',pale:'#f1ece2',mon:'8',ink:'#3f3c34'}
 };
 const iconImages={},monImages={};
 function loadImageMap(urlMap,target){
