@@ -38,71 +38,77 @@ input[type=file]{padding:7px;font-size:12px}
 .canvas-shell{width:min(100%,900px);box-shadow:0 14px 38px #25231c2b;background:#d0c9b7;border:1px solid #c2bcad;padding:7px}
 canvas{display:block;width:100%;height:auto;background:#f4f0e6}
 @media(max-width:850px){main{grid-template-columns:1fr;padding:12px}.editor{order:2}.preview-wrap{order:1}header{padding:14px 16px}}
+ @font-face {
+  font-family: "L5RSymbols";
+  src: url("./L5R RPG Icons (1).ttf") format("ttf");
+  font-weight: normal;
+  font-style: normal;
+ }
 </style>
+ 
 </head>
 <body>
-<header><h1>Champions of Rokugan · Card Creator</h1><span>12.7 × 9.2 cm · JPG export</span></header>
+<header><h1>Champions of Rokugan · Champion Creator</h1></header>
 <main>
 <section class="editor">
-<h2>Character details</h2>
+<h2>Fill this in!</h2>
 <div class="grid">
-<div class="field"><label for="clan">Clan / palette</label>
+<div class="field"><label for="clan">Clan</label>
 <select id="clan">
-<option value="crab">Crab</option><option value="crane" selected>Crane</option><option value="dragon">Dragon</option><option value="lion">Lion</option><option value="phoenix">Phoenix</option><option value="scorpion">Scorpion</option><option value="unicorn">Unicorn</option><option value="naga">Naga</option><option value="mon">Ronin / Neutral</option>
+<option value="crab">Crab</option><option value="crane" selected>Crane</option><option value="dragon">Dragon</option><option value="lion">Lion</option><option value="phoenix">Phoenix</option><option value="scorpion">Scorpion</option><option value="unicorn">Unicorn</option><option value="naga">Naga</option><option value="neutral">Neutral</option>
 </select></div>
-<div class="field"><label for="rank">Destiny</label><input id="rank" value="1" maxlength="3"></div>
+<div class="field"><label for="rank">Destiny</label><input id="rank" value="1" maxlength="2"></div>
 <div class="field wide"><label for="name">Character name</label><input id="name" value="Asahina Takako"></div>
 <div class="field wide"><label for="keywords">Keywords / subtitle</label><input id="keywords" value="Break Through — Elementalist"></div>
 <div class="field wide"><label for="portrait">Portrait image</label><input id="portrait" type="file" accept="image/*"><div class="note">Portrait is cropped to fill the left panel.</div></div>
 </div>
 
-<h3>Bottom stats</h3>
+<h3>Attributes</h3>
 <div class="stats">
-<div><label for="lp">LP</label><input id="lp" type="number" min="0" max="99" value="5"></div>
-<div><label for="ap">AP</label><input id="ap" type="number" min="0" max="99" value="6"></div>
-<div><label for="honor">Honor</label><input id="honor" type="number" min="0" max="99" value="5"></div>
-<div><label for="ki">Ki</label><input id="ki" type="number" min="0" max="99" value="2"></div>
-<div><label for="size">Size</label><input id="size" type="number" min="0" max="99" value="1"></div>
+<div><label for="lp">LP</label><input id="lp" type="number" min="0" max="9" value="5"></div>
+<div><label for="ap">AP</label><input id="ap" type="number" min="0" max="9" value="6"></div>
+<div><label for="honor">Honor</label><input id="honor" type="number" min="0" max="9" value="5"></div>
+<div><label for="ki">Ki</label><input id="ki" type="number" min="0" max="9" value="2"></div>
+<div><label for="size">Size</label><input id="size" type="number" min="1" max="4" value="1"></div>
 </div>
 
-<h3>Top-right passive power</h3>
-<div class="field"><label for="powerTitle">Power title</label><input id="powerTitle" value="The Art of Conversation"></div>
-<div class="field"><label for="powerText">Power rules text</label><textarea id="powerText">At the beginning of your Investigation tests, you gain 1 Ki Point.</textarea></div>
+<h3>Passive power</h3>
+<div class="field"><label for="powerTitle">Passive name</label><input id="powerTitle" value="The Art of Conversation"></div>
+<div class="field"><label for="powerText">Passive rules text</label><textarea id="powerText">At the beginning of your Investigation tests, you gain 1 Ki Point.</textarea></div>
 
 <div class="grid">
-<div class="field"><label for="melee">Melee value</label><input id="melee" type="number" value="4" min="0" max="99"></div>
-<div class="field"><label for="range">Range value (optional)</label><input id="range" type="number" value="5" min="0" max="99" placeholder="None"></div>
+<div class="field"><label for="melee">Melee value</label><input id="melee" type="number" value="4" min="0" max="9"></div>
+<div class="field"><label for="range">Range value (optional)</label><input id="range" type="number" value="5" min="0" max="9" placeholder="None"></div>
 </div>
 
-<h3>Bottom-right secret technique</h3>
-<div class="field"><label for="techTitle">Technique title</label><input id="techTitle" value="Tempest of Air"></div>
-<div class="field"><label for="techText">Technique rules text</label><textarea id="techText">Activation only. After performing a Ranged Combat, you can move each Enemy in your target's area to an adjacent area and inflict &amp; on each Enemy you moved.</textarea></div>
+<h3>Secret technique</h3>
+<div class="field"><label for="techTitle">Technique name</label><input id="techTitle" value="Tempest of Air"></div>
+<div class="field"><label for="techText">Technique rules text</label><textarea id="techText">Activation only. After performing a Ranged Combat, you can move each Enemy in your target's area to an adjacent area and inflict on each Enemy you moved.</textarea></div>
 
-<label>Technique element cost (numeric, maximum total 5)</label>
+<label>Technique element cost</label>
 <div class="elements">
-<label class="element"><span>Void</span><input type="number" name="element" data-element="void" value="0" min="0" max="5"></label>
-<label class="element"><span>Air</span><input type="number" name="element" data-element="air" value="1" min="0" max="5"></label>
+<label class="element"><span>Air</span><input type="number" name="element" data-element="air" value="3" min="0" max="5"></label>
+<label class="element"><span>Earth</span><input type="number" name="element" data-element="earth" value="0" min="0" max="5"></label>
 <label class="element"><span>Fire</span><input type="number" name="element" data-element="fire" value="0" min="0" max="5"></label>
 <label class="element"><span>Water</span><input type="number" name="element" data-element="water" value="0" min="0" max="5"></label>
-<label class="element"><span>Earth</span><input type="number" name="element" data-element="earth" value="0" min="0" max="5"></label>
+<label class="element"><span>Void</span><input type="number" name="element" data-element="void" value="0" min="0" max="5"></label>
 </div>
 <div class="note" id="costTotal">Total cost: 1 / 5</div>
 
 <div class="actions"><button class="primary" id="export">Export JPG</button><button class="secondary" id="reset">Reset example</button></div>
-<div class="note">Tokens: &amp; blood drop · @ kabuto · # katana · [v] void · [a] air · [f] fire · [e] earth · [w] water</div>
+<div class="note">The following are replaced in the abilities: &amp; blood drop · @ kabuto · # katana · [v] void · [a] air · [f] fire · [e] earth · [w] water</div>
 </section>
 
 <section class="preview-wrap">
-<div class="preview-top"><strong>Live card preview</strong><span>1500 × 1087 px · 12.7 × 9.2 cm ratio</span></div>
+<div class="preview-top"><strong>Preview</strong></div>
 <div class="canvas-shell"><canvas id="card" width="1500" height="1087"></canvas></div>
 </section>
 </main>
 
 <script>
-// Replace these URLs with your own hosted mon/icon images.
-// Leave a value empty to use the built-in drawn icon.
+
 const MON_URLS={
- crab:"",crane:"",dragon:"",lion:"",phoenix:"",scorpion:"",unicorn:"",naga:"",mon:""
+ crab:"",crane:"",dragon:"",lion:"",phoenix:"",scorpion:"",unicorn:"",naga:"",neutral:""
 };
 const ICON_URLS={
  blood:"",kabuto:"",katana:"",void:"",air:"",fire:"",earth:"",water:""
@@ -120,7 +126,7 @@ const clans={
  scorpion:{name:'Scorpion',bg:'#d69b9d',deep:'#853d4b',pale:'#f5e9e5',mon:'♏',ink:'#5d2935'},
  unicorn:{name:'Unicorn',bg:'#c9b6df',deep:'#8062a3',pale:'#f3edf7',mon:'❋',ink:'#4e3d69'},
  naga:{name:'Naga',bg:'#b8c8a2',deep:'#58764a',pale:'#eef1e2',mon:'蛇',ink:'#3e5435'},
- mon:{name:'Ronin',bg:'#d5c7b1',deep:'#6b675b',pale:'#f1ece2',mon:'✦',ink:'#3f3c34'}
+ mon:{name:'Neutral',bg:'#d5c7b1',deep:'#6b675b',pale:'#f1ece2',mon:'✦',ink:'#3f3c34'}
 };
 const iconImages={},monImages={};
 function loadImageMap(urlMap,target){
@@ -281,10 +287,10 @@ function draw(){
  let total=0;const els=[];
  costs.forEach(input=>{const n=Math.max(0,Math.min(5,parseInt(input.value,10)||0));total+=n;for(let i=0;i<n;i++)els.push(input.dataset.element)});
  $('costTotal').textContent=`Total cost: ${total} / 5`;
- const colors={void:'#5b5968',air:'#5a9bb1',fire:'#d76d35',water:'#4d91bd',earth:'#9a8551'};
- const tokenFor={void:'v',air:'a',fire:'f',water:'w',earth:'e'};
+ const colors={air:'#5a9bb1',earth:'#9a8551',fire:'#d76d35',water:'#4d91bd',void:'#5b5968'};
+ const tokenFor={air:'a',earth:'e',fire:'f',water:'w',void:'v'};
  const shown=els.slice(0,5),spacing=62,start=1050-(shown.length-1)*spacing/2;
- shown.forEach((e,i)=>{const x=start+i*spacing;ctx.fillStyle=colors[e];ctx.beginPath();ctx.arc(x,635,31,0,Math.PI*2);ctx.fill();iconToken(tokenFor[e],x,635,42,'#fff8e8')});
+ shown.forEach((e,i)=>{const x=start+i*spacing;ctx.fillStyle=colors[e];iconToken(tokenFor[e],x,635,42,'#fff8e8')});
  const ttitle=val('techTitle')||'Secret Technique';
  ctx.fillStyle=cl.ink;ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();ctx.beginPath();ctx.rect(690,671,720,49);ctx.clip();
