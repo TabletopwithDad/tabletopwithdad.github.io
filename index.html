@@ -248,7 +248,7 @@ function draw(){
  }
  const ids=['lp','ap','honor','ki','size'],labels=['LP','AP','Honor','Ki','Size'],xs=[61,183,305,427,549],cols=['#b74b4b','#1393e8','#d9a918','#282821','#282821'];
  ids.forEach((id,i)=>{
-  const x=xs[i],y=930, c=cols[i];
+  const x=xs[i],y=980, c=cols[i];
   ctx.fillStyle='#f4f0e6';ctx.strokeStyle='#47443c';ctx.lineWidth=5;ctx.beginPath();ctx.arc(x,y,58,0,Math.PI*2);ctx.fill();ctx.stroke();
   ctx.strokeStyle=cl.deep;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,49,0,Math.PI*2);ctx.stroke();
   ctx.fillStyle=c;ctx.font=`italic ${fitFont(val(id)||'0',78,48,22)}px "Cormorant Garamond"`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(val(id)||'0',x,y-4,78);
