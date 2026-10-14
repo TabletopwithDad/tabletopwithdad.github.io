@@ -66,8 +66,8 @@ canvas{display:block;width:100%;height:auto;background:#f4f0e6}
 
 <h3>Passive power</h3>
 <div class="field"><label for="powerTitle">Name</label><input id="powerTitle" value="The Art of Conversation"></div>
-<div class="field"><label for="powerText">Rules text</label><textarea id="powerText">At the beginning of your Investigation Tests, you gain 1 Ki Point. @ # & [a] [e] [f] [v] [w] Thanks!</textarea>
-<div class="note">The following are replaced in the abilities: &amp; blood drop · @ kabuto · # katana · [v] void · [a] air · [f] fire · [e] earth · [w] water</div></div>
+<div class="field"><label for="powerText">Rules text</label><textarea id="powerText">At the beginning of your *Investigation* Tests, you gain 1 Ki Point. @ # & [a] [e] [f] [v] [w] Thanks!</textarea>
+<div class="note">The following are replaced in the abilities: &amp; blood drop · @ kabuto · # katana · [v] void · [a] air · [f] fire · [e] earth · [w] water, and *gives italics*</div></div>
 
 <div class="grid">
 <div class="field"><label for="melee">Melee value</label><input id="melee" type="number" value="4" min="0" max="9"></div>
@@ -76,8 +76,8 @@ canvas{display:block;width:100%;height:auto;background:#f4f0e6}
 
 <h3>Secret technique</h3>
 <div class="field"><label for="techTitle">Name</label><input id="techTitle" value="Tempest of Air"></div>
-<div class="field"><label for="techText">Rules text</label><textarea id="techText">Activation only.<br> After performing a Ranged Combat, you can move each Enemy in your target's area to an adjacent area and inflict & on each Enemy you moved.</textarea>
-<div class="note">The following are replaced in the abilities: &amp; blood drop · @ kabuto · # katana · [v] void · [a] air · [f] fire · [e] earth · [w] water</div></div>
+<div class="field"><label for="techText">Rules text</label><textarea id="techText">*Activation* only. After performing a *Ranged Combat*, you can move each Enemy in your target's area to an adjacent area and inflict & on each Enemy you moved.</textarea>
+<div class="note">The following are replaced in the abilities: &amp; blood drop · @ kabuto · # katana · [v] void · [a] air · [f] fire · [e] earth · [w] water, and *gives italics*</div></div>
 
 
 <label>Technique element cost - <span class="note" id="costTotal">Total cost: 1 / 5</span></label>
@@ -100,9 +100,9 @@ canvas{display:block;width:100%;height:auto;background:#f4f0e6}
 </main>
 
 <script>
-var f1 = new FontFace('L5RSymbols', 'url(./fonts/L5RSymbols.ttf)');
-var f2 = new FontFace('WCMANONegra', 'url(./fonts/WCManoNegraBta.ttf)');
-var f3 = new FontFace('BTTTRIAL', 'url(./fonts/BTTTRIAL.otf)');
+var f1 = new FontFace('L5RSymbols', 'url(./Fonts/L5RSymbols.ttf)');
+var f2 = new FontFace('WCMANONegra', 'url(./Fonts/WCMANONegraBta.ttf)');
+var f3 = new FontFace('BTTTRIAL', 'url(./Fonts/BTTTRIAL.otf)');
 f1.load().then(function(font) {console.log('font ready');
 document.fonts.add(font);
 f2.load().then(function(font2) {console.log('font ready');
@@ -152,25 +152,55 @@ function fitFont(text,maxWidth,base,min=18,family='Cormorant Garamond'){
 function iconToken(token,x,y,size,color){
   ctx.save();
   const symbols={'&':'S','#':'O', '@':'D', v:'V',a:'A',f:'F',e:'E',w:'W'};
-  ctx.font=`${size*2.5}px "L5RSymbols"`;ctx.fillStyle=color;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbols[token]||'AAA',x+12,y-7);
+  ctx.font=`${size*2.5}px "L5RSymbols"`;ctx.fillStyle=color;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbols[token]||'AAA',x+16,y-3);
  ctx.restore();
 }
 function drawRich(text,x,y,maxWidth,font,color,lineH,iconSize=24,maxHeight=Infinity){
+ let italics = false;
  const re=/(\[v\]|\[a\]|\[f\]|\[e\]|\[w\]|[&@#])/g;
  const tokens=text.split(re).filter(Boolean);
  let lines=[[]],width=0;
  ctx.font=font;
  function addText(str){
-  for(const chunk of str.split(/(\s+)/)){
-   if(!chunk)continue;
-   const w=ctx.measureText(chunk).width;
-   if(width+w > maxWidth && width>0){lines.push([]);width=0}
-   if(w>maxWidth){
-    for(const ch of chunk){const cw=ctx.measureText(ch).width;if(width+cw>maxWidth&&width){lines.push([]);width=0}lines.at(-1).push({t:ch,w:cw});width+=cw}
-   }else
-   {lines.at(-1).push({t:chunk,w});width+=w}
+  for(let chunk of str.split(/(\s+)/)){
+    if(!chunk) continue;
+
+    if(chunk.startsWith('*')){
+      italics = true;
+      chunk = chunk.slice(1);
+    }
+
+    const endItalic = chunk.includes('*');
+
+    if(endItalic){
+      chunk = chunk.replace('*','');
+    }
+
+    if(!chunk) continue;
+
+    const style = italics;
+
+    ctx.font = style ? `italic ${font}` : font;
+    const w = ctx.measureText(chunk).width;
+
+    if(width+w > maxWidth && width > 0){
+      lines.push([]);
+      width = 0;
+    }
+
+    lines.at(-1).push({
+      t: chunk,
+      w,
+      italics: style
+    });
+
+    width += w;
+
+    if(endItalic){
+      italics = false;
+    }
   }
- }
+}
  for(const t of tokens){
   if(t.includes('\n')){
    const parts=t.split('\n');
@@ -184,7 +214,7 @@ function drawRich(text,x,y,maxWidth,font,color,lineH,iconSize=24,maxHeight=Infin
  }
  const maxLines=Number.isFinite(maxHeight)?Math.max(0,Math.floor(maxHeight/lineH)):lines.length;
  const shown=lines.slice(0,maxLines);
- ctx.save()//;ctx.beginPath();ctx.rect(x,y,maxWidth,Math.min(maxHeight,shown.length*lineH));ctx.clip();
+ ctx.save()
  ctx.textBaseline='top';ctx.fillStyle=color;ctx.font=font;
  shown.forEach((line,i)=>{
 const lineWidth = line.reduce((s,p)=>s+p.w,0);
@@ -196,8 +226,10 @@ const lineWidth = line.reduce((s,p)=>s+p.w,0);
    colRich={'&':color,'@':color,'#':color,'a':'#9BC4CF','f':'#F07F09','e':'#4BB062','v':'#7E519C','w':'#4152A0'};
    iconToken(key,xx+iconSize/2,yy+lineH*.5,iconSize,colRich[key]);xx+=p.w}
    else{
+   
    ctx.fillStyle=color;
-  ctx.font=font;
+  ctx.font=p.italics?`italic ${font}`
+  : font;
   ctx.textAlign='left';
   ctx.fillText(p.t,xx,yy);xx+=p.w}
   }
@@ -248,7 +280,7 @@ flower.addColorStop(1,cl.deep);
  ctx.font=`${fitFont(nm,540,60,24,'BTTTRIAL')}px "BTTTRIAL"`;
  ctx.fillText(nm,135,105,540);ctx.restore();
  if(val('keywords')){
-  ctx.fillStyle=cl.deep;ctx.globalAlpha=.94;ctx.fillRect(55,820,681,92);ctx.globalAlpha=1;
+  ctx.fillStyle=cl.deep;ctx.globalAlpha=.94;ctx.fillRect(55,820,626,92);ctx.globalAlpha=1;
   ctx.fillStyle='#fffaf0';ctx.font=`italic ${fitFont(val('keywords'),640,45,15)}px "BTTTRIAL"`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,640);ctx.textAlign='left';
  }
  const ids=['lp','ap','honor','ki','size'],labels=['LP','AP','Honor','Ki','Size'],xs=[104,236,368,500,632],cols=['#b74b4b','#1393e8','#d9a918','#282821','#282821'];
@@ -275,7 +307,7 @@ flower.addColorStop(1,cl.deep);
  ctx.fillStyle=cl.ink;ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,103,720,102);ctx.clip();
  ctx.font=`${fitFont(ptitle,690,58,30,'BTTTRIAL')}px "BTTTRIAL"`;ctx.fillText(ptitle,778+333,128,690);ctx.restore();
- drawRich(val('powerText')||'',800,204,630,'30px "Arial"',cl.ink,34,24,210);
+ drawRich(val('powerText')||'',800,204,630,'37px "Arial"',cl.ink,34,24,210);
 
  // Melee and optional ranged attack
  ctx.textAlign='left';ctx.textBaseline='middle';
@@ -305,14 +337,14 @@ flower.addColorStop(1,cl.deep);
  $('costTotal').textContent=`Total cost: ${total} / 5`;
  const colors={'a':'#9BC4CF','f':'#F07F09','e':'#4BB062','v':'#7E519C','w':'#4152A0'};
  const tokenFor={air:'a',earth:'e',fire:'f',water:'w',void:'v'};
- const shown=els.slice(0,5),spacing=110,start=1103-(shown.length-2)*spacing/2;
+ const shown=els.slice(0,5),spacing=110,start=1098-(shown.length-2)*spacing/2;
  ctx.fillStyle=cl.pale; ctx.fillRect(1111-(shown.length)*spacing/2,620,(shown.length)*spacing,40);
  shown.forEach((e,i)=>{const x=start+i*spacing;ctx.fillStyle=colors[tokenFor[e]];iconToken(tokenFor[e],x,630,94,colors[tokenFor[e]])});
  const ttitle=val('techTitle')||'Secret Technique';
  ctx.fillStyle=cl.ink;ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,701,720,49);ctx.clip();
  ctx.font=`${fitFont(ttitle,690,58,30,'BTTTRIAL')}px "BTTTRIAL"`;ctx.fillText(ttitle,778+333,707,690);ctx.restore();
- drawRich(val('techText')||'',800,779,630,'30px "Cormorant Garamond"',cl.ink,34,24,300);
+ drawRich(val('techText')||'',800,779,630,'37px "Arial"',cl.ink,34,24,300);
 
 }
 document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',draw));
