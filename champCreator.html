@@ -97,7 +97,7 @@ canvas{display:block;width:100%;height:auto;background:#f4f0e6}
 <section class="preview-wrap">
 <div class="preview-top"><strong>Preview</strong></div>
 <div class="canvas-shell"><canvas id="card" width="1500" height="1087"></canvas></div>
- </section>
+</section>
 </main>
 
 <script>
@@ -119,7 +119,7 @@ const ICON_URLS={
 
 const $=id=>document.getElementById(id);
 const canvas=$('card'),ctx=canvas.getContext('2d');
-const W=1500,H=1087,DIVIDER=14,LEFT=(W/2)-DIVIDER;
+const W=1500,H=1087,DIVIDER=14,LEFT=(W/2)-DIVIDER, PAPER='#EAE9E7';
 const clans={
  crab:{name:'Crab',bg:'#9eb9c1',deep:'#315b68',pale:'#e7f0ed',mon:'1',ink:'#273e43'},
  crane:{name:'Crane',bg:'#a9d9e8',deep:'#5a9bb1',pale:'#edf7f7',mon:'2',ink:'#2d5968'},
@@ -237,6 +237,10 @@ const lineWidth = line.reduce((s,p)=>s+p.w,0);
  });
  return shown.length*lineH;
 }
+function hexToRgb(hex,opacity) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return `rgba(${parseInt(result[1],16)},${parseInt(result[2],16)},${parseInt(result[3],16)},${opacity})`;
+ }
 function drawBow(x,y,size,color){
  ctx.save();ctx.translate(x,y);ctx.strokeStyle=color;ctx.lineWidth=size*.08;
  ctx.beginPath();ctx.arc(-size*.15,0,size*.45,-Math.PI/2.2,Math.PI/2.2);ctx.stroke();
@@ -246,13 +250,14 @@ function drawBow(x,y,size,color){
 function drawMon(c,x,y,r,cl){
 
 const grad=ctx.createLinearGradient(x-.2*r,y-.9*r, x-.9*r,y-.2*r);
-grad.addColorStop(1, cl.pale);
+grad.addColorStop(1, PAPER);
 grad.addColorStop(0, cl.deep);
  c.save();c.fillStyle=grad;c.strokeStyle=cl.deep;
  c.font=` ${r}px "L5RSymbols"`;c.textAlign='center';c.textBaseline='middle';c.fillText(cl.mon,x,y);c.restore();
 }
 function panelFrame(x,y,w,h,cl){
- ctx.save();ctx.fillStyle=cl.pale;ctx.strokeStyle=cl.deep;ctx.lineWidth=5;
+ 
+ ctx.save();ctx.fillStyle=hexToRgb(PAPER,0.6);ctx.strokeStyle=cl.deep;ctx.lineWidth=5;
  ctx.beginPath();ctx.moveTo(x+35,y);ctx.lineTo(x+w-35,y);ctx.lineTo(x+w-35,y+18);ctx.lineTo(x+w-17,y+18);ctx.lineTo(x+w-17,y+42);ctx.lineTo(x+w,y+42);ctx.lineTo(x+w,y+h-42);ctx.lineTo(x+w-17,y+h-42);ctx.lineTo(x+w-17,y+h-18);ctx.lineTo(x+w-35,y+h-18);ctx.lineTo(x+w-35,y+h);ctx.lineTo(x+35,y+h);ctx.lineTo(x+35,y+h-18);ctx.lineTo(x+17,y+h-18);ctx.lineTo(x+17,y+h-42);ctx.lineTo(x,y+h-42);ctx.lineTo(x,y+42);ctx.lineTo(x+17,y+42);ctx.lineTo(x+17,y+18);ctx.lineTo(x+35,y+18);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
 }
 function draw(){
@@ -268,10 +273,10 @@ function draw(){
  }
  const shade=ctx.createLinearGradient(0,0,LEFT,0);shade.addColorStop(0,'rgba(0,0,0,.18)');shade.addColorStop(.5,'rgba(0,0,0,0)');shade.addColorStop(1,'rgba(0,0,0,.12)');ctx.fillStyle=shade;ctx.fillRect(0,0,LEFT,H);
  // Name banner
- ctx.fillStyle=cl.pale;ctx.globalAlpha=.94;ctx.beginPath();ctx.moveTo(18,40);ctx.lineTo(693,31);ctx.lineTo(718,50);ctx.lineTo(703,144);ctx.lineTo(45,151);ctx.lineTo(15,130);ctx.closePath();ctx.fill();ctx.globalAlpha=1;
+ ctx.fillStyle=hexToRgb(PAPER,0.95);ctx.globalAlpha=.94;ctx.beginPath();ctx.moveTo(18,40);ctx.lineTo(693,31);ctx.lineTo(718,50);ctx.lineTo(703,144);ctx.lineTo(45,151);ctx.lineTo(15,130);ctx.closePath();ctx.fill();ctx.globalAlpha=1;
  // Destiny number badge to the left of the character name.
  const flower=ctx.createRadialGradient(75,90,0,75,90,50);
-flower.addColorStop(0,cl.pale);
+flower.addColorStop(0,PAPER);
 flower.addColorStop(1,cl.deep);
  ctx.fillStyle=flower;ctx.font='200px "L5RSymbols"';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B'||'0',130,70);
  ctx.fillStyle='#000000';ctx.font='60px "WCMANONegra"';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(val('rank')||'',74,95);
@@ -281,11 +286,11 @@ flower.addColorStop(1,cl.deep);
  ctx.font=`${fitFont(nm,540,60,24,'BTTTRIAL')}px "BTTTRIAL"`;
  ctx.fillText(nm,135,105,540);ctx.restore();
  if(val('keywords')){
-  ctx.fillStyle=cl.deep;ctx.globalAlpha=.94;ctx.fillRect(55,820,626,92);ctx.globalAlpha=1;
-  ctx.fillStyle='#fffaf0';ctx.font=`italic ${fitFont(val('keywords'),640,45,15)}px "BTTTRIAL"`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,640);ctx.textAlign='left';
+  ctx.fillStyle=hexToRgb(cl.ink,0.9);ctx.globalAlpha=.94;ctx.fillRect(55,820,626,92);ctx.globalAlpha=1;
+  ctx.fillStyle='#ffffff';ctx.font=`italic ${fitFont(val('keywords'),640,45,15)}px "BTTTRIAL"`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,640);ctx.textAlign='left';
  }
  const ids=['lp','ap','honor','ki','size'],labels=['LP','AP','Honor','Ki','Size'],xs=[104,236,368,500,632],cols=['#b74b4b','#1393e8','#d9a918','#282821','#282821'];
- ctx.fillStyle=cl.pale;ctx.font=`240px "L5RSymbols"`;
+ ctx.fillStyle=hexToRgb(PAPER,0.9);ctx.font=`240px "L5RSymbols"`;
  ids.forEach((id,i)=>{
   const x=xs[i],y=980, c=cols[i];
   ctx.fillText('M',x-65,y-10);
@@ -293,22 +298,22 @@ flower.addColorStop(1,cl.deep);
  ids.forEach((id,i)=>{
   const x=xs[i],y=980, c=cols[i];
   ctx.fillStyle=c;ctx.font=` 58px "WCMANONegra"`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(val(id)||'0',x,y,78);
-  ctx.fillStyle=cl.deep;ctx.fillRect(x-43,y+27,86,32);ctx.fillStyle='#fff9ed';ctx.font='bold 25px "Cormorant Garamond"';ctx.fillText(labels[i],x,y+45);
+  ctx.fillStyle=hexToRgb(cl.ink,0.9);ctx.fillRect(x-43,y+27,86,32);ctx.fillStyle='#fff9ed';ctx.font='25px "Arial"';ctx.fillText(labels[i],x,y+45);
  });
  ctx.restore();
 
- ctx.fillStyle=cl.deep;ctx.fillRect(LEFT,0,DIVIDER,H);ctx.fillStyle=cl.pale;ctx.fillRect(LEFT+DIVIDER,0,W-LEFT-DIVIDER,H);
- drawMon(ctx,1750,105,1800,cl);
+ ctx.fillStyle=cl.deep;ctx.fillRect(LEFT,0,DIVIDER,H);ctx.fillStyle=PAPER;ctx.fillRect(LEFT+DIVIDER,0,W-LEFT-DIVIDER,H);
+ drawMon(ctx,1630,175,1500,cl);
  ctx.fillStyle=cl.deep;ctx.fillRect(W-DIVIDER*2,0,DIVIDER,H);
  ctx.fillStyle=cl.pale;ctx.fillRect(W-DIVIDER,0,DIVIDER,H);
 
  // Passive power box
  panelFrame(778,75,666,315,cl);
  const ptitle=val('powerTitle')||'Passive Power';
- ctx.fillStyle=cl.ink;ctx.textAlign='center';ctx.textBaseline='top';
+ ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,103,720,102);ctx.clip();
  ctx.font=`${fitFont(ptitle,690,58,30,'BTTTRIAL')}px "BTTTRIAL"`;ctx.fillText(ptitle,778+333,128,690);ctx.restore();
- drawRich(val('powerText')||'',800,204,630,'37px "Arial"',cl.ink,34,24,210);
+ drawRich(val('powerText')||'',800,204,630,'37px "Arial"','#000000',34,24,210);
 
  // Melee and optional ranged attack
  ctx.textAlign='left';ctx.textBaseline='middle';
@@ -342,10 +347,10 @@ flower.addColorStop(1,cl.deep);
  ctx.fillStyle=cl.pale; ctx.fillRect(1111-(shown.length)*spacing/2,620,(shown.length)*spacing,40);
  shown.forEach((e,i)=>{const x=start+i*spacing;ctx.fillStyle=colors[tokenFor[e]];iconToken(tokenFor[e],x,630,94,colors[tokenFor[e]])});
  const ttitle=val('techTitle')||'Secret Technique';
- ctx.fillStyle=cl.ink;ctx.textAlign='center';ctx.textBaseline='top';
+ ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,701,720,49);ctx.clip();
  ctx.font=`${fitFont(ttitle,690,58,30,'BTTTRIAL')}px "BTTTRIAL"`;ctx.fillText(ttitle,778+333,707,690);ctx.restore();
- drawRich(val('techText')||'',800,779,630,'37px "Arial"',cl.ink,34,24,300);
+ drawRich(val('techText')||'',800,779,630,'37px "Arial"','#000000',34,24,300);
 
 }
 document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',draw));
