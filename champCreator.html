@@ -344,7 +344,7 @@ flower.addColorStop(1,cl.deep);
  const colors={'a':'#9BC4CF','f':'#F07F09','e':'#4BB062','v':'#7E519C','w':'#4152A0'};
  const tokenFor={air:'a',earth:'e',fire:'f',water:'w',void:'v'};
  const shown=els.slice(0,5),spacing=110,start=1098-(shown.length-2)*spacing/2;
- ctx.fillStyle=cl.pale; ctx.fillRect(1111-(shown.length)*spacing/2,620,(shown.length)*spacing,40);
+ ctx.fillStyle=PAPER; ctx.fillRect(1111-(shown.length)*spacing/2,620,(shown.length)*spacing,40);
  shown.forEach((e,i)=>{const x=start+i*spacing;ctx.fillStyle=colors[tokenFor[e]];iconToken(tokenFor[e],x,630,94,colors[tokenFor[e]])});
  const ttitle=val('techTitle')||'Secret Technique';
  ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
