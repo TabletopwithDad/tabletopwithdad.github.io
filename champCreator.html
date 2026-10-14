@@ -33,7 +33,7 @@ input[type=file]{padding:7px;font-size:12px}
 .preview-wrap{min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px}
 .preview-top{width:min(100%,900px);display:flex;justify-content:space-between;align-items:center;color:#65645b;font-size:12px}
 .canvas-shell{width:min(100%,900px);box-shadow:0 14px 38px #25231c2b;background:#d0c9b7;border:1px solid #c2bcad;padding:7px}
-canvas{display:block;width:100%;height:auto;background:#f4f0e6}
+canvas{display:block;width:100%;height:auto;}
 @media(max-width:850px){main{grid-template-columns:1fr;padding:12px}.editor{order:2}.preview-wrap{order:1}header{padding:14px 16px}}
 </style>
  
@@ -90,7 +90,7 @@ canvas{display:block;width:100%;height:auto;background:#f4f0e6}
 </div>
 
 
-<div class="actions"><button class="primary" id="export">Export JPG</button><button class="secondary" id="reset">Reset example</button></div>
+<div class="actions"><button class="primary" id="export">Export PNG</button><button class="secondary" id="reset">Reset example</button></div>
 <div class="note">This tool was created by a fan for fans to support homebrew and community content. It is not affiliated with, endorsed by, or sponsored by the creators, publishers, or rights holders of Champions of Rokugan and Legend of the Five Rings. Champions of Rokugan and Legend of the Five Rings, and all associated names, logos, artwork, and setting elements are the property of their respective owners.</div></div> 
 </section>
 
@@ -262,7 +262,8 @@ function panelFrame(x,y,w,h,cl){
 }
 function draw(){
  const cl=clans[val('clan')]||clans.crane;
- ctx.clearRect(0,0,W,H);ctx.fillStyle='#eee9dd';ctx.fillRect(0,0,W,H);
+ 
+ctx.clearRect(0,0,W,H);ctx.fillStyle=hexToRgb('#D0C9B7',0);ctx.fillRect(0,0,W,H);
  for(let i=0;i<1800;i++){const x=(i*7919)%W,y=(i*3571)%H;ctx.fillStyle=i%3?'rgba(94,84,65,.035)':'rgba(255,255,255,.18)';ctx.fillRect(x,y,2,1)}
  ctx.save();ctx.beginPath();ctx.rect(0,0,LEFT,H);ctx.clip();
  ctx.fillStyle=cl.bg;ctx.fillRect(0,0,LEFT,H);
@@ -317,7 +318,7 @@ flower.addColorStop(1,cl.deep);
 
  // Melee and optional ranged attack
  ctx.textAlign='left';ctx.textBaseline='middle';
- if(val('range')!==''){
+ if(val('range')!==''&&val('range')!=='0'){
   ctx.fillStyle=cl.deep;ctx.font=`270px "L5RSymbols"`;
   ctx.fillText('M',960,470);
   ctx.fillText('M',1100,470);
@@ -351,7 +352,19 @@ flower.addColorStop(1,cl.deep);
  ctx.save();//ctx.beginPath();ctx.rect(690,701,720,49);ctx.clip();
  ctx.font=`${fitFont(ttitle,690,58,30,'BTTTRIAL')}px "BTTTRIAL"`;ctx.fillText(ttitle,778+333,707,690);ctx.restore();
  drawRich(val('techText')||'',800,779,630,'37px "Arial"','#000000',34,24,300);
+const r = 35; // ~3 mm at 300 DPI
 
+ctx.save();
+ctx.globalCompositeOperation = 'destination-out';
+
+ctx.beginPath();
+ctx.rect(0, 0, W, H);
+ctx.roundRect(0, 0, W, H, r);
+
+ctx.fill('evenodd');
+const p = ctx.getImageData(0,0,1,1).data;
+console.log(p); // [r,g,b,a]
+ctx.restore();
 }
 document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',draw));
 document.querySelectorAll('input[name="element"]').forEach(el=>el.addEventListener('input',()=>{
@@ -372,8 +385,8 @@ $('portrait').addEventListener('change',e=>{
 });
 $('export').addEventListener('click',()=>{
  const a=document.createElement('a');
- a.download=(val('name')||'champion-card').replace(/[^\w\-]+/g,'_')+'.jpg';
- a.href=canvas.toDataURL('image/jpeg',.94);a.click();
+ a.download=(val('name')||'champion-card').replace(/[^\w\-]+/g,'_')+'.png';
+ a.href=canvas.toDataURL('image/png',.94);a.click();
 });
 $('reset').addEventListener('click',()=>{
  $('clan').value='crane';$('rank').value='1';$('name').value='Asahina Takako';$('keywords').value='Break Through — Elementalist';
