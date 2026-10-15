@@ -136,39 +136,18 @@ const $=id=>document.getElementById(id);
 const canvas=$('card'),ctx=canvas.getContext('2d');
 const W=1500,H=1087,DIVIDER=14,LEFT=(W/2)-DIVIDER, PAPER='#EAE9E7';
 const clans={
- crab:{name:'Crab',bg:'#9eb9c1',deep:'#2D395A',pale:'#e7f0ed',mon:'1',ink:'#273e43'},
- crane:{name:'Crane',bg:'#a9d9e8',deep:'#BED3E9',pale:'#edf7f7',mon:'2',ink:'#2d5968'},
- dragon:{name:'Dragon',bg:'#a8c6b1',deep:'#5B8E52',pale:'#edf2e8',mon:'3',ink:'#3D7D30'},
- lion:{name:'Lion',bg:'#e6c56e',deep:'#C8A000',pale:'#f8f0d9',mon:'4',ink:'#61451d'},
- phoenix:{name:'Phoenix',bg:'#e6a17d',deep:'#DF441B',pale:'#fbede0',mon:'5',ink:'#773d2b'},
- scorpion:{name:'Scorpion',bg:'#d69b9d',deep:'#94000B',pale:'#f5e9e5',mon:'6',ink:'#30151C'},
- unicorn:{name:'Unicorn',bg:'#c9b6df',deep:'#5F3C95',pale:'#f3edf7',mon:'7',ink:'#4e3d69'},
- naga:{name:'Naga',bg:'#b8c8a2',deep:'#7D9256',pale:'#eef1e2',mon:'9',ink:'#586631'},
-fox:{
-    name:'Fox',
-    bg:'#DDBFAC',
-    deep:'#943A0E',
-    pale:'#F7F1E6',
-    mon:'<',
-    ink:'#59341F'
-},
- mantis:{
-    name:'Mantis',
-    bg:'#b8d7b3',
-    deep:'#1C6B4A',
-    pale:'#eef5e8',
-    mon:'=',
-    ink:'#0B5E3D'
-},
- hare:{
-    name:'Hare',
-    bg:'#dcbfc2',
-    deep:'#C99393',
-    pale:'#faf1f0',
-    mon:';',
-    ink:'#C92032'
-},
- neutral:{name:'Neutral',bg:'#d5c7b1',deep:'#676053',pale:'#f1ece2',mon:'8',ink:'#3f3c34'}
+ crab:{name:'Crab',bg:'#9eb9c1',deep:'#2D395A',pale:'#e7f0ed',mon:'1',ink:'#5a6669',inkText:'#ffffff'},
+ crane:{name:'Crane',bg:'#a9d9e8',deep:'#88c6f2',pale:'#edf7f7',mon:'2',ink:'#BED3E9',inkText:'#000000'},
+ dragon:{name:'Dragon',bg:'#a8c6b1',deep:'#5B8E52',pale:'#edf2e8',mon:'3',ink:'#61451d',inkText:'#ffffff'},
+ lion:{name:'Lion',bg:'#e6c56e',deep:'#C8A000',pale:'#f8f0d9',mon:'4',ink:'#61451d',inkText:'#ffffff'},
+ phoenix:{name:'Phoenix',bg:'#e6a17d',deep:'#f0571a',pale:'#fbede0',mon:'5',ink:'#e6a910',inkText:'#ffffff'},
+ scorpion:{name:'Scorpion',bg:'#d69b9d',deep:'#94000B',pale:'#f5e9e5',mon:'6',ink:'#302025',inkText:'#ffffff'},
+ unicorn:{name:'Unicorn',bg:'#c9b6df',deep:'#654991',pale:'#f3edf7',mon:'7',ink:'#d2bce6',inkText:'#000000'},
+ naga:{name:'Naga',bg:'#b8c8a2',deep:'#7D9256',pale:'#eef1e2',mon:'9',ink:'#3c4d23',inkText:'#ffffff'},
+fox:{    name:'Fox', bg:'#DDBFAC', deep:'#943A0E', pale:'#F7F1E6', mon:'<', ink:'#adb2b8',inkText:'#000000'},
+ mantis:{name:'Mantis',bg:'#b8d7b3',deep:'#1C6B4A',pale:'#eef5e8',mon:'=',ink:'#0B5E3D',inkText:'#ffffff'},
+ hare:{name:'Hare',bg:'#dcbfc2',deep:'#C92032',pale:'#faf1f0',mon:';',ink:'#f5e4e4',inkText:'#000000'},
+ neutral:{name:'Neutral',bg:'#d5c7b1',deep:'#453f35',pale:'#f1ece2',mon:'8',ink:'#676053',inkText:'#ffffff'}
 };
 const iconImages={},monImages={};
 function loadImageMap(urlMap,target){
@@ -327,7 +306,7 @@ flower.addColorStop(1,cl.deep);
  ctx.fillText(nm,135,105-(val('font')=='BTTTRIAL'?0:10),540);ctx.restore();
  if(val('keywords')){
   ctx.fillStyle=hexToRgb(cl.ink,0.9);ctx.globalAlpha=.94;ctx.fillRect(55,820,626,92);ctx.globalAlpha=1;
-  ctx.fillStyle='#ffffff';ctx.font=`italic ${fitFont(val('keywords'),610,val('font')=='BTTTRIAL'?45:36,15,val('font'))}px ${val('font')}`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,610);ctx.textAlign='left';
+  ctx.fillStyle=cl.inkText;ctx.font=`italic ${fitFont(val('keywords'),610,val('font')=='BTTTRIAL'?45:36,15,val('font'))}px ${val('font')}`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,610);ctx.textAlign='left';
  }
  const ids=['lp','ap','honor','ki','size'],labels=['LP','AP','Honor','Ki','Size'],xs=[104,236,368,500,632],cols=['#b74b4b','#1393e8','#d9a918','#282821','#282821'];
  ctx.fillStyle=hexToRgb(PAPER,0.9);ctx.font=`240px "L5RSymbols"`;
@@ -338,7 +317,8 @@ flower.addColorStop(1,cl.deep);
  ids.forEach((id,i)=>{
   const x=xs[i],y=980, c=cols[i];
   ctx.fillStyle=c;ctx.font=` 58px "WCMANONegra"`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(val(id)||'0',x,y,78);
-  ctx.fillStyle=hexToRgb(cl.ink,0.9);ctx.fillRect(x-43,y+27,86,32);ctx.fillStyle='#fff9ed';ctx.font='25px "Arial"';ctx.fillText(labels[i],x,y+45);
+  ctx.fillStyle=hexToRgb('#000000',0.2),0.9;ctx.fillRect(x-41,y+30,86,32);
+  ctx.fillStyle=cl.ink,0.9;ctx.fillRect(x-43,y+27,86,32);ctx.fillStyle=cl.inkText;ctx.font='25px "Arial"';ctx.fillText(labels[i],x,y+45);
  });
  ctx.restore();
 
