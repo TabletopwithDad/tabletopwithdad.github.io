@@ -4,7 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Champions of Rokugan — Card Creator</title>
+
 <style>
+@font-face {
+  font-family: 'BTTTRIAL';
+  src: url('https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf') format('otf');
+  font-display: swap;
+}
 :root{--ink:#28271f;--paper:#f3efe4;--line:#9b9788;--accent:#6c8b9c}
 *{box-sizing:border-box}
 body{margin:0;background:#e8e5dc;color:var(--ink);font:15px/1.35 system-ui,sans-serif}
@@ -44,9 +50,15 @@ canvas{display:block;width:100%;height:auto;}
 <section class="editor">
 <h2>Fill this in!</h2>
 <div class="grid">
-<div class="field wide"><label for="clan">Clan</label>
+<div class="field"><label for="clan">Clan</label>
 <select id="clan">
 <option value="crab">Crab</option><option value="crane" selected>Crane</option><option value="dragon">Dragon</option><option value="lion">Lion</option><option value="phoenix">Phoenix</option><option value="scorpion">Scorpion</option><option value="unicorn">Unicorn</option><option value="mantis">Mantis</option><option value="hare">Hare</option><option value="fox">Fox</option><option value="naga">Naga</option><option value="neutral">Neutral</option>
+</select>
+</div>
+
+<div class="field"><label for="font">Title Font</label>
+<option value="BTTTRIAL">BrushtipTexeTrial (FFG titles)</option>
+<select id="font"><option value="UVNBayBuom">UVN Bay Buom (Old card titles)</option>
 </select></div>
 
 <div class="field wide"><label for="name">Character name</label><input id="name" value="Asahina Takako"></div>
@@ -103,13 +115,17 @@ canvas{display:block;width:100%;height:auto;}
 <script>
 var f1 = new FontFace('L5RSymbols', 'url(./fonts/L5RSymbols.ttf)');
 var f2 = new FontFace('WCMANONegra', 'url(./fonts/WCManoNegraBta.ttf)');
-var f3 = new FontFace('BTTTRIAL', 'url(./fonts/BTTTRIAL.otf)');
+var f3 = new FontFace('BTTTRIAL', 'url("https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf")');
+var f4 = new FontFace('UVNBayBuom', 'url("https://static.wfonts.com/data/2015/01/01/uvn-bay-buom/UVN Bay Buom.ttf")');
+
 f1.load().then(function(font) {console.log('font ready');
 document.fonts.add(font);
 f2.load().then(function(font2) {console.log('font ready');
 document.fonts.add(font2);
 f3.load().then(function(font3) {console.log('font ready');
 document.fonts.add(font3);
+f4.load().then(function(font4) {console.log('font ready');
+document.fonts.add(font4);
 const MON_URLS={
  crab:"",crane:"",dragon:"",lion:"",phoenix:"",scorpion:"",unicorn:"",naga:"",neutral:""
 };
@@ -308,11 +324,11 @@ flower.addColorStop(1,cl.deep);
  ctx.fillStyle='#24231f';ctx.textAlign='left';ctx.textBaseline='middle';
  const nm=val('name')||'Character Name';
  ctx.save();
- ctx.font=`${fitFont(nm,540,60,24,'BTTTRIAL')}px "BTTTRIAL"`;
- ctx.fillText(nm,135,105,540);ctx.restore();
+ ctx.font=`${fitFont(nm,540,val('font')=='BTTTRIAL'?60:50,24,val('font'))}px ${val('font')}`;
+ ctx.fillText(nm,135,105-(val('font')=='BTTTRIAL'?0:10),540);ctx.restore();
  if(val('keywords')){
   ctx.fillStyle=hexToRgb(cl.ink,0.9);ctx.globalAlpha=.94;ctx.fillRect(55,820,626,92);ctx.globalAlpha=1;
-  ctx.fillStyle='#ffffff';ctx.font=`italic ${fitFont(val('keywords'),640,45,15)}px "BTTTRIAL"`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,640);ctx.textAlign='left';
+  ctx.fillStyle='#ffffff';ctx.font=`italic ${fitFont(val('keywords'),610,val('font')=='BTTTRIAL'?45:36,15,val('font'))}px ${val('font')}`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,610);ctx.textAlign='left';
  }
  const ids=['lp','ap','honor','ki','size'],labels=['LP','AP','Honor','Ki','Size'],xs=[104,236,368,500,632],cols=['#b74b4b','#1393e8','#d9a918','#282821','#282821'];
  ctx.fillStyle=hexToRgb(PAPER,0.9);ctx.font=`240px "L5RSymbols"`;
@@ -337,7 +353,7 @@ flower.addColorStop(1,cl.deep);
  const ptitle=val('powerTitle')||'Passive Power';
  ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,103,720,102);ctx.clip();
- ctx.font=`${fitFont(ptitle,690,58,30,'BTTTRIAL')}px "BTTTRIAL"`;ctx.fillText(ptitle,778+333,128,690);ctx.restore();
+ ctx.font=`${fitFont(ptitle,630,val('font')=='BTTTRIAL'?58:46,30,val('font'))}px ${val('font')}`;ctx.fillText(ptitle,778+333,128-(val('font')=='BTTTRIAL'?0:7),630);ctx.restore();
  drawRich(val('powerText')||'',800,204,630,'37px "Arial"','#000000',34,24,210);
 
  // Melee and optional ranged attack
@@ -374,7 +390,7 @@ flower.addColorStop(1,cl.deep);
  const ttitle=val('techTitle')||'Secret Technique';
  ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,701,720,49);ctx.clip();
- ctx.font=`${fitFont(ttitle,690,58,30,'BTTTRIAL')}px "BTTTRIAL"`;ctx.fillText(ttitle,778+333,707,690);ctx.restore();
+ ctx.font=`${fitFont(ttitle,630,val('font')=='BTTTRIAL'?58:46,30,val('font'))}px ${val('font')}`;ctx.fillText(ttitle,778+333,707+(val('font')=='BTTTRIAL'?7:0),630);ctx.restore();
  drawRich(val('techText')||'',800,779,630,'37px "Arial"','#000000',34,24,300);
 const r = 35; // ~3 mm at 300 DPI
 
@@ -422,6 +438,7 @@ $('reset').addEventListener('click',()=>{
  $('portrait').value='';portrait=null;draw();
 });
 draw();
+});
 });
 });
 });
