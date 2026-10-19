@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Champions of Rokugan — Card Creator</title>
+<title>Champions of Rokugan — Champion Creator</title>
 
 <style>
 @font-face {
@@ -52,7 +52,7 @@ canvas{display:block;width:100%;height:auto;}
 <div class="grid">
 <div class="field"><label for="clan">Clan</label>
 <select id="clan">
-<option value="crab">Crab</option><option value="crane" selected>Crane</option><option value="dragon">Dragon</option><option value="lion">Lion</option><option value="phoenix">Phoenix</option><option value="scorpion">Scorpion</option><option value="unicorn">Unicorn</option><option value="mantis">Mantis</option><option value="hare">Hare</option><option value="fox">Fox</option><option value="naga">Naga</option><option value="neutral">Neutral</option>
+<option value="crab">Crab</option><option value="crane" selected>Crane</option><option value="dragon">Dragon</option><option value="lion">Lion</option><option value="phoenix">Phoenix</option><option value="scorpion">Scorpion</option><option value="unicorn">Unicorn</option><option value="mantis">Mantis</option><option value="hare">Hare</option><option value="fox">Fox</option><option value="naga">Naga</option><option value="neutral">Neutral</option><option value="shadow">Shadowlands</option>
 </select>
 </div>
 
@@ -107,10 +107,11 @@ canvas{display:block;width:100%;height:auto;}
 
 <section class="preview-wrap">
 <div class="preview-top"><strong>Preview</strong></div>
-<div class="canvas-shell"><canvas id="card" width="1500" height="1087"></canvas></div>
+<div class="canvas-shell"><canvas id="card" width="1500" height="1075"></canvas></div>
 </section>
 </main>
 
+<script src="l5rFunctions.js"></script>
 <script>
 var f1 = new FontFace('L5RSymbols', 'url(./fonts/L5RSymbols.ttf)');
 var f2 = new FontFace('WCMANONegra', 'url(./fonts/WCManoNegraBta.ttf)');
@@ -125,159 +126,15 @@ f3.load().then(function(font3) {console.log('font ready');
 document.fonts.add(font3);
 f4.load().then(function(font4) {console.log('font ready');
 document.fonts.add(font4);
-const MON_URLS={
- crab:"",crane:"",dragon:"",lion:"",phoenix:"",scorpion:"",unicorn:"",naga:"",neutral:""
-};
-const ICON_URLS={
- blood:"",kabuto:"",katana:"",void:"",air:"",fire:"",earth:"",water:""
-};
 
 const $=id=>document.getElementById(id);
 const canvas=$('card'),ctx=canvas.getContext('2d');
-const W=1500,H=1087,DIVIDER=14,LEFT=(W/2)-DIVIDER, PAPER='#EAE9E7';
-const clans={
- crab:{name:'Crab',bg:'#9eb9c1',deep:'#2D395A',pale:'#e7f0ed',mon:'1',ink:'#5a6669',inkText:'#ffffff'},
- crane:{name:'Crane',bg:'#a9d9e8',deep:'#88c6f2',pale:'#edf7f7',mon:'2',ink:'#BED3E9',inkText:'#000000'},
- dragon:{name:'Dragon',bg:'#a8c6b1',deep:'#5B8E52',pale:'#edf2e8',mon:'3',ink:'#61451d',inkText:'#ffffff'},
- lion:{name:'Lion',bg:'#e6c56e',deep:'#C8A000',pale:'#f8f0d9',mon:'4',ink:'#61451d',inkText:'#ffffff'},
- phoenix:{name:'Phoenix',bg:'#e6a17d',deep:'#f0571a',pale:'#fbede0',mon:'5',ink:'#e6a910',inkText:'#ffffff'},
- scorpion:{name:'Scorpion',bg:'#d69b9d',deep:'#94000B',pale:'#f5e9e5',mon:'6',ink:'#302025',inkText:'#ffffff'},
- unicorn:{name:'Unicorn',bg:'#c9b6df',deep:'#654991',pale:'#f3edf7',mon:'7',ink:'#d2bce6',inkText:'#000000'},
- naga:{name:'Naga',bg:'#b8c8a2',deep:'#7D9256',pale:'#eef1e2',mon:'9',ink:'#3c4d23',inkText:'#ffffff'},
-fox:{    name:'Fox', bg:'#DDBFAC', deep:'#943A0E', pale:'#F7F1E6', mon:'<', ink:'#adb2b8',inkText:'#000000'},
- mantis:{name:'Mantis',bg:'#b8d7b3',deep:'#1C6B4A',pale:'#eef5e8',mon:'=',ink:'#0B5E3D',inkText:'#ffffff'},
- hare:{name:'Hare',bg:'#dcbfc2',deep:'#C92032',pale:'#faf1f0',mon:';',ink:'#f5e4e4',inkText:'#000000'},
- neutral:{name:'Neutral',bg:'#d5c7b1',deep:'#453f35',pale:'#f1ece2',mon:'8',ink:'#676053',inkText:'#ffffff'}
-};
-const iconImages={},monImages={};
-function loadImageMap(urlMap,target){
- Object.entries(urlMap).forEach(([key,url])=>{
-  if(!url)return;
-  const img=new Image();
-  img.onload=()=>{target[key]=img;draw()};
-  img.src=url;
- });
-}
-loadImageMap(ICON_URLS,iconImages);
-loadImageMap(MON_URLS,monImages);
+const W=1500,H=1075,DIVIDER=14,LEFT=(W/2)-DIVIDER;
+
 let portrait=null;
 
 function val(id){return $(id).value.trim()}
-function fitFont(text,maxWidth,base,min=18,family='Cormorant Garamond'){
- let size=base;
- while(size>min){ctx.font=`${size}px "${family}"`;if(ctx.measureText(text).width<=maxWidth)break;size--}
- return size;
-}
-function iconToken(token,x,y,size,color){
-  ctx.save();
-  const symbols={'&':'S','#':'O', '@':'D', v:'V',a:'A',f:'F',e:'E',w:'W'};
-  ctx.font=`${size*2.5}px "L5RSymbols"`;ctx.fillStyle=color;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbols[token]||'AAA',x+16,y-3);
- ctx.restore();
-}
-function drawRich(text,x,y,maxWidth,font,color,lineH,iconSize=24,maxHeight=Infinity){
- let italics = false;
- const re=/(\[v\]|\[a\]|\[f\]|\[e\]|\[w\]|[&@#])/g;
- const tokens=text.split(re).filter(Boolean);
- let lines=[[]],width=0;
- ctx.font=font;
- function addText(str){
-  for(let chunk of str.split(/(\s+)/)){
-    if(!chunk) continue;
 
-    if(chunk.startsWith('*')){
-      italics = true;
-      chunk = chunk.slice(1);
-    }
-
-    const endItalic = chunk.includes('*');
-
-    if(endItalic){
-      chunk = chunk.replace('*','');
-    }
-
-    if(!chunk) continue;
-
-    const style = italics;
-
-    ctx.font = style ? `italic ${font}` : font;
-    const w = ctx.measureText(chunk).width;
-
-    if(width+w > maxWidth && width > 0){
-      lines.push([]);
-      width = 0;
-    }
-
-    lines.at(-1).push({
-      t: chunk,
-      w,
-      italics: style
-    });
-
-    width += w;
-
-    if(endItalic){
-      italics = false;
-    }
-  }
-}
- for(const t of tokens){
-  if(t.includes('\n')){
-   const parts=t.split('\n');
-   parts.forEach((p,i)=>{if(p)addText(p);if(i<parts.length-1){lines.push([]);width=0}});
-   continue;
-  }
-  const isIcon=/^(\[v\]|\[a\]|\[f\]|\[e\]|\[w\]|[&@#])$/.test(t);
-  const w=isIcon?iconSize:ctx.measureText(t).width;
-  if(isIcon&&width+w>maxWidth&&width){lines.push([]);width=0}
-  if(isIcon){lines.at(-1).push({t,w,isIcon});width+=w}else addText(t);
- }
- const maxLines=Number.isFinite(maxHeight)?Math.max(0,Math.floor(maxHeight/lineH)):lines.length;
- const shown=lines.slice(0,maxLines);
- ctx.save()
- ctx.textBaseline='top';ctx.fillStyle=color;ctx.font=font;
- shown.forEach((line,i)=>{
-const lineWidth = line.reduce((s,p)=>s+p.w,0);
-
-    let xx = x + (maxWidth - lineWidth)/2;
-    let yy = y + i*lineH;
-  for(const p of line){
-   if(p.isIcon){const key=p.t==='&'?'&':p.t==='@'?'@':p.t==='#'?'#':p.t[1];
-   colRich={'&':color,'@':color,'#':color,'a':'#9BC4CF','f':'#F07F09','e':'#4BB062','v':'#7E519C','w':'#4152A0'};
-   iconToken(key,xx+iconSize/2,yy+lineH*.5,iconSize,colRich[key]);xx+=p.w}
-   else{
-   
-   ctx.fillStyle=color;
-  ctx.font=p.italics?`italic ${font}`
-  : font;
-  ctx.textAlign='left';
-  ctx.fillText(p.t,xx,yy);xx+=p.w}
-  }
- });
- return shown.length*lineH;
-}
-function hexToRgb(hex,opacity) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return `rgba(${parseInt(result[1],16)},${parseInt(result[2],16)},${parseInt(result[3],16)},${opacity})`;
- }
-function drawBow(x,y,size,color){
- ctx.save();ctx.translate(x,y);ctx.strokeStyle=color;ctx.lineWidth=size*.08;
- ctx.beginPath();ctx.arc(-size*.15,0,size*.45,-Math.PI/2.2,Math.PI/2.2);ctx.stroke();
- ctx.beginPath();ctx.moveTo(size*.15,-size*.45);ctx.lineTo(size*.15,size*.45);ctx.stroke();
- ctx.restore();
-}
-function drawMon(c,x,y,r,cl){
-
-const grad=ctx.createLinearGradient(x-.2*r,y-.9*r, x-.9*r,y-.2*r);
-grad.addColorStop(1, PAPER);
-grad.addColorStop(0, cl.deep);
- c.save();c.fillStyle=grad;c.strokeStyle=cl.deep;
- c.font=` ${r}px "L5RSymbols"`;c.textAlign='center';c.textBaseline='middle';c.fillText(cl.mon,x,y);c.restore();
-}
-function panelFrame(x,y,w,h,cl){
- 
- ctx.save();ctx.fillStyle=hexToRgb(PAPER,0.6);ctx.strokeStyle=cl.deep;ctx.lineWidth=5;
- ctx.beginPath();ctx.moveTo(x+35,y);ctx.lineTo(x+w-35,y);ctx.lineTo(x+w-35,y+18);ctx.lineTo(x+w-17,y+18);ctx.lineTo(x+w-17,y+42);ctx.lineTo(x+w,y+42);ctx.lineTo(x+w,y+h-42);ctx.lineTo(x+w-17,y+h-42);ctx.lineTo(x+w-17,y+h-18);ctx.lineTo(x+w-35,y+h-18);ctx.lineTo(x+w-35,y+h);ctx.lineTo(x+35,y+h);ctx.lineTo(x+35,y+h-18);ctx.lineTo(x+17,y+h-18);ctx.lineTo(x+17,y+h-42);ctx.lineTo(x,y+h-42);ctx.lineTo(x,y+42);ctx.lineTo(x+17,y+42);ctx.lineTo(x+17,y+18);ctx.lineTo(x+35,y+18);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
-}
 function draw(){
  const cl=clans[val('clan')]||clans.crane;
  
@@ -302,11 +159,11 @@ flower.addColorStop(1,cl.deep);
  ctx.fillStyle='#24231f';ctx.textAlign='left';ctx.textBaseline='middle';
  const nm=val('name')||'Character Name';
  ctx.save();
- ctx.font=`${fitFont(nm,540,val('font')=='BTTTRIAL'?60:50,24,val('font'))}px ${val('font')}`;
+ ctx.font=`${fitFont(ctx,nm,540,val('font')=='BTTTRIAL'?60:50,24,val('font'))}px ${val('font')}`;
  ctx.fillText(nm,135,105-(val('font')=='BTTTRIAL'?0:10),540);ctx.restore();
  if(val('keywords')){
   ctx.fillStyle=hexToRgb(cl.ink,0.9);ctx.globalAlpha=.94;ctx.fillRect(55,820,626,92);ctx.globalAlpha=1;
-  ctx.fillStyle=cl.inkText;ctx.font=`italic ${fitFont(val('keywords'),610,val('font')=='BTTTRIAL'?45:36,15,val('font'))}px ${val('font')}`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,610);ctx.textAlign='left';
+  ctx.fillStyle=cl.inkText;ctx.font=`italic ${fitFont(ctx,val('keywords'),610,val('font')=='BTTTRIAL'?45:36,15,val('font'))}px ${val('font')}`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,610);ctx.textAlign='left';
  }
  const ids=['lp','ap','honor','ki','size'],labels=['LP','AP','Honor','Ki','Size'],xs=[104,236,368,500,632],cols=['#b74b4b','#1393e8','#d9a918','#282821','#282821'];
  ctx.fillStyle=hexToRgb(PAPER,0.9);ctx.font=`240px "L5RSymbols"`;
@@ -328,12 +185,12 @@ flower.addColorStop(1,cl.deep);
  ctx.fillStyle=cl.pale;ctx.fillRect(W-DIVIDER,0,DIVIDER,H);
 
  // Passive power box
- panelFrame(778,75,666,315,cl);
+ panelFrame(ctx,778,75,666,315,cl);
  const ptitle=val('powerTitle')||'Passive Power';
  ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,103,720,102);ctx.clip();
- ctx.font=`${fitFont(ptitle,630,val('font')=='BTTTRIAL'?58:46,30,val('font'))}px ${val('font')}`;ctx.fillText(ptitle,778+333,128-(val('font')=='BTTTRIAL'?0:7),630);ctx.restore();
- drawRich(val('powerText')||'',800,204,630,'37px "Arial"','#000000',34,24,210);
+ ctx.font=`${fitFont(ctx,ptitle,630,val('font')=='BTTTRIAL'?58:46,30,val('font'))}px ${val('font')}`;ctx.fillText(ptitle,778+333,128-(val('font')=='BTTTRIAL'?0:7),630);ctx.restore();
+ drawRich(ctx,val('powerText')||'',805,174,620,'37px "Arial"','#000000',34,24,210);
 
  // Melee and optional ranged attack
  ctx.textAlign='left';ctx.textBaseline='middle';
@@ -355,7 +212,7 @@ flower.addColorStop(1,cl.deep);
  }
 
  // Technique panel
- panelFrame(778,635,666,390,cl);
+ panelFrame(ctx,778,635,666,390,cl);
  // Element cost badges overlap the upper border of the technique panel.
  const costs=[...document.querySelectorAll('input[name="element"]')];
  let total=0;const els=[];
@@ -365,12 +222,12 @@ flower.addColorStop(1,cl.deep);
  const tokenFor={air:'a',earth:'e',fire:'f',water:'w',void:'v'};
  const shown=els.slice(0,5),spacing=110,start=1098-(shown.length-2)*spacing/2;
  ctx.fillStyle=PAPER; ctx.fillRect(1111-(shown.length)*spacing/2,620,(shown.length)*spacing,40);
- shown.forEach((e,i)=>{const x=start+i*spacing;ctx.fillStyle=colors[tokenFor[e]];iconToken(tokenFor[e],x,630,94,colors[tokenFor[e]])});
+ shown.forEach((e,i)=>{const x=start+i*spacing;ctx.fillStyle=colors[tokenFor[e]];iconToken(ctx,tokenFor[e],x,630,94,colors[tokenFor[e]])});
  const ttitle=val('techTitle')||'Secret Technique';
  ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,701,720,49);ctx.clip();
- ctx.font=`${fitFont(ttitle,630,val('font')=='BTTTRIAL'?58:46,30,val('font'))}px ${val('font')}`;ctx.fillText(ttitle,778+333,707+(val('font')=='BTTTRIAL'?7:0),630);ctx.restore();
- drawRich(val('techText')||'',800,779,630,'37px "Arial"','#000000',34,24,300);
+ ctx.font=`${fitFont(ctx,ttitle,630,val('font')=='BTTTRIAL'?58:46,30,val('font'))}px ${val('font')}`;ctx.fillText(ttitle,778+333,707+(val('font')=='BTTTRIAL'?7:0),630);ctx.restore();
+ drawRich(ctx,val('techText')||'',805,755,620,'37px "Arial"','#000000',34,24,260);
 const r = 35; // ~3 mm at 300 DPI
 
 ctx.save();
@@ -381,8 +238,6 @@ ctx.rect(0, 0, W, H);
 ctx.roundRect(0, 0, W, H, r);
 
 ctx.fill('evenodd');
-const p = ctx.getImageData(0,0,1,1).data;
-console.log(p); // [r,g,b,a]
 ctx.restore();
 }
 document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',draw));
