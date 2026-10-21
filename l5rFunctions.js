@@ -53,6 +53,7 @@ function drawRich(ctx,text,x,y,maxWidth,font,color,lineH,iconSize=24,maxHeight=I
  const re=/(\[v\]|\[a\]|\[f\]|\[e\]|\[w\]|[&@#])/g;
  const tokens=text.split(re).filter(Boolean);
  let lines=[[]],width=0;
+ let stretch = .8;
  ctx.font=font;
  function addText(str){
   for(let chunk of str.split(/(\s+)/)){
@@ -74,7 +75,8 @@ function drawRich(ctx,text,x,y,maxWidth,font,color,lineH,iconSize=24,maxHeight=I
     const style = italics;
 
     ctx.font = style ? `italic ${font}` : font;
-    const w = ctx.measureText(chunk).width;
+	
+    const w = ctx.measureText(chunk).width*stretch;
 
     if(width+w > maxWidth && width > 0){
       lines.push([]);
@@ -120,16 +122,26 @@ shown.forEach((line,i)=>{
   for(const p of line){
    if(p.isIcon){const key=p.t==='&'?'&':p.t==='@'?'@':p.t==='#'?'#':p.t[1];
    colRich={'&':color,'@':color,'#':color,'a':'#9BC4CF','f':'#F07F09','e':'#4BB062','v':'#7E519C','w':'#4152A0'};
-   iconToken(ctx,key,xx+iconSize/2,yy+lineH*.5,iconSize,colRich[key]);xx+=p.w}
+   iconToken(ctx,key,xx+iconSize/2,yy+lineH*.4,iconSize,colRich[key]);xx+=p.w}
    else{
    
    ctx.fillStyle=color;
   ctx.font=p.italics?`italic ${font}`
   : font;
-  ctx.textAlign='left';
-  ctx.fillText(p.t,xx,yy);xx+=p.w}
+  ctx.textAlign='left';ctx.save();
+ctx.scale(stretch, 1);
+
+ctx.fillText(
+    p.t,
+    xx / stretch,
+    yy
+);
+
+ctx.restore();
+  xx+=p.w}
   }
  });
+ ctx.restore();
  return shown.length*lineH;
 }
 function fitFont(ctx,text,maxWidth,base,min=18,family='Cormorant Garamond'){
@@ -137,8 +149,14 @@ function fitFont(ctx,text,maxWidth,base,min=18,family='Cormorant Garamond'){
  while(size>min){ctx.font=`${size}px "${family}"`;if(ctx.measureText(text).width<=maxWidth)break;size--}
  return size;
 }
-function panelFrame(ctx,x,y,w,h,cl){
+function panelFrame(ctx,x,y,w,h,cl,hole=false){
  
  ctx.save();ctx.fillStyle=hexToRgb(PAPER,0.6);ctx.strokeStyle=cl.deep;ctx.lineWidth=5;
- ctx.beginPath();ctx.moveTo(x+35,y);ctx.lineTo(x+w-35,y);ctx.lineTo(x+w-35,y+18);ctx.lineTo(x+w-17,y+18);ctx.lineTo(x+w-17,y+42);ctx.lineTo(x+w,y+42);ctx.lineTo(x+w,y+h-42);ctx.lineTo(x+w-17,y+h-42);ctx.lineTo(x+w-17,y+h-18);ctx.lineTo(x+w-35,y+h-18);ctx.lineTo(x+w-35,y+h);ctx.lineTo(x+35,y+h);ctx.lineTo(x+35,y+h-18);ctx.lineTo(x+17,y+h-18);ctx.lineTo(x+17,y+h-42);ctx.lineTo(x,y+h-42);ctx.lineTo(x,y+42);ctx.lineTo(x+17,y+42);ctx.lineTo(x+17,y+18);ctx.lineTo(x+35,y+18);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
+ ctx.beginPath();ctx.moveTo(x+35,y);ctx.lineTo(x+w-35,y);ctx.lineTo(x+w-35,y+18);ctx.lineTo(x+w-17,y+18);ctx.lineTo(x+w-17,y+42);ctx.lineTo(x+w,y+42);ctx.lineTo(x+w,y+h-42);ctx.lineTo(x+w-17,y+h-42);ctx.lineTo(x+w-17,y+h-18);ctx.lineTo(x+w-35,y+h-18);ctx.lineTo(x+w-35,y+h);ctx.lineTo(x+35,y+h);ctx.lineTo(x+35,y+h-18);ctx.lineTo(x+17,y+h-18);ctx.lineTo(x+17,y+h-42);ctx.lineTo(x,y+h-42);ctx.lineTo(x,y+42);ctx.lineTo(x+17,y+42);ctx.lineTo(x+17,y+18);ctx.lineTo(x+35,y+18);ctx.closePath();ctx.fill();
+ if (hole)
+ {
+	  ctx.beginPath();ctx.moveTo(x+w-115,y);ctx.lineTo(x+w-35,y);ctx.lineTo(x+w-35,y+18);ctx.lineTo(x+w-17,y+18);ctx.lineTo(x+w-17,y+42);ctx.lineTo(x+w,y+42);ctx.lineTo(x+w,y+h-42);ctx.lineTo(x+w-17,y+h-42);ctx.lineTo(x+w-17,y+h-18);ctx.lineTo(x+w-35,y+h-18);ctx.lineTo(x+w-35,y+h);ctx.lineTo(x+35,y+h);ctx.lineTo(x+35,y+h-18);ctx.lineTo(x+17,y+h-18);ctx.lineTo(x+17,y+h-42);ctx.lineTo(x,y+h-42);ctx.lineTo(x,y+42);ctx.lineTo(x+17,y+42);ctx.lineTo(x+17,y+18);ctx.lineTo(x+35,y+18);ctx.lineTo(x+35,y);ctx.lineTo(x+115,y);
+ }
+ 
+ ctx.stroke();ctx.restore();
 }
