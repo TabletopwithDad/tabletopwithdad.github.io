@@ -142,7 +142,7 @@ document.fonts.add(font4);
 f5.load().then(function(font5) {console.log('font ready');
 document.fonts.add(font5);
 const allyTex = new Image();
-allyTex.src = "./images/allyTex.png";
+
 
 let allyTexLoaded = false;
 
@@ -152,6 +152,8 @@ allyTex.onload = () => {
     draw(); // optional
 	console.log("test");
 	}
+
+allyTex.src = "./images/allyTex.png";
 const $=id=>document.getElementById(id);
 const canvas=$('card'),ctx=canvas.getContext('2d');
 const W=744,H=1039,DIVIDER=14;
@@ -178,7 +180,7 @@ ctx.clip();
 ctx.globalCompositeOperation = "multiply";
 
 if (allyTexLoaded) {
-    ctx.drawImage(allyTex, 0, 0, W, H,0,0,allyTex.width,allyTex.height);
+    ctx.drawImage(allyTex, 0, 0, W, H);
 }
 
 ctx.restore();
