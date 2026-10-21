@@ -207,7 +207,7 @@ flower.addColorStop(1,cl.deep);
   ctx.globalAlpha=1;
   let keywordHalfW = ctx.measureText(val('keywords')).width/2;
   ctx.beginPath();
- ctx.fillStyle=hexToRgb(PAPER,0.95);ctx.globalAlpha=.94;
+ ctx.fillStyle=hexToRgb(cl.ink,0.95);ctx.globalAlpha=.94;
  paintStroke(ctx,LEFT/2-keywordHalfW-20,840,2*keywordHalfW+45,60);
  paintStroke(ctx,LEFT/2-keywordHalfW-40,860,2*keywordHalfW+75,50);
  paintStroke(ctx,LEFT/2-keywordHalfW-25,880,2*keywordHalfW+37,60);
