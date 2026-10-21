@@ -150,11 +150,20 @@ var dO=document.getElementById("dO");
 
 allyTex.onload = () => {
     allyTexLoaded = true;
-    draw(); // optional
-	console.log("test");
-	dO.innerHTML += "test";
-	dO.innerHTML += allyTex;
-	}
+
+    dO.innerHTML +=
+        "<br>loaded " +
+        allyTex.width +
+        "x" +
+        allyTex.height;
+
+    draw();
+};
+
+allyTex.onerror = () => {
+    dO.innerHTML += "<br>ERROR loading allyTex";
+};
+
 
 allyTex.src = "./images/allyTex.png";
 const $=id=>document.getElementById(id);
