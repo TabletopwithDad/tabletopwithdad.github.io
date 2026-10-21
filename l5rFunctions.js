@@ -1,4 +1,4 @@
-const PAPER='#EAE9E7', goodBorder='#ffffff', badBorder='#000000';
+const PAPER='#EAE9E7', goodBorder='#ffffff', badBorder='#2f2826';
 
 const clans={
  crab:{name:'Crab',bg:'#9eb9c1',deep:'#2D395A',pale:'#e7f0ed',mon:'1',ink:'#5a6669',inkText:'#ffffff'},
@@ -48,6 +48,7 @@ function drawBow(ctx,x,y,size,color){
  ctx.beginPath();ctx.moveTo(size*.15,-size*.45);ctx.lineTo(size*.15,size*.45);ctx.stroke();
  ctx.restore();
 }
+
 function drawRich(ctx,text,x,y,maxWidth,font,color,lineH,iconSize=24,maxHeight=Infinity){
  let italics = false;
  const re=/(\[v\]|\[a\]|\[f\]|\[e\]|\[w\]|[&@#])/g;
@@ -159,4 +160,97 @@ function panelFrame(ctx,x,y,w,h,cl,hole=false){
  }
  
  ctx.stroke();ctx.restore();
+}
+
+function edgeOffset(y,skip=false) {
+    return (
+        (skip?0:Math.sin(y*0.03)*5) +
+        Math.sin(y*0.09)*2 +
+        Math.sin(y*0.18)*1 +
+        Math.sin(y*0.45)*0.8 +
+        Math.sin(y*1.2)*0.3
+    );
+}
+function tornArc(ctx, cx, cy, r, startAngle, endAngle, ccw = false) {
+    const steps = Math.max(100, Math.floor(r * 2));
+
+    for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+
+        let a;
+        if (!ccw) {
+            a = startAngle + (endAngle - startAngle) * t;
+        } else {
+            a = startAngle - (startAngle - endAngle) * t;
+        }
+
+        const rr =
+            r + edgeOffset(a*r,true);
+
+        const x = cx + Math.cos(a) * rr;
+        const y = cy + Math.sin(a) * rr;
+
+        if (i === 0) ctx.lineTo(x, y);
+        else ctx.lineTo(x, y);
+    }
+}
+function drawTornPanel(ctx, x, y, w, h,scale) {
+    ctx.beginPath();
+
+    // Left edge
+    ctx.moveTo(x, y);
+
+    for(let yy=0; yy<=h; yy+=2){
+    ctx.lineTo(x + edgeOffset(yy)*scale, y+yy);
+}
+
+
+    // Bottom
+    ctx.lineTo(x+w, y+h);
+
+    // Right edge
+    for(let yy=h; yy>=0; yy-=2){
+    ctx.lineTo(x+w + edgeOffset(yy+1000)*scale, y+yy);
+}
+
+    ctx.closePath();
+
+    ctx.fill();
+}
+
+ function paintStroke(ctx, x, y, w, h) {
+    const top = [];
+    const bottom = [];
+
+    for (let px = 0; px <= w; px += 4) {
+        const t = px / w;
+
+        // taper ends
+        const thickness =
+            h/2* (0.7 + 0.2 * Math.sin(Math.PI * t));
+
+        const topY =
+            y -
+            thickness +
+            edgeOffset(px)*0.6;
+
+        const bottomY =
+            y +
+            thickness +
+            edgeOffset(px + 50)*0.6;
+
+        top.push([x + px, topY]);
+        bottom.push([x + px, bottomY]);
+    }
+
+    ctx.moveTo(top[0][0], top[0][1]);
+
+    for (const p of top)
+        ctx.lineTo(p[0], p[1]);
+
+    for (let i = bottom.length - 1; i >= 0; i--)
+        ctx.lineTo(
+            bottom[i][0],
+            bottom[i][1]
+        );
 }

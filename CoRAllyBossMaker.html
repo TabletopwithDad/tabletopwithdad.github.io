@@ -124,6 +124,7 @@ canvas{display:block;width:100%;height:auto;}
 
 <script src="l5rFunctions.js"></script>
 <script>
+
 var f1 = new FontFace('L5RSymbols', 'url(./fonts/L5RSymbols.ttf)');
 var f2 = new FontFace('WCMANONegra', 'url(./fonts/WCManoNegraBta.ttf)');
 var f5 = new FontFace('Serithai', 'url(https://static.wfonts.com/data/2013/11/26/serithai/Serithai-Regular.ttf)');
@@ -140,7 +141,17 @@ f4.load().then(function(font4) {console.log('font ready');
 document.fonts.add(font4);
 f5.load().then(function(font5) {console.log('font ready');
 document.fonts.add(font5);
+const allyTex = new Image();
+allyTex.src = "./images/allyTex.png";
 
+let allyTexLoaded = false;
+
+
+allyTex.onload = () => {
+    allyTexLoaded = true;
+    draw(); // optional
+	console.log("test");
+	}
 const $=id=>document.getElementById(id);
 const canvas=$('card'),ctx=canvas.getContext('2d');
 const W=744,H=1039,DIVIDER=14;
@@ -157,13 +168,27 @@ function draw(){
  
 ctx.clearRect(0,0,W,H);ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
 
- drawMonReverse(ctx,670,710,1500,cl);
+ drawMonReverse(ctx,670,710+(hasText?0:312),1500,cl);
+ 
+ ctx.save();
+ctx.beginPath();
+ctx.rect(0,0,W,H);
+tornArc(ctx,W/2, hasText ? -242 : 100, W, 0, Math.PI*2, true);
+ctx.clip();
+
+ctx.globalCompositeOperation = "multiply";
+
+if (allyTexLoaded) {
+    ctx.drawImage(allyTex, 0, 0, W, H,0,0,allyTex.width,allyTex.height);
+}
+
+ctx.restore();
  for(let i=0;i<1800;i++){const x=(i*7919)%W,y=(i*3571)%H;ctx.fillStyle=i%3?'rgba(94,84,65,.035)':'rgba(255,255,255,.18)';ctx.fillRect(x,y,2,1)}
  ctx.save();
  ctx.beginPath();
-            ctx.arc(W/2,(hasText?-270+28:100), W, 0, Math.PI*2, true);
-        ctx.closePath();
-        ctx.clip();
+ tornArc(ctx,W/2,(hasText?-270+28:100), W, 0, Math.PI*2, true);
+ ctx.closePath();
+ ctx.clip();
  ctx.fillStyle=cl.bg;ctx.fillRect(0,0,W,H);
  if(portrait){
   const iw=portrait.width,ih=portrait.height,scale=Math.max(W/iw,H/ih)*(val("sImage")/100),sw=W/scale,sh=H/scale;
@@ -175,13 +200,23 @@ ctx.clearRect(0,0,W,H);ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
  const shade=ctx.createLinearGradient(0,0,W,0);shade.addColorStop(0,'rgba(0,0,0,.18)');shade.addColorStop(.5,'rgba(0,0,0,0)');shade.addColorStop(1,'rgba(0,0,0,.12)');ctx.fillStyle=shade;ctx.fillRect(0,0,W,H);
  }
  ctx.restore();
- // Name banner
- ctx.fillStyle=hexToRgb(PAPER,0.95);ctx.globalAlpha=.94;ctx.beginPath();ctx.moveTo(98,30);ctx.lineTo(613,31);ctx.lineTo(638,50);ctx.lineTo(623,144);ctx.lineTo(125,151);ctx.lineTo(95,130);ctx.closePath();ctx.fill();ctx.globalAlpha=1;
- ctx.textAlign='center';ctx.textBaseline='middle'; ctx.fillStyle='#24231f';
- const nm=val('name')||'Character Name';
  ctx.save();
+ // Name banner
+ ctx.fillStyle=hexToRgb(PAPER,0.95);ctx.globalAlpha=.94;
+ const nm=val('name')||'Character Name';
+ ctx.textAlign='center';ctx.textBaseline='middle'; 
  ctx.font=`${fitFont(ctx,nm,540,val('font')=='BTTTRIAL'?60:50,24,val('font'))}px ${val('font')}`;
- ctx.fillText(nm,W/2,105-(val('font')=='BTTTRIAL'?0:10),540);ctx.restore();
+
+	let titleHalfW = Math.min(235,ctx.measureText(nm).width/2);
+  ctx.beginPath();
+ ctx.fillStyle=hexToRgb(PAPER,0.95);
+ paintStroke(ctx,W/2-titleHalfW-20,70,2*titleHalfW+45,60);
+ paintStroke(ctx,W/2-titleHalfW-40,91,2*titleHalfW+75,50);
+ paintStroke(ctx,W/2-titleHalfW-25,112,2*titleHalfW+37,60);
+    ctx.closePath();
+ 
+ ctx.fill();
+ ctx.fillStyle='#24231f';ctx.fillText(nm,W/2,105-(val('font')=='BTTTRIAL'?0:10),470);ctx.restore();
  
  const ids=['lp','ap','size','type'],labels=['LP','AP','Size',val('type')],xs=[(W/2),W/4-10,(W/4*3)+10,(W/2)],ys=[425+(hasText?35:400),405+(hasText?38:400),405+(hasText?38:400),-27],cols=['#b74b4b','#1393e8','#282821','#282821'];
  ctx.fillStyle=hexToRgb(PAPER,0.9);ctx.font=`240px "L5RSymbols"`;
@@ -197,8 +232,19 @@ ctx.clearRect(0,0,W,H);ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
  });
  ctx.restore();
 
- ctx.fillStyle=isFriendly?goodBorder:badBorder;ctx.fillRect(0,0,2*DIVIDER,H);
- ctx.fillStyle=isFriendly?goodBorder:badBorder;ctx.fillRect(W-DIVIDER*2,0,DIVIDER*2,H);
+
+ctx.save();
+ ctx.fillStyle=hexToRgb("#000000",0.3);
+ ctx.filter = 'blur(8px)';
+drawTornPanel(ctx,-(DIVIDER),0,DIVIDER*3.5,H+3,0.67)
+drawTornPanel(ctx,W-DIVIDER*2.5,0,DIVIDER*4,H+3,0.67)
+ctx.restore();
+ ctx.fillStyle=isFriendly?goodBorder:badBorder;//ctx.fillRect(0,0,2*DIVIDER,H);
+ //ctx.fillStyle=isFriendly?goodBorder:badBorder;
+ //ctx.fillRect(W-DIVIDER*2,0,DIVIDER*2,H);
+drawTornPanel(ctx,-DIVIDER,0,DIVIDER*3,H,0.67)
+
+drawTornPanel(ctx,W-DIVIDER*2,0,DIVIDER*3,H,0.67)
 
  // power box
  if (hasText)
@@ -335,6 +381,8 @@ ctx.roundRect(0, 0, W, H, r);
 ctx.fill('evenodd');
 ctx.restore();
 }
+
+
 document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',draw));
 document.querySelectorAll('input[name="element"]').forEach(el=>el.addEventListener('input',()=>{
  const inputs=[...document.querySelectorAll('input[name="element"]')];
@@ -367,11 +415,14 @@ $('reset').addEventListener('click',()=>{
  $('portrait').value='';portrait=null;draw();
 });
 draw();
+
 });
 });
 });
 });
 });
+
+
 </script>
 </body>
 </html>

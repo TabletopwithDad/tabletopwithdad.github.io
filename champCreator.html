@@ -141,6 +141,19 @@ document.fonts.add(font4);
 f5.load().then(function(font5) {console.log('font ready');
 document.fonts.add(font5);
 
+
+const allyTex = new Image();
+allyTex.src = "./images/championTex.png";
+
+let allyTexLoaded = false;
+
+
+allyTex.onload = () => {
+    allyTexLoaded = true;
+    draw(); // optional
+	console.log("test");
+	}
+
 const $=id=>document.getElementById(id);
 const canvas=$('card'),ctx=canvas.getContext('2d');
 const W=1500,H=1075,DIVIDER=14,LEFT=(W/2)-DIVIDER;
@@ -163,22 +176,46 @@ ctx.clearRect(0,0,W,H);ctx.fillStyle=hexToRgb('#D0C9B7',0);ctx.fillRect(0,0,W,H)
  }
  const shade=ctx.createLinearGradient(0,0,LEFT,0);shade.addColorStop(0,'rgba(0,0,0,.18)');shade.addColorStop(.5,'rgba(0,0,0,0)');shade.addColorStop(1,'rgba(0,0,0,.12)');ctx.fillStyle=shade;ctx.fillRect(0,0,LEFT,H);
  // Name banner
- ctx.fillStyle=hexToRgb(PAPER,0.95);ctx.globalAlpha=.94;ctx.beginPath();ctx.moveTo(18,40);ctx.lineTo(693,31);ctx.lineTo(718,50);ctx.lineTo(703,144);ctx.lineTo(45,151);ctx.lineTo(15,130);ctx.closePath();ctx.fill();ctx.globalAlpha=1;
+ 
+
+ 
+    ctx.beginPath();
+ ctx.fillStyle=hexToRgb(PAPER,0.95);ctx.globalAlpha=.94;
+ paintStroke(ctx,100,70,500,60);
+ paintStroke(ctx,40,90,600,50);
+ paintStroke(ctx,60,110,520,60);
+    ctx.closePath();
+// ctx.beginPath();ctx.moveTo(18,40);ctx.lineTo(693,31);ctx.lineTo(718,50);ctx.lineTo(703,144);ctx.lineTo(45,151);ctx.lineTo(15,130);ctx.closePath();
+ ctx.fill();ctx.globalAlpha=1;
  // Destiny number badge to the left of the character name.
- const flower=ctx.createRadialGradient(75,90,0,75,90,50);
-flower.addColorStop(0,PAPER);
-flower.addColorStop(1,cl.deep);
- ctx.fillStyle=flower;ctx.font='200px "L5RSymbols"';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B'||'0',130,70);
- ctx.fillStyle='#000000';ctx.font='60px "WCMANONegra"';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(val('rank')||'',74,95);
- ctx.fillStyle='#24231f';ctx.textAlign='left';ctx.textBaseline='middle';
+
+ ctx.fillStyle='#24231f';ctx.textAlign='center';ctx.textBaseline='middle';
  const nm=val('name')||'Character Name';
  ctx.save();
  ctx.font=`${fitFont(ctx,nm,540,val('font')=='BTTTRIAL'?60:50,24,val('font'))}px ${val('font')}`;
- ctx.fillText(nm,135,105-(val('font')=='BTTTRIAL'?0:10),540);ctx.restore();
+ ctx.fillText(nm,LEFT/2,105-(val('font')=='BTTTRIAL'?0:10),470);ctx.restore();
+ let bannerXoffset = Math.max(137,LEFT/2-ctx.measureText(nm).width/2);
+  const flower=ctx.createRadialGradient(bannerXoffset-55,90,0,bannerXoffset-55,90,50);
+flower.addColorStop(0,PAPER);
+flower.addColorStop(1,cl.deep);
+ ctx.fillStyle=flower;ctx.font='200px "L5RSymbols"';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B'||'0',bannerXoffset,70);
+ ctx.fillStyle='#000000';ctx.font='60px "WCMANONegra"';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(val('rank')||'',bannerXoffset-55,95);
  if(val('keywords')){
-  ctx.fillStyle=hexToRgb(cl.ink,0.9);ctx.globalAlpha=.94;ctx.fillRect(55,820,626,92);ctx.globalAlpha=1;
-  ctx.fillStyle=cl.inkText;ctx.font=` ${fitFont(ctx,val('keywords'),610,val('font')=='BTTTRIAL'?45:36,15,val('font'))}px ${val('font')}`;ctx.textAlign='center';ctx.fillText(val('keywords'),736/2,866,610);ctx.textAlign='left';
- }
+  ctx.fillStyle=hexToRgb(cl.ink,0.9);ctx.globalAlpha=.94;
+  //ctx.fillRect(55,820,626,92);
+  ctx.font=` ${fitFont(ctx,val('keywords'),610,val('font')=='BTTTRIAL'?45:36,15,val('font'))}px ${val('font')}`;ctx.textAlign='center';
+  ctx.globalAlpha=1;
+  let keywordHalfW = ctx.measureText(val('keywords')).width/2;
+  ctx.beginPath();
+ ctx.fillStyle=hexToRgb(PAPER,0.95);ctx.globalAlpha=.94;
+ paintStroke(ctx,LEFT/2-keywordHalfW-20,840,2*keywordHalfW+45,60);
+ paintStroke(ctx,LEFT/2-keywordHalfW-40,860,2*keywordHalfW+75,50);
+ paintStroke(ctx,LEFT/2-keywordHalfW-25,880,2*keywordHalfW+37,60);
+    ctx.closePath();
+	ctx.fill();
+	console.log(keywordHalfW);
+  ctx.fillStyle=cl.inkText;ctx.fillText(val('keywords'),736/2,866,610);
+ }ctx.textAlign='left';
  const ids=['lp','ap','honor','ki','size'],labels=['LP','AP','Honor','Ki','Size'],xs=[104,236,368,500,632],cols=['#b74b4b','#1393e8','#d9a918','#282821','#282821'];
  ctx.fillStyle=hexToRgb(PAPER,0.9);ctx.font=`240px "L5RSymbols"`;
  ids.forEach((id,i)=>{
@@ -192,19 +229,42 @@ flower.addColorStop(1,cl.deep);
   ctx.fillStyle=cl.ink,0.9;ctx.fillRect(x-43,y+27,86,32);ctx.fillStyle=cl.inkText;ctx.font='25px "Serithai"';ctx.fillText(labels[i],x,y+49);
  });
  ctx.restore();
-
- ctx.fillStyle=cl.deep;ctx.fillRect(LEFT,0,DIVIDER,H);ctx.fillStyle=PAPER;ctx.fillRect(LEFT+DIVIDER,0,W-LEFT-DIVIDER,H);
+ 
+ ctx.fillStyle=PAPER;ctx.fillRect(LEFT,0,W-LEFT-DIVIDER/2,H);
+ 
  drawMon(ctx,1630,175,1500,cl);
- ctx.fillStyle=cl.deep;ctx.fillRect(W-DIVIDER*2,0,DIVIDER,H);
  ctx.fillStyle=cl.pale;ctx.fillRect(W-DIVIDER,0,DIVIDER,H);
 
+ ctx.save();
+ctx.beginPath();
+ctx.rect(LEFT,0,W-LEFT-DIVIDER,H);
+ctx.clip();
+
+ctx.globalCompositeOperation = "multiply";
+
+if (allyTexLoaded) {
+    ctx.drawImage(allyTex, 0, 0, W, H,0,0,allyTex.width,allyTex.height);
+}
+
+ctx.restore();.4
+
+ 
+ctx.save();
+ ctx.fillStyle=hexToRgb("#000000",0.3);
+ ctx.filter = 'blur(8px)';
+ drawTornPanel(ctx,LEFT-DIVIDER*0.2,0,DIVIDER*1.3,H,0.5);
+ drawTornPanel(ctx,W-DIVIDER*2.3,0,DIVIDER*1.3,H,0.5);
+ctx.restore();
+ 
+ ctx.fillStyle=cl.deep;drawTornPanel(ctx,LEFT-DIVIDER/2,0,DIVIDER*1.3,H,0.5);
+ drawTornPanel(ctx,W-DIVIDER*2,0,DIVIDER*1.3,H,0.5);
  // Passive power box
  panelFrame(ctx,778,75,666,315,cl);
  const ptitle=val('powerTitle')||'Passive Power';
  ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,103,720,102);ctx.clip();
  ctx.font=`${fitFont(ctx,ptitle,630,val('font')=='BTTTRIAL'?58:46,30,val('font'))}px ${val('font')}`;ctx.fillText(ptitle,778+333,128-(val('font')=='BTTTRIAL'?0:7),630);ctx.restore();
- drawRich(ctx,val('powerText')||'',805,174,620,'41px "Serithai"','#000000',34,24,210);
+ drawRich(ctx,val('powerText')||'',805,180,620,'41px "Serithai"','#000000',34,24,210);
 
  // Melee and optional ranged attack
  ctx.textAlign='left';ctx.textBaseline='middle';
@@ -241,7 +301,7 @@ flower.addColorStop(1,cl.deep);
  ctx.fillStyle='#000000';ctx.textAlign='center';ctx.textBaseline='top';
  ctx.save();//ctx.beginPath();ctx.rect(690,701,720,49);ctx.clip();
  ctx.font=`${fitFont(ctx,ttitle,630,val('font')=='BTTTRIAL'?58:46,30,val('font'))}px ${val('font')}`;ctx.fillText(ttitle,778+333,707+(val('font')=='BTTTRIAL'?7:0),630);ctx.restore();
- drawRich(ctx,val('techText')||'',805,755,620,'41px "Serithai"','#000000',34,24,260);
+ drawRich(ctx,val('techText')||'',805,770,620,'41px "Serithai"','#000000',34,24,260);
 const r = 35; // ~3 mm at 300 DPI
 
 ctx.save();
