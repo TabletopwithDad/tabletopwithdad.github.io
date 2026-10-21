@@ -164,7 +164,6 @@ function draw(){
  const cl=clans[val('clan')]||clans.neutral;
  let hasKey = val('keywords')!=='', hasAbil = val('abilText')!=='',hasText=hasAbil||hasKey;
  let isFriendly= val('type')=='Ally';
- console.log(isFriendly);
  
 ctx.clearRect(0,0,W,H);ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
 
@@ -218,6 +217,7 @@ ctx.restore();
  ctx.fill();
  ctx.fillStyle='#24231f';ctx.fillText(nm,W/2,105-(val('font')=='BTTTRIAL'?0:10),470);ctx.restore();
  
+ ctx.textAlign='center';ctx.textBaseline='middle';
  const ids=['lp','ap','size','type'],labels=['LP','AP','Size',val('type')],xs=[(W/2),W/4-10,(W/4*3)+10,(W/2)],ys=[425+(hasText?35:400),405+(hasText?38:400),405+(hasText?38:400),-27],cols=['#b74b4b','#1393e8','#282821','#282821'];
  ctx.fillStyle=hexToRgb(PAPER,0.9);ctx.font=`240px "L5RSymbols"`;
  ids.forEach((id,i)=>{
@@ -259,7 +259,7 @@ drawTornPanel(ctx,W-DIVIDER*2,0,DIVIDER*3,H,0.67)
 	 ctx.textAlign='left';
  }
  
-
+ctx.save();
 if (isFriendly)
 {
  // Melee and optional ranged attack
@@ -366,6 +366,7 @@ flower.addColorStop(1,cl.deep);
  }
  
  
+ctx.restore();
 
  
 
