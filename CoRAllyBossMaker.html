@@ -114,7 +114,8 @@ canvas{display:block;width:100%;height:auto;}
 
 <div class="actions"><button class="primary" id="export">Export PNG</button><button class="secondary" id="reset">Reset example</button></div>
 <div class="note">This tool was created by a fan for fans to support homebrew and community content. It is not affiliated with, endorsed by, or sponsored by the creators, publishers, or rights holders of Champions of Rokugan and Legend of the Five Rings. Champions of Rokugan and Legend of the Five Rings, and all associated names, logos, artwork, and setting elements are the property of their respective owners.</div></div> 
-</section>
+
+<div id="dO"></div></section>
 
 <section class="preview-wrap">
 <div class="preview-top"><strong>Preview</strong></div>
@@ -145,12 +146,14 @@ const allyTex = new Image();
 
 
 let allyTexLoaded = false;
-
+var dO=document.getElementById("dO");
 
 allyTex.onload = () => {
     allyTexLoaded = true;
     draw(); // optional
 	console.log("test");
+	dO.innerHTML += "test";
+	dO.innerHTML += allyTex;
 	}
 
 allyTex.src = "./images/allyTex.png";
@@ -180,6 +183,7 @@ ctx.clip();
 ctx.globalCompositeOperation = "multiply";
 
 if (allyTexLoaded) {
+	dO.innerHTML += "bool checks true on draw";
     ctx.drawImage(allyTex, 0, 0, W, H);
 }
 
