@@ -184,16 +184,21 @@ ctx.clearRect(0,0,W,H);ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
  drawMonReverse(ctx,670,710+(hasText?0:312),1500,cl);
  
  ctx.save();
-ctx.beginPath();
+
+if (allyTexLoaded) {
+	ctx.beginPath();
 ctx.rect(0,0,W,H);
 tornArc(ctx,W/2, hasText ? -242 : 100, W, 0, Math.PI*2, true);
 ctx.clip();
 
-ctx.globalCompositeOperation = "multiply";
+//ctx.globalCompositeOperation = "multiply";
 
-if (allyTexLoaded) {
-	dO.innerHTML += "bool checks true on draw";
-    ctx.drawImage(allyTex, 0, 0, W, H);
+	 dO.innerHTML +=
+        "<br>ondraw " +
+        allyTex.width +
+        "x" +
+        allyTex.height;
+    ctx.drawImage(allyTex, 1, 0, W, H);
 }
 
 ctx.restore();
