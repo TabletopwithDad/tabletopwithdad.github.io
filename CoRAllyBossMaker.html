@@ -150,13 +150,6 @@ var dO=document.getElementById("dO");
 
 allyTex.onload = () => {
     allyTexLoaded = true;
-
-    dO.innerHTML +=
-        "<br>loaded " +
-        allyTex.width +
-        "x" +
-        allyTex.height;
-
     draw();
 };
 
@@ -186,18 +179,9 @@ ctx.clearRect(0,0,W,H);ctx.fillStyle=PAPER;ctx.fillRect(0,0,W,H);
  ctx.save();
 
 if (allyTexLoaded) {
-	ctx.beginPath();
-ctx.rect(0,0,W,H);
-tornArc(ctx,W/2, hasText ? -242 : 100, W, 0, Math.PI*2, true);
-ctx.clip();
 
 ctx.globalCompositeOperation = "multiply";
 
-	 dO.innerHTML +=
-        "<br>ondraw " +
-        allyTex.width +
-        "x" +
-        allyTex.height;
     ctx.drawImage(allyTex, 1, 0, W, H);
 }
 
