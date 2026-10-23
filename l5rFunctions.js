@@ -15,6 +15,10 @@ fox:{    name:'Fox', bg:'#DDBFAC', deep:'#943A0E', pale:'#F7F1E6', mon:'<', ink:
  neutral:{name:'Neutral',bg:'#d5c7b1',deep:'#544d42',pale:'#f1ece2',mon:'8',ink:'#676053',inkText:'#ffffff'},
  shadow:{name:'Shadowlands',bg:'#544d42',deep:'#1c1c1a',pale:'#f1ece2',mon:':',ink:'#2e1e19',inkText:'#ffffff'}
 };
+const textFonts={
+	serithai:{font:'Serithai',size:'41',symbolOffeset:0.4,iconSize:24, stretch:.8},
+	arial:{font:'Arial',size:'37',symbolOffeset:0.5, iconSize:28,stretch:1}
+};
 
 function hexToRgb(hex,opacity) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -49,12 +53,11 @@ function drawBow(ctx,x,y,size,color){
  ctx.restore();
 }
 
-function drawRich(ctx,text,x,y,maxWidth,font,color,lineH,iconSize=24,maxHeight=Infinity){
+function drawRich(ctx,text,x,y,maxWidth,font,color,lineH,iconSize=24,maxHeight=Infinity, stretch=1, iconYoff=.5){
  let italics = false;
  const re=/(\[v\]|\[a\]|\[f\]|\[e\]|\[w\]|[&@#])/g;
  const tokens=text.split(re).filter(Boolean);
  let lines=[[]],width=0;
- let stretch = .8;
  ctx.font=font;
  function addText(str){
   for(let chunk of str.split(/(\s+)/)){
@@ -123,7 +126,7 @@ shown.forEach((line,i)=>{
   for(const p of line){
    if(p.isIcon){const key=p.t==='&'?'&':p.t==='@'?'@':p.t==='#'?'#':p.t[1];
    colRich={'&':color,'@':color,'#':color,'a':'#9BC4CF','f':'#F07F09','e':'#4BB062','v':'#7E519C','w':'#4152A0'};
-   iconToken(ctx,key,xx+iconSize/2,yy+lineH*.4,iconSize,colRich[key]);xx+=p.w}
+   iconToken(ctx,key,xx+iconSize/2,yy+lineH*iconYoff,iconSize,colRich[key]);xx+=p.w}
    else{
    
    ctx.fillStyle=color;
