@@ -1,0 +1,1206 @@
+[
+    {
+        "name": "Shinobi",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "vantage",
+            "hidden",
+            "human",
+            "hasAlly"
+        ],
+        "keywords": [
+            "break through"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Armored Oni",
+        "type": "boss",
+        "pointCost": 6,
+        "amount": 2,
+        "size": 2,
+        "traits": [],
+        "keywords": [
+            "break through",
+            "corruption",
+            "defense",
+            "oni",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Moto Tsume",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 2,
+        "traits": [
+            "Undead",
+            "unicorn"
+        ],
+        "keywords": [
+            "cavalry",
+            "corruption",
+            "defense",
+            "shadowlands"
+        ],
+        "commonEnemies": [
+            "shadowlands"
+        ],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Hound of the lost",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 8,
+        "size": 1,
+        "traits": [
+            "hidden"
+        ],
+        "keywords": [
+            "Agile",
+            "break through",
+            "corruption",
+            "oni",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Goblin spearman",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 8,
+        "size": 1,
+        "traits": [
+            "Goblin",
+            "hidden"
+        ],
+        "keywords": [
+            "Reinforcement",
+            "insignificant",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Samurai commander",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Elementalist",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "ranged",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Elementalist"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Skeleton Archer",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 8,
+        "size": 1,
+        "traits": [
+            "Undead",
+            "ranged",
+            "turned"
+        ],
+        "keywords": [
+            "Corruption",
+            "insignificant",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Corrupted samurai",
+        "type": "enemy",
+        "pointCost": 2,
+        "amount": 4,
+        "size": 2,
+        "traits": [
+            "Human",
+            "turned"
+        ],
+        "keywords": [
+            "Corruption",
+            "shadowlands",
+            "yojimbo"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "P'an Ku",
+        "type": "boss",
+        "pointCost": 10,
+        "amount": 1,
+        "size": 4,
+        "traits": [],
+        "keywords": [
+            "Break through",
+            "corruption",
+            "Shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Goblin shaman",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Goblin",
+            "ranged",
+            "hidden"
+        ],
+        "keywords": [
+            "Corruption",
+            "elementalist",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Daku no oni",
+        "type": "enemy",
+        "pointCost": 2,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Outdoor"
+        ],
+        "keywords": [
+            "Break through",
+            "corruption",
+            "oni",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Mounted lost samurai",
+        "type": "enemy",
+        "pointCost": 2,
+        "amount": 4,
+        "size": 2,
+        "traits": [
+            "Undead",
+            "turned"
+        ],
+        "keywords": [
+            "Cavalry",
+            "corruption",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Zombie peasant",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 8,
+        "size": 1,
+        "traits": [
+            "Undead",
+            "turned",
+            "zombie"
+        ],
+        "keywords": [
+            "Corruption",
+            "insignificant",
+            "reinforcement",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Witch of calamity",
+        "type": "boss",
+        "pointCost": 6,
+        "amount": 1,
+        "size": 2,
+        "traits": [],
+        "keywords": [
+            "Break through",
+            "corruption",
+            "defense",
+            "oni",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Necromancer",
+        "type": "boss",
+        "pointCost": 4,
+        "amount": 2,
+        "size": 1,
+        "traits": [
+            "Human",
+            "undead",
+            "ranged"
+        ],
+        "keywords": [
+            "Corruption",
+            "elementalist",
+            "shadowlands"
+        ],
+        "commonEnemies": [
+            "zombie"
+        ],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Goblin warrior",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 8,
+        "size": 1,
+        "traits": [
+            "Goblin",
+            "hidden"
+        ],
+        "keywords": [
+            "Defense",
+            "insignificant",
+            "reinforcement",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Monk",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "monk",
+            "hasAlly"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Tchickchuk",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Nezumi",
+            "bushi",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Break through",
+            "defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Akuma no Oni",
+        "type": "boss",
+        "pointCost": 8,
+        "amount": 1,
+        "size": 4,
+        "traits": [],
+        "keywords": [
+            "Break through",
+            "corruption",
+            "defense",
+            "oni",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Corrupted Hida Yakamo",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 2,
+        "traits": [
+            "Human",
+            "crab",
+            "turned"
+        ],
+        "keywords": [
+            "Corruption",
+            "defense",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Trebuchet",
+        "type": "enemy",
+        "pointCost": 3,
+        "amount": 1,
+        "size": 4,
+        "traits": [
+            "Outdoor",
+            "ranged",
+            "contraption",
+            "stuck",
+            "hasAlly"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Ballista",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 1,
+        "size": 2,
+        "traits": [
+            "Outdoor",
+            "vantage",
+            "ranged",
+            "contraption",
+            "stuck",
+            "hasAlly"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Yakamo no Oni",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 2,
+        "traits": [],
+        "keywords": [
+            "Break through",
+            "corruption",
+            "defense",
+            "oni",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Kuni Yori",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "ranged",
+            "hidden",
+            "crab"
+        ],
+        "keywords": [
+            "Corruption",
+            "shadowlands"
+        ],
+        "commonEnemies": [
+            "Goblin"
+        ],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Yogo Junzo",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "undead",
+            "ranged"
+        ],
+        "keywords": [
+            "Corruption",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Ashigaru Archer",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "ranged",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Insignificant",
+            "reinforcement"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Toku",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "Toturi",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Samurai",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 8,
+        "size": 1,
+        "traits": [
+            "Human",
+            "hasAlly"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Toturi the Rônin",
+        "type": "boss",
+        "pointCost": 8,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "Toturi",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": [
+            "shadowlands"
+        ]
+    },
+    {
+        "name": "Yoritomo",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "mantis",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Nezumi Scavenger",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 8,
+        "size": 1,
+        "traits": [
+            "Nezumi",
+            "hidden",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Break through"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Ashigaru spearman",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Insignificant",
+            "reinforcement"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Dragon Monk",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "dragon",
+            "monk",
+            "hasAlly"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Togashi Yokuni",
+        "type": "boss",
+        "pointCost": 9,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "dragon",
+            "monk",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Imposing"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Togashi Mitsu",
+        "type": "boss",
+        "pointCost": 6,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "dragon",
+            "monk",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Mirumoto Hitomi",
+        "type": "boss",
+        "pointCost": 6,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "dragon",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense",
+            "imposing"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Agasha Tamori",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "ranged",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Elementalist"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Naga Archer",
+        "type": "enemy",
+        "pointCost": 4,
+        "amount": 4,
+        "size": 2,
+        "traits": [
+            "Ranged",
+            "vantage",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Agile",
+            "break through",
+            "naga"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "The Isha",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Ranged",
+            "vantage",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Agile",
+            "break through",
+            "naga"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "The Shashakar",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 2,
+        "traits": [
+            "Ranged",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Agile",
+            "break through",
+            "elementalist",
+            "naga"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "The Shahadet",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 2,
+        "traits": [
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Agile",
+            "break through",
+            "defense",
+            "naga"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Moto Chagatai",
+        "type": "boss",
+        "pointCost": 6,
+        "amount": 1,
+        "size": 2,
+        "traits": [
+            "Human",
+            "unicorn",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Cavalry",
+            "defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Unicorn Scout",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "ranged",
+            "unicorn",
+            "hasAlly"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Utako Kamoko",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 2,
+        "traits": [
+            "Human",
+            "unicorn",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Cavalry"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Iuchi Shahai",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "unicorn",
+            "ranged",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense",
+            "elementalist",
+            "shadowlands"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Scorpion Shinobi",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "scorpion",
+            "hidden",
+            "hasAlly"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Bayushi Aramaro",
+        "type": "boss",
+        "pointCost": 6,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "scorpion",
+            "hidden",
+            "vantage",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Agile",
+            "break through",
+            "defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Bayushi Kachiko",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "scorpion",
+            "hidden",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": [
+            "shadowlands"
+        ]
+    },
+    {
+        "name": "Yogo Kikuyo",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "scorpion",
+            "hidden",
+            "ranged",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Elementalist"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Phoenix Elementalist",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "phoenix",
+            "ranged",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Elementalist"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Isawa Tadaka",
+        "type": "boss",
+        "pointCost": 6,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "phoenix",
+            "ranged",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Elementalist"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Isawa Kaede",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "phoenix",
+            "ranged",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Elementalist"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Shiba Tsukune",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "phoenix",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense",
+            "yojimbo"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Crane Duelist",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "crane",
+            "hasAlly"
+        ],
+        "keywords": [],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Daidoji Uji",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "crane",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Doji Hotaru",
+        "type": "boss",
+        "pointCost": 6,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "crane",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Asahina Takako",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "crane",
+            "ranged",
+            "vantage",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Elementalist",
+            "break through"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Lion Samurai",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "lion",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Yojimbo"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Matsu Tsuko",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "lion",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Akado Kage",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "lion",
+            "hidden",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Kitsu Okura",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "lion",
+            "ranged",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Elementalist"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Crab Defender",
+        "type": "enemy",
+        "pointCost": 1,
+        "amount": 4,
+        "size": 1,
+        "traits": [
+            "Human",
+            "crab",
+            "hasAlly"
+        ],
+        "keywords": [
+            "Yojimbo"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Hida Kisada",
+        "type": "boss",
+        "pointCost": 7,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "crab",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense",
+            "imposing"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Kuni Tansho",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "crab",
+            "ranged",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Elementalist"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    },
+    {
+        "name": "Hida Yakamo",
+        "type": "boss",
+        "pointCost": 5,
+        "amount": 1,
+        "size": 1,
+        "traits": [
+            "Human",
+            "crab",
+            "hasAlly",
+            "bushi"
+        ],
+        "keywords": [
+            "Defense"
+        ],
+        "commonEnemies": [],
+        "uncommonEnemies": []
+    }
+]
