@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unofficial Scenario Randomizer for Champions of Rokugan</title>
+
+<style>
+:root{
+    --bg:#1b1b1b;
+    --panel:#2a2a2a;
+    --border:#444;
+    --text:#eee;
+    --accent:#c89b3c;
+}
+#debug{
+    display:none;
+}
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:10px;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,sans-serif;
+}
+
+#app{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+/* Generic panel */
+
+.panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px;
+}
+
+.panel h2{
+    margin-top:0;
+}
+
+.controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+}
+
+.controls label{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.requirements{
+    display:grid;
+    gap:8px;
+}
+
+.requirement{
+    background:#333;
+    padding:8px;
+    border-radius:4px;
+}
+.story{
+    display:grid;
+    gap:10px;
+}
+
+.story-header{
+    min-height:80px;
+}
+
+.story-columns{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+}
+
+.story-box{
+    background:#333;
+    border-radius:4px;
+    padding:10px;
+    min-height:120px;
+}
+.map-container{
+    text-align:center;
+}
+
+#mapCanvas{
+    width:100%;
+    max-width:900px;
+    border:1px solid #555;
+    background:#111;
+}
+
+.legend-items{
+    display:grid;
+    flex-direction:column;
+    gap:2px;
+        grid-template-columns:
+            1fr
+            1fr;
+}
+
+.legend-item{
+    background:#333;
+    padding:4px 8px;
+    border-radius:4px;
+}
+
+@media (min-width: 1000px){
+
+    .story-columns{
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+.desktop-layout{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+@media (min-width: 1200px){
+
+	.requirements{
+		display:grid;
+		gap:8px;
+		grid-template-columns:
+				1fr 
+				1fr 
+				1fr;
+
+			align-items:start;
+	}
+    .desktop-layout{
+        display:grid;
+        gap:10px;
+
+        grid-template-columns:
+            2fr   /* story */
+            3fr   /* map */
+            2fr;  /* legend */
+
+        align-items:start;
+    }
+
+}
+}
+</style>
+</head>
+<body>
+
+<header><h1>Unofficial Scenario Randomizer for Champions of Rokugan</h1></header>
+<div id="app">
+
+
+    <section class="panel">
+
+        <h2>Settings</h2>
+
+        <div class="controls">
+
+            <label>
+                Difficulty
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </label>
+
+            <label>
+                Seed
+                <input id="seed" type="text">
+            </label>
+
+        <div class="filters">
+
+            <div>
+                <strong>Maps</strong>
+                <div id="mapFilters">
+        <select multiple id="mapSelect" style="width:170px;"></select></div>
+            </div>
+
+            <div>
+                <strong>Enemies</strong>
+                <div id="enemyFilters">
+        <select multiple id="eneSelect" style="width:170px;"></select></div>
+            </div>
+			
+            <div>
+                <strong>Objectives</strong>
+                <div id="objectiveFilters">
+        <select multiple id="objSelect" style="width:170px;"></select></div>
+            </div>
+
+        </div>
+            <button id="randomizeBtn">
+                Generate Scenario
+            </button>
+
+
+        <label>Generated Seed</label>
+		<div
+            id="seeded"
+            >
+        </div>
+        </div>
+
+
+		<div id="debug">
+		<h2>Debug</h2>
+		<label>Map</label>
+		<input
+    type="file"
+    id="mapFile"
+    accept=".json">
+		<label>Enemies</label>
+		<input
+    type="file"
+    id="eneFile"
+    accept=".json">
+		<label>Objectives</label>
+		<input
+    type="file"
+    id="objFile"
+    accept=".json">
+		</div>
+    </section>
+
+
+    <section class="panel">
+
+        <h2>Requirements</h2>
+
+        <div class="requirements">
+
+            <div class="requirement"> Map Type: <span id="typeName">
+Adventure     </span>     </div>
+            <div class="requirement"> Game Board:  : <span id="boardName">
+                Town</span>    
+            </div>
+
+
+            <div class="requirement"> Mandatory Champions:  : <span id="mandChamps">
+               None</span>    
+            </div>
+
+            <div class="requirement"> Forbidden Champions:  : <span id="forbChamps">
+                None</span>    
+            </div>
+
+            <div class="requirement"> Modified Honor needed:  : <span id="honorReq">
+                default </span>    
+            </div>
+            <div class="requirement"> Clan Objectives:  : <span id="clanObjReq">
+                X completed </span>    
+            </div>
+
+        </div>
+
+    </section>
+
+<div class="desktop-layout">
+
+    <section class="panel story">
+
+       
+        <div class="story-columns">
+			<div class="story-header story-box">
+				<h2>Introduction</h2>
+				<div id="narrativeIntro"></div>
+			</div>
+
+            <div class="story-box">
+                <h2>Objectives</h2>
+                <div id="objectiveText"></div>
+            </div>
+
+            <div class="story-box">
+                <h2>Special Rules</h2>
+                <div id="rulesText"></div>
+            </div>
+
+            <div class="story-box">
+                <h2>Conclusion</h2>
+                <div id="narrativeOutro"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel map-container">
+
+        <h2>Scenario Map</h2>
+
+        <canvas
+            id="mapCanvas"
+            width="900"
+            height="900">
+        </canvas>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>Setup</h2>
+
+        <div
+            id="legend"
+            class="legend-items">
+        </div>
+
+    </section>
+
+</div>
+</div>
+
+<script>
+
+
+const SOURCE_IMAGE =
+    "https://imgcdn.gamefound.com/richtextimage/richtext/b3c8214a-901a-4ebe-a5ca-08ad91201eba.png";
+
+const mapSelect =
+    document.getElementById("mapSelect");
+const objSelect =
+    document.getElementById("objSelect");
+const eneSelect =
+    document.getElementById("eneSelect");
+let maps = [];
+let objectives = [];
+let enemies = [];
+let orderedenemies = [];
+const quadrantInfo = {
+
+    NW: {
+        close:["N","W","C"],
+        far:["NE","E","SE","S","SW"]
+    },
+
+    N: {
+        close:["NW","NE","C"],
+        far:["W","E","SW","S","SE"]
+    },
+
+    NE: {
+        close:["N","E","C"],
+        far:["NW","W","SW","S","SE"]
+    },
+
+    W: {
+        close:["NW","SW","C"],
+        far:["N","NE","E","SE","S"]
+    },
+
+    C: {
+        close:["N","E","S","W"],
+        far:["NW","NE","SW","SE"]
+    },
+
+    E: {
+        close:["NE","SE","C"],
+        far:["N","NW","W","SW","S"]
+    },
+
+    SW: {
+        close:["W","S","C"],
+        far:["NW","N","NE","E","SE"]
+    },
+
+    S: {
+        close:["SW","SE","C"],
+        far:["NW","N","NE","W","E"]
+    },
+
+    SE: {
+        close:["S","E","C"],
+        far:["NW","N","NE","W","SW"]
+    }
+
+};
+const canvas =
+    document.getElementById("mapCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+	
+let currentMap = null;
+let currentMarker = null;
+
+const img =
+    new Image();
+
+img.src = SOURCE_IMAGE;
+const difficulty={
+	easy:{budget:20,secondaryOffeset:-1,honor:-3,objs:5},
+	normal:{budget:25,secondaryOffeset:0,honor:0,objs:7},
+	hard:{budget:30,secondaryOffeset:1,honor:3,objs:9}
+};
+const clans={
+ crab:{name:'Crab',deep:'#2D395A',mon:'1'},
+ crane:{name:'Crane',deep:'#88c6f2',mon:'2'},
+ dragon:{name:'Dragon',bg:'#a8c6b1',deep:'#5B8E52',pale:'#edf2e8',mon:'3',ink:'#61451d',inkText:'#ffffff'},
+ lion:{name:'Lion',bg:'#e6c56e',deep:'#C8A000',pale:'#f8f0d9',mon:'4',ink:'#61451d',inkText:'#ffffff'},
+ phoenix:{name:'Phoenix',bg:'#e6a17d',deep:'#f0571a',pale:'#fbede0',mon:'5',ink:'#e6a910',inkText:'#ffffff'},
+ scorpion:{name:'Scorpion',bg:'#d69b9d',deep:'#94000B',pale:'#f5e9e5',mon:'6',ink:'#302025',inkText:'#ffffff'},
+ unicorn:{name:'Unicorn',bg:'#c9b6df',deep:'#654991',pale:'#f3edf7',mon:'7',ink:'#d2bce6',inkText:'#000000'},
+ naga:{name:'Naga',bg:'#b8c8a2',deep:'#7D9256',pale:'#eef1e2',mon:'9',ink:'#3c4d23',inkText:'#ffffff'},
+ mantis:{name:'Mantis',bg:'#b8d7b3',deep:'#1C6B4A',pale:'#eef5e8',mon:'=',ink:'#0B5E3D',inkText:'#ffffff'},
+ nezumi:{name:'Nezumi',flavor:"Tattered Ear Tribe",bg:'#b8d7b3',deep:'#544d42',pale:'#eef5e8',mon:'8',ink:'#0B5E3D',inkText:'#ffffff'},
+ neutral:{name:'ronin',flavor:"rônin",bg:'#d5c7b1',deep:'#544d42',pale:'#f1ece2',mon:'8',ink:'#676053',inkText:'#ffffff'}
+};
+
+const scenario = {
+
+    map:null,
+
+    mainObjective:null,
+    secondaryObjective:null,
+    bonusObjective:null,
+	clan:null,
+    enemyBudget:25,
+
+    markers:[],
+    enemies:[],
+    tokens:[],
+    placements:[],
+    reserves:[],
+    dict:[],
+    forbiddenChampions: [],
+    intro:"",
+    objectivesText:"",
+    rules:[],
+    outro:""
+
+};
+function resetScenario() {
+    scenario.map = null;
+
+    scenario.mainObjective = null;
+    scenario.secondaryObjective = null;
+    scenario.bonusObjective = null;
+
+    scenario.enemyBudget = 25;
+
+    scenario.markers = [];
+    scenario.enemies = [];
+    scenario.tokens = [];
+    scenario.placements = [];
+    scenario.reserves = [];
+	scenario.dict =[];
+scenario.forbiddenChampions = [];
+    scenario.intro = "";
+    scenario.objectivesText = "";
+    scenario.rules = [];
+    scenario.outro = "";
+}
+
+window.addEventListener(
+    "load",
+    init
+);
+async function loadDefaultFiles()
+{
+    try
+    {
+        const [
+            mapsResponse,
+            enemiesResponse,
+            objectivesResponse
+        ] =
+        await Promise.all([
+            fetch("data/maps.json"),
+            fetch("data/enemies.json"),
+            fetch("data/objectives.json")
+        ]);
+
+        maps =
+            await mapsResponse.json();
+
+        enemies =
+            await enemiesResponse.json();
+
+        orderedenemies =
+            [...enemies];
+
+        objectives =
+            await objectivesResponse.json();
+
+        objectives.forEach(
+            rule =>
+            {
+                rule.needEnemyPlace =
+                    rule.needEnemyPlace ||
+                    "start";
+            }
+        );
+
+        populateMapList();
+        populateEnemyList();
+        populateObjectiveList();
+
+        loadMap(0);
+
+        return true;
+    }
+    catch(error)
+    {
+        console.warn(
+            "Automatic loading failed",
+            error
+        );
+
+        return false;
+    }
+}
+async function init(){
+// add load of files, if fail show debug.
+   const loaded =
+        await loadDefaultFiles();
+
+    if(loaded)
+    {
+        hideDebug();
+    }
+    else
+    {
+        showDebug();
+    }
+
+    buildFilterLists();
+
+    document
+        .getElementById("randomizeBtn")
+        .addEventListener(
+            "click",
+            generateScenario
+        );
+
+    drawMap();
+
+}
+function mulberry32(a) {
+  return function() {
+    let t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
+
+let getRand ="";
+
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  while (currentIndex != 0) {
+
+    let randomIndex = Math.floor(getRand() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}
+
+function randomIndex(list)
+{
+	let i = getRand();
+	
+	return Math.floor(i*list.length);
+}
+function getRandomClan()
+{
+	let clan = null;
+	while (clan == null)
+	{
+		let i = Math.floor(getRand()*11);
+		clan = Object.values(clans)[i]!=scenario.clan?Object.values(clans)[i]:null;
+		
+	}
+	return clan;
+}
+function generateScenario(){
+	resetScenario();
+	resetWeights();
+    scenario.enemyBudget = difficulty[document.getElementById("difficulty").value].budget;
+
+    let seed =
+        document.getElementById("seed").value!=""?Number(document.getElementById("seed").value):(Math.random()*2**32)>>>0;
+
+    console.log("Seed:", seed);
+	
+	document.getElementById("seeded").innerHTML = seed;
+	
+	getRand=mulberry32(seed);
+	enemies = [...orderedenemies];
+	shuffle(enemies);
+	scenario.map = pickMap();
+	
+	scenario.dict.push (["[map]",maps[scenario.map].name]);
+	scenario.mainObjective= pickObjective("main objective");
+	if (scenario.mainObjective.randomClanAdversary)
+	{
+		scenario.clan = getRandomClan();
+		scenario.mainObjective.neededEnemy = scenario.clan.name;
+		
+		scenario.dict.push (["[clan]",typeof scenario.clan.flavor!='undefined'?scenario.clan.flavor:`${scenario.clan.name} clan`]);
+	}
+	scenario.secondaryObjective= pickObjective("secondary objective");
+	scenario.bonusObjective= pickObjective("special rule");
+	
+	applyWeights(scenario.mainObjective);
+	applyWeights(scenario.secondaryObjective);
+	applyWeights(scenario.bonusObjective);
+	let mainQuad = "";
+	// add select targets
+	// add each to dict
+	if (scenario.mainObjective.neededEnemy) 
+	{
+		scenario.mainTarget = weightedPickByTrait(scenario.mainObjective.neededEnemy,scenario.mainObjective.neededEnemyType);
+		scenario.dict.push (["[mainTarget]",scenario.mainTarget.name]);
+		scenario.mainTarget.placed = scenario.mainTarget.type=="boss"?1:Math.min(scenario.mainObjective.neededEnemyCount,scenario.mainTarget.amount-scenario.mainTarget.placed);
+		scenario.enemyBudget-=scenario.mainTarget.placed*scenario.mainTarget.pointCost;
+		if(scenario.mainTarget.traits?.includes("bushi") && !scenario.forbiddenChampions.includes(scenario.mainTarget.name))
+		{
+			scenario.forbiddenChampions.push(scenario.mainTarget.name);
+		}
+		if (scenario.mainObjective.needEnemyPlace =="start"){
+		let r = placementRules(scenario.mainTarget,"lair");
+		let m = pickMarker(r);
+		mainQuad = m.quadrant;
+		placeAtMarker(m.id,scenario.mainTarget); 
+		}else if (scenario.mainObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.mainTarget);
+		if (scenario.mainTarget.placed!=1)
+		{
+			for (let i = 0; i < scenario.mainTarget.placed-1; i++) {
+			if (scenario.mainObjective.needEnemyPlace == "start") {
+			r = placementRules(scenario.mainTarget,"lair");
+			m = pickMarker(r);
+			placeAtMarker(m.id,scenario.mainTarget); }
+			else if (scenario.mainObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.mainTarget);
+			}
+		}
+		
+	}
+	if (scenario.secondaryObjective.neededEnemy) 
+	{
+		scenario.secondaryTarget = weightedPickByTrait(scenario.secondaryObjective.neededEnemy,scenario.secondaryObjective.neededEnemyType);
+		scenario.dict.push (["[secondaryTarget]",scenario.secondaryTarget.name]);
+		scenario.secondaryTarget.placed = scenario.secondaryTarget.type=="boss"?1:Math.min(scenario.secondaryObjective.neededEnemyCount+difficulty[ document.getElementById("difficulty").value].secondaryOffeset,scenario.secondaryTarget.amount-scenario.secondaryTarget.placed);
+		if(scenario.secondaryTarget.traits?.includes("bushi") && !scenario.forbiddenChampions.includes(scenario.secondaryTarget.name))
+		{
+			scenario.forbiddenChampions.push(scenario.secondaryTarget.name);
+		}
+		if (scenario.secondaryObjective.neededEnemy== "hasAlly")
+		{
+			for (let i = 0; i < scenario.secondaryTarget.placed; i++) {
+				if (scenario.secondaryObjective.needEnemyPlace == "start"){
+				let r = placementRules(scenario.secondaryTarget,"","","lair",quadrantInfo[mainQuad].close);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,scenario.secondaryTarget); }
+				else if (scenario.secondaryObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.secondaryTarget);
+			}
+		}
+		else
+		{
+			for (let i = 0; i < scenario.secondaryTarget.placed; i++) {
+				if (scenario.secondaryObjective.needEnemyPlace == "start") 
+				{
+				let r = placementRules(scenario.secondaryTarget,"","","lair",null,quadrantInfo[mainQuad].far);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,scenario.secondaryTarget); }
+				else if (scenario.secondaryObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.secondaryTarget);
+			}
+			
+			scenario.enemyBudget-=scenario.secondaryTarget.placed*scenario.secondaryTarget.pointCost;
+		}
+	}
+	if (scenario.bonusObjective.neededEnemy) 
+	{
+		scenario.bonusTarget = weightedPickByTrait(scenario.bonusObjective.neededEnemy,scenario.bonusObjective.neededEnemyType);
+		scenario.dict.push (["[ruleUnit]",scenario.bonusTarget.name]);
+		scenario.bonusTarget.placed = scenario.bonusTarget.type=="boss"?1:Math.min(scenario.bonusObjective.neededEnemyCount,scenario.bonusTarget.amount-scenario.bonusTarget.placed);
+		if(scenario.bonusTarget.traits?.includes("bushi") && !scenario.forbiddenChampions.includes(scenario.bonusTarget.name))
+		{
+			scenario.forbiddenChampions.push(scenario.bonusTarget.name);
+		}
+		if (scenario.bonusObjective.neededEnemy== "hasAlly")
+		{
+			for (let i = 0; i < scenario.bonusTarget.placed; i++) {
+				if (scenario.bonusObjective.needEnemyPlace == "start"){
+				let r = placementRules(scenario.bonusTarget,"","","",null,quadrantInfo[mainQuad].far);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,scenario.bonusTarget); 
+				}else if (scenario.bonusObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.bonusTarget);
+			}
+		}
+		else
+		{
+			for (let i = 0; i < scenario.bonusTarget.placed; i++) {
+				if (scenario.bonusObjective.needEnemyPlace == "start") {
+				
+				let r = placementRules(scenario.bonusTarget,"","","",null,quadrantInfo[mainQuad].far);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,scenario.bonusTarget);
+}
+				else if (scenario.bonusObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.bonusTarget);
+			}
+			scenario.enemyBudget-=scenario.bonusTarget.placed*scenario.bonusTarget.pointCost;
+		}
+	}
+	
+	for (let i = 0; i<scenario.mainObjective.neededTokenCount;i++)
+	{
+				let r = placementRules(scenario.mainObjective.neededTokens,"","","",mainQuad,quadrantInfo[mainQuad].far);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,{name:scenario.mainObjective.neededTokens, type:"token"});
+	}
+	for (let i = 0; i<scenario.secondaryObjective.neededTokenCount;i++)
+	{
+				let r = placementRules(scenario.secondaryObjective.neededTokens,"","","",mainQuad,quadrantInfo[mainQuad].far);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,{name:scenario.secondaryObjective.neededTokens, type:"token"});
+	}
+	for (let i = 0; i<scenario.bonusObjective.neededTokenCount;i++)
+	{
+				let r = placementRules(scenario.bonusObjective.neededTokens);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,{name:scenario.bonusObjective.neededTokens, type:"token"});
+	}
+	// add select enemies up to remaining budget.
+	generateEnemyRoster();
+	
+	for (const enemy of scenario.enemies)
+			{
+				let r = placementRules(enemy,"","","",mainQuad,quadrantInfo[mainQuad].far);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,enemy);
+			}	
+		
+	//place playerspawn
+	
+	for (let i = 0; i<5;i++)
+	{
+				let r = placementRules("player","","","",quadrantInfo[mainQuad].far,mainQuad);
+				let m = pickMarker(r);
+				placeAtMarker(m.id,{name:"player", type:"token"});
+	}
+
+	scenario.objectivesText = richTextUpdate(`${scenario.mainObjective.name} ${scenario.secondaryObjective.name}`);
+	
+	scenario.intro = richTextUpdate(`${scenario.bonusObjective.narrative} ${scenario.mainObjective.narrative}  ${scenario.secondaryObjective.narrative} `);
+	writeToSpecialRule(scenario.mainObjective);
+	writeToSpecialRule(scenario.secondaryObjective);
+	writeToSpecialRule(scenario.bonusObjective);
+	scenario.placements.sort((a, b) => {
+  if (a.marker > b.marker) {
+    return 1;
+  }
+  if (a.marker < b.marker) {
+    return -1;
+  }
+  return 0;
+});
+    updateDisplay();
+
+}
+
+function richTextUpdate(text)
+{
+	//add rich text handling, replace for icons and dictionary terms.
+	scenario.dict.forEach(d =>
+	{
+		text=text.replaceAll(d[0],d[1]);
+	});
+	return text;
+}
+
+function writeToSpecialRule(objective)
+{
+	if (objective.ruleTitle == "") return;
+	let r = scenario.rules.find(ru=> ru[0] == objective.ruleTitle);
+	
+	if (typeof r == "undefined")
+		scenario.rules.push([objective.ruleTitle,objective.rules]);
+	else
+		r[1] = r[1].concat(objective.rule);
+}
+function writeSpecialRules()
+{
+	let temp = "";
+	
+	for (const ru of scenario.rules)
+	{
+		temp = temp.concat(`<h3>${ru[0]}</h3><div>${ru[1]}</div>`);
+}
+	return richTextUpdate(temp);
+}
+function updateDisplay(){
+
+document.getElementById(
+        "boardName"
+    ).textContent = maps[scenario.map].name;
+	
+	document.getElementById(
+        "honorReq"
+    ).textContent = difficulty[ document.getElementById("difficulty").value].honor;
+	
+	document.getElementById(
+        "clanObjReq"
+    ).textContent = difficulty[ document.getElementById("difficulty").value].objs;
+	
+	
+    document.getElementById(
+        "narrativeIntro"
+    ).textContent =
+        scenario.intro;
+
+    document.getElementById(
+        "objectiveText"
+    ).textContent =
+        scenario.objectivesText;
+
+    document.getElementById(
+        "rulesText"
+    ).innerHTML =writeSpecialRules();
+
+    document.getElementById(
+        "narrativeOutro"
+    ).textContent =
+        scenario.outro;
+
+	document.getElementById(
+		"forbChamps"
+	).textContent =
+		scenario.forbiddenChampions.length
+			? scenario.forbiddenChampions.join(", ")
+			: "None";
+    updateLegend();
+	
+	
+    loadMap(scenario.map);
+
+}
+function loadMap(index){
+
+
+    currentMap = maps[index];
+    canvas.width =
+        currentMap.crop.w;
+
+    canvas.height =
+        currentMap.crop.h;
+
+    drawMap();
+}
+
+function buildFilterLists(){
+	populateEnemyList();
+	populateMapList();
+	populateObjectiveList();
+
+}
+
+function drawMap(){
+
+    if(!currentMap)
+        return;
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.drawImage(
+        img,
+        currentMap.crop.x,
+        currentMap.crop.y,
+        currentMap.crop.w,
+        currentMap.crop.h,
+
+        0,
+        0,
+        currentMap.crop.w,
+        currentMap.crop.h
+    );
+
+
+
+	if (scenario.placements == null)
+	{
+	return;
+	}
+	
+const drawn = new Set();
+    currentMap.markers.filter(m=> scenario.placements.some(p => p.marker === m.id)).forEach(
+    marker => {
+
+	let p = scenario.placements.find(p => p.marker === marker.id);
+    ctx.beginPath();
+
+    ctx.fillStyle = p.contents.some(c=> c.name=="player")
+            ? "yellow"
+            : (p.contents.some(c=> c.type=="enemy" ||c.type=="boss" )
+            ? "red"
+            : "blue");
+
+    ctx.arc(
+        marker.x,
+        marker.y,
+        12,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.fillStyle = "black";
+    ctx.font = "12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(
+        p.index,
+        marker.x,
+        marker.y + 4
+    );
+
+});
+
+}
+
+
+function updateLegend()
+{
+    const legend =
+        document.getElementById(
+            "legend"
+        );
+
+    legend.innerHTML = "";
+	let index = 1;
+    scenario.placements.forEach(
+        placement =>
+        {
+            const row =
+                document.createElement(
+                    "div"
+                );
+			const grouped = {};
+
+			placement.contents.forEach(
+				item =>
+				{
+					const name =
+						item.type !== "token"
+						? item.name
+						: (
+							item.name === "player"
+							? "Champion Setup"
+							: item.name + " token"
+						);
+
+					grouped[name] =
+						(grouped[name] || 0) + 1;
+				}
+			);
+            row.className =
+                "legend-item";
+			placement.index = index;
+            row.innerHTML =
+			`<strong>Marker ${placement.index} </strong> ` +
+			Object.entries(grouped)
+				.map(
+					([name,count]) =>
+						count > 1
+							? `${name} ×${count}`
+							: name
+				)
+				.join("<br>");
+
+            legend.appendChild(
+                row
+            );
+			index +=1;
+        })
+		if (scenario.reserves.length ==0) return;
+		const rw =
+                document.createElement(
+                    "div"
+                );
+
+			const grouped2 = {};
+
+			scenario.reserves.forEach(
+				item =>
+				{
+					const name =
+						item.type !== "token"
+						? item.name
+						: (
+							item.name === "player"
+							? "Champion Setup"
+							: item.name + " token"
+						);
+
+					grouped2[name] =
+						(grouped2[name] || 0) + 1;
+				}
+			);
+            rw.className =
+                "legend-item";
+            rw.innerHTML =
+                `<strong>Reserved for later </strong> ` +
+                Object.entries(grouped2)
+				.map(
+					([name,count]) =>
+						count > 1
+							? `${name} ×${count}`
+							: name
+				)
+                    .join("<br>");
+
+            legend.appendChild(
+                rw
+            );
+    
+}
+
+
+function resetWeights()
+{ 
+enemies.forEach(enemy=> {
+	enemy.weight = enemy.type =="boss"?(10*(enemy.traits.some(e=>e=="bushi")?0.5:1)):30;
+	enemy.placed=0;
+});
+}
+
+function applyWeights(applier)
+{
+	for (const enemy of enemies) {
+
+        const tags = enemy.keywords.concat(enemy.traits);
+
+        for (const trait of applier.commonEnemies) {
+            if (tags.includes(trait))
+                enemy.weight *= 2;
+        }
+
+        for (const trait of applier.uncommonEnemies) {
+            if (tags.includes(trait))
+                enemy.weight *= 0.5;
+        }
+
+        for (const trait of applier.prohibitedEnemies) {
+            if (tags.includes(trait))
+                enemy.weight = 0;
+        }
+
+    }
+}
+
+function weightedPickByTrait(trait, type="either"){
+	
+	return weightedPick(enemies.filter(e => (e.traits.some(t => t.toUpperCase()==trait.toUpperCase()) ||e.keywords.some(t => t.toUpperCase()==trait.toUpperCase()))).filter(e =>type=="either"||type==e.type));
+}
+function weightedPick(items){
+    const total =
+        items.reduce(
+            (sum,item) =>
+            sum + item.weight,
+            0
+        );
+
+    let roll =
+        getRand() * total;
+
+    for(const item of items)
+    {
+        roll -= item.weight;
+
+        if(roll <= 0)
+		{
+			if (item && typeof item === "object" && "pointCost" in item) item.weight=0;
+            return item;
+		}
+    }
+
+}
+
+function pickMap(){
+//only map 0 is so far populated.
+
+    return 0;
+	return randomIndex(maps);
+}
+
+
+function pickObjective(type){
+
+	const selectedNames = new Set(
+        Array.from(objSelect.selectedOptions)
+             .map(option => option.textContent)
+    );
+
+    const selectionOfObjs = objectives.filter(
+        obj => obj.type === type &&
+               selectedNames.has(obj.name) && (obj.requiredMainObjective == "" ||(scenario.mainObjective!=null&& obj.requiredMainObjective==scenario.mainObjective.name)) && (obj.neededTokens == "" ||!scenario.tokens.some(t=> t ==obj.neededTokens))
+    );
+	
+	const obj = selectionOfObjs[randomIndex(selectionOfObjs)];
+	if (obj.neededTokens &&obj.neededTokens != "none" ) scenario.tokens.push(obj.neededTokens);
+	return obj ;
+}
+
+function generateEnemyRoster(){
+	while (scenario.enemyBudget >0)
+	{
+	const enemy =
+            weightedPick(
+                enemies.filter(
+                    e =>
+                    e.weight > 0 &&
+                    e.placed <
+                    e.amount
+                )
+            );
+
+        if(!enemy)
+            break;
+			
+		let numb = Math.ceil(getRand()*enemy.amount);
+		for (let i = 0; i < numb; i++) {
+			enemy.placed++;
+			
+			
+			scenario.enemies.push(
+				enemy
+			);
+
+			scenario.enemyBudget -=
+				enemy.pointCost;
+		}
+		if(enemy.traits?.includes("bushi") && !scenario.forbiddenChampions.includes(enemy.name))
+		{
+			scenario.forbiddenChampions.push(enemy.name);
+		}
+	}
+}
+
+function placementRules(item, req = "", forb= "",pref= "",quadrants=null,notQuadrants = null)
+{
+    const rules = {
+        requiredTraits: [],
+        forbiddenTraits: [],
+        preferredTraits: [],
+        dispreferredTraits: [],
+		size:0,
+		tokenName:""
+    };
+ // add conditional input.
+	if (typeof item !== "string")
+	{
+		rules.size = item.size;
+		let keys=item.keywords.map(t=>t.toLowerCase()).concat (item.traits.map(t=> t.toLowerCase()));
+		if(keys.includes("cavalry")){rules.forbiddenTraits.push("roof","indoor")};
+		if(keys.includes("outdoor")){rules.preferredTraits.push("outdoor")};
+		if(keys.includes("hidden")){rules.preferredTraits.push("hidden")};
+		if(keys.includes("vantage")){rules.preferredTraits.push("vantage","roof")} else if(keys.includes("ranged")){rules.preferredTraits.push("vantage","roof")};
+		if(keys.includes("shadowlands")){rules.preferredTraits.push("taint")};
+		if(keys.includes("bushi")){rules.dispreferredTraits.push("water")};
+		//enemy
+	}
+	else
+	{
+		rules.size = 0;
+		//token
+		rules.tokenName = item;
+		if (item=="objective" || item=="oni" || item == "event"){rules.requiredTraits.push("objective")};
+		if (item=="flaming"){rules.requiredTraits.push("flammable")};
+		if (item=="arrow"||item=="player"){rules.requiredTraits.push("edge")};
+	}
+	if (req != "")rules.requiredTraits.push (req);
+	if (forb != "")rules.forbiddenTraits.push (forb);
+	if (pref != "")rules.preferredTraits.push (pref);
+	if (quadrants != null)rules.preferredQuadrants = quadrants;
+	if (notQuadrants != null)rules.dispreferredQuadrants = notQuadrants;
+    return rules;
+}
+
+
+const MARKER_CAPACITY = 4;
+function hasToken(
+    markerId,
+    tokenName
+)
+{
+    const placement =
+        scenario.placements.find(
+            p => p.marker === markerId
+        );
+
+    if(!placement)
+        return false;
+
+    return placement.contents.some(
+        item =>
+            item.type === "token" &&
+            item.name === tokenName
+    );
+}
+
+function usedSize(markerId)
+{
+    const placement =
+        scenario.placements?.find(
+            p => p.marker === markerId
+        );
+
+    if(!placement)
+        return 0;
+
+    return placement.contents.reduce(
+        (sum,item) =>
+            sum + (item.size || 0),
+        0
+    );
+}
+
+function remainingSize(markerId)
+{
+    return MARKER_CAPACITY -
+        usedSize(markerId);
+}
+
+function freeMarkers(
+    neededSize = 0
+)
+{
+    return currentMap.markers.filter(
+        marker =>
+            remainingSize(
+                marker.id
+            ) >= neededSize
+    );
+}
+
+function markersInArea(
+    quadrants,
+    markers = freeMarkers()
+)
+{
+    return markers.filter(
+        marker =>
+            quadrants.includes(
+                marker.quadrant
+            )
+    );
+}
+
+function markersWithTrait(
+    trait,
+    markers = freeMarkers()
+)
+{
+    return markers.filter(
+        marker =>
+            marker.traits.includes(
+                trait
+            )
+    );
+}
+
+function getMainAreaMarkers(
+    mainQuadrant,
+    neededSize = 0
+)
+{
+    return markersInArea(
+        [mainQuadrant],
+        freeMarkers(
+            neededSize
+        )
+    );
+}
+
+function getCloseMarkers(
+    mainQuadrant,
+    neededSize = 0
+)
+{
+    return markersInArea(
+        quadrantInfo[
+            mainQuadrant
+        ].close,
+        freeMarkers(
+            neededSize
+        )
+    );
+}
+
+function getFarMarkers(
+    mainQuadrant,
+    neededSize = 0
+)
+{
+    return markersInArea(
+        quadrantInfo[
+            mainQuadrant
+        ].far,
+        freeMarkers(
+            neededSize
+        )
+    );
+}
+
+function randomFromMarker(
+    neededSize = 0,available =freeMarkers()
+        )
+{
+    if(
+        available.length === 0
+    )
+    {
+        return null;
+    }
+
+    return available[
+        randomIndex(
+            available
+        )
+    ];
+}
+
+function markerWeight(
+    marker,
+    rules = {}
+)
+{
+    const {
+        requiredTraits = [],
+        forbiddenTraits = [],
+        preferredTraits = [],
+		dispreferredTraits = [],
+        preferredQuadrants = [],
+		dispreferredQuadrants= [],
+		tokenName =""
+    } = rules;
+
+    for(const trait of requiredTraits)
+    {
+        if(
+            !marker.traits.includes(
+                trait
+            )
+        )
+        {
+            return 0;
+        }
+    }
+    for(const trait of forbiddenTraits)
+    {
+        if(
+            marker.traits.includes(
+                trait
+            )
+        )
+        {
+            return 0;
+        }
+    }
+	if(rules.tokenName !="" && hasToken(marker.id,rules.tokenName)){ return 0; }
+	
+    let weight = 10;
+
+    for(const trait of preferredTraits)
+    {
+        if(
+            marker.traits.includes(
+                trait
+            )
+        )
+        {
+            weight *= 3;
+        }
+    }
+
+    for(const trait of dispreferredTraits)
+    {
+        if(
+            marker.traits.includes(
+                trait
+            )
+        )
+        {
+            weight *= 0.2;
+        }
+    }
+
+    if(
+        preferredQuadrants.includes(
+            marker.quadrant)
+    )
+    {
+        weight *= 4;
+    }
+	else if (
+        dispreferredQuadrants.includes(
+            marker.quadrant)
+    )
+    {
+        weight *= 0.3;
+    }
+
+    return weight;
+}
+
+function pickMarker(
+    rules = {} 
+)
+{
+    const {
+        size = 0,
+        quadrants = null
+    } = rules;
+
+    let candidates =
+        freeMarkers(size);
+
+    if(
+        quadrants &&
+        quadrants.length
+    )
+    {
+        candidates =
+            markersInArea(
+                quadrants,
+                candidates
+            );
+    }
+
+    const weighted =
+        candidates
+            .map(marker => ({
+                marker,
+                weight:
+                    markerWeight(
+                        marker,
+                        rules
+                    )
+            }))
+            .filter(
+                x => x.weight > 0
+            );
+
+    if(
+        weighted.length === 0
+    )
+    {
+        return null;
+    }
+
+    return weightedPick(
+        weighted
+    ).marker;
+}
+
+function placeAtMarker(
+    markerId,
+    item
+)
+{
+    let placement =
+        scenario.placements.find(
+            p =>
+                p.marker === markerId
+        );
+
+    if(!placement)
+    {
+        placement = {
+			index: scenario.placements.length+1,
+            marker: markerId,
+            contents:[]
+        };
+
+        scenario.placements.push(
+            placement
+        );
+    }
+
+    placement.contents.push(
+        item
+    );
+}
+
+function populateMapList(){
+ 
+mapSelect.innerHTML = "";
+ 
+[...maps]
+.sort(
+    (a,b) =>
+        a.name.localeCompare(
+            b.name
+        )
+).forEach((map,index)=>{
+ 
+const option =
+document.createElement(
+"option"
+);
+ 
+option.value =
+index;
+ 
+ option.selected="selected";
+option.textContent =
+map.name;
+ 
+mapSelect.appendChild(
+option
+);
+ 
+});
+ 
+}
+function populateEnemyList(){
+ 
+eneSelect.innerHTML = "";
+ 
+[...enemies]
+.sort(
+    (a,b) =>
+        a.type.localeCompare(b.type) ||
+        a.name.localeCompare(b.name)
+)
+.forEach((enemy,index)=>{
+ 
+const option =
+document.createElement(
+"option"
+);
+ 
+option.value =
+index;
+ option.selected="selected";
+option.textContent =
+enemy.name;
+ 
+eneSelect.appendChild(
+option
+);
+ 
+});
+ 
+}
+function populateObjectiveList(){
+ objSelect.innerHTML = "";
+ 
+[...objectives]
+.sort(
+    (a,b) =>
+        a.type.localeCompare(b.type) ||
+        a.name.localeCompare(b.name)
+).forEach((objective,index)=>{
+ 
+const option =
+document.createElement(
+"option"
+);
+ 
+option.value =
+index;
+ 
+ option.selected="selected";
+option.textContent =
+objective.name;
+ 
+objSelect.appendChild(
+option
+);
+ 
+});
+ 
+}
+function showDebug()
+{
+    document.getElementById(
+        "debug"
+    ).style.display = "block";
+}
+
+function hideDebug()
+{
+    document.getElementById(
+        "debug"
+    ).style.display = "none";
+}
+document
+.getElementById("mapFile")
+.addEventListener(
+    "change",
+    async event => {
+
+        const file =
+            event.target.files[0];
+
+        if (!file)
+            return;
+
+        try {
+
+            const text =
+                await file.text();
+
+            maps =
+                JSON.parse(text);
+
+            populateMapList();
+
+            if (maps.length) {
+
+                loadMap(0);
+
+            }
+
+        }
+        catch(error) {
+
+            alert(
+                "Invalid JSON:\n\n" +
+                error.message
+            );
+
+        }
+
+    }
+);
+document
+.getElementById("eneFile")
+.addEventListener(
+    "change",
+    async event => {
+
+        const file =
+            event.target.files[0];
+
+        if (!file)
+            return;
+
+        try {
+
+            const text =
+                await file.text();
+
+            enemies =
+                JSON.parse(text);
+			orderedenemies = [...enemies];
+
+            populateEnemyList();
+        }
+        catch(error) {
+
+            alert(
+                "Invalid JSON:\n\n" +
+                error.message
+            );
+
+        }
+
+    }
+);
+document
+.getElementById("objFile")
+.addEventListener(
+    "change",
+    async event => {
+
+        const file =
+            event.target.files[0];
+
+        if (!file)
+            return;
+
+        try {
+
+            const text =
+                await file.text();
+
+            objectives =
+                JSON.parse(text);
+
+			objectives.forEach(rule =>
+			{
+				rule.needEnemyPlace =
+					rule.needEnemyPlace ||
+					"start";
+			});
+            populateObjectiveList();
+        }
+        catch(error) {
+
+            alert(
+                "Invalid JSON:\n\n" +
+                error.message
+            );
+
+        }
+
+    }
+);
+</script>
+
+</body>
+</html>
