@@ -6,6 +6,19 @@
 <title>Unofficial Scenario Randomizer for Champions of Rokugan</title>
 
 <style>
+
+@font-face {
+  font-family: 'L5RSymbols';
+  src: url('./fonts/L5RSymbols.ttf') format('ttf');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'BTTTRIAL';
+  src: url('https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf') format('otf');
+  font-display: swap;
+}
+h1{font:700 26px "BTTTRIAL",sans-serif;margin:0}
+h2{font:700 23px "BTTTRIAL",sans-serif;margin:0 0 14px}
 :root{
     --bg:#1b1b1b;
     --panel:#2a2a2a;
@@ -185,7 +198,7 @@ body{
             </label>
 
             <label>
-                Seed
+                Replace Seed? 
                 <input id="seed" type="text">
             </label>
 
@@ -284,8 +297,8 @@ Adventure     </span>     </div>
         <div class="story-columns">
 			<div class="story-header story-box">
 				<h2>Introduction</h2>
-				<div id="narrativeIntro"></div>
-			</div>
+				<i><div id="narrativeIntro" ></div>
+			</div></i>
 
             <div class="story-box">
                 <h2>Objectives</h2>
@@ -299,7 +312,7 @@ Adventure     </span>     </div>
 
             <div class="story-box">
                 <h2>Conclusion</h2>
-                <div id="narrativeOutro"></div>
+                <i><div id="narrativeOutro"></div></i>
             </div>
 
         </div>
@@ -332,11 +345,20 @@ Adventure     </span>     </div>
     </section>
 
 </div>
+This tool was created by a fan for fans to support the community. It is not affiliated with, endorsed by, or sponsored by the creators, publishers, or rights holders of Champions of Rokugan and Legend of the Five Rings. Champions of Rokugan and Legend of the Five Rings, and all associated names, logos, artwork, and setting elements are the property of their respective owners.
 </div>
 
 <script>
 
+var f1 = new FontFace('L5RSymbols', 'url(./fonts/L5RSymbols.ttf)');
+var f3 = new FontFace('BTTTRIAL', 'url("https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf")');
 
+f1.load().then(function(font) {console.log('font ready');
+document.fonts.add(font);
+f3.load().then(function(font3) {console.log('font ready');
+document.fonts.add(font3);
+});
+});
 const SOURCE_IMAGE =
     "https://imgcdn.gamefound.com/richtextimage/richtext/b3c8214a-901a-4ebe-a5ca-08ad91201eba.png";
 
@@ -648,7 +670,12 @@ function generateScenario(){
 		if (scenario.mainObjective.needEnemyPlace =="start"){
 		let r = placementRules(scenario.mainTarget,"lair");
 		let m = pickMarker(r);
-		mainQuad = m.quadrant;
+		if (m == null)
+		{ r = placementRules(scenario.mainTarget);
+		 m = pickMarker(r);
+		console.log (m);
+		}
+		mainQuad = m.quadrant||"C";
 		placeAtMarker(m.id,scenario.mainTarget); 
 		}else if (scenario.mainObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.mainTarget);
 		if (scenario.mainTarget.placed!=1)
@@ -696,9 +723,10 @@ function generateScenario(){
 			scenario.enemyBudget-=scenario.secondaryTarget.placed*scenario.secondaryTarget.pointCost;
 		}
 	}
-	if (scenario.bonusObjective.neededEnemy) 
+	if (scenario.bonusObjective.neededEnemyCount != 0) 
 	{
 		scenario.bonusTarget = weightedPickByTrait(scenario.bonusObjective.neededEnemy,scenario.bonusObjective.neededEnemyType);
+		
 		scenario.dict.push (["[ruleUnit]",scenario.bonusTarget.name]);
 		scenario.bonusTarget.placed = scenario.bonusTarget.type=="boss"?1:Math.min(scenario.bonusObjective.neededEnemyCount,scenario.bonusTarget.amount-scenario.bonusTarget.placed);
 		if(scenario.bonusTarget.traits?.includes("bushi") && !scenario.forbiddenChampions.includes(scenario.bonusTarget.name))
@@ -732,13 +760,13 @@ function generateScenario(){
 	
 	for (let i = 0; i<scenario.mainObjective.neededTokenCount;i++)
 	{
-				let r = placementRules(scenario.mainObjective.neededTokens,"","","",mainQuad,quadrantInfo[mainQuad].far);
+				let r = placementRules(scenario.mainObjective.neededTokens,"","","",scenario.mainObjective.neededTokens=="arrow"?quadrantInfo[mainQuad].far:mainQuad,scenario.mainObjective.neededTokens!="arrow"?quadrantInfo[mainQuad].far:mainQuad);
 				let m = pickMarker(r);
 				placeAtMarker(m.id,{name:scenario.mainObjective.neededTokens, type:"token"});
 	}
 	for (let i = 0; i<scenario.secondaryObjective.neededTokenCount;i++)
 	{
-				let r = placementRules(scenario.secondaryObjective.neededTokens,"","","",mainQuad,quadrantInfo[mainQuad].far);
+				let r = placementRules(scenario.secondaryObjective.neededTokens,"","","",scenario.secondaryObjective.neededTokens=="arrow"?quadrantInfo[mainQuad].far:mainQuad,scenario.secondaryObjective.neededTokens!="arrow"?quadrantInfo[mainQuad].far:mainQuad);
 				let m = pickMarker(r);
 				placeAtMarker(m.id,{name:scenario.secondaryObjective.neededTokens, type:"token"});
 	}
@@ -804,7 +832,7 @@ function writeToSpecialRule(objective)
 	if (typeof r == "undefined")
 		scenario.rules.push([objective.ruleTitle,objective.rules]);
 	else
-		r[1] = r[1].concat(objective.rule);
+		r[1] = r[1].concat(objective.rules);
 }
 function writeSpecialRules()
 {
@@ -919,23 +947,56 @@ const drawn = new Set();
     marker => {
 
 	let p = scenario.placements.find(p => p.marker === marker.id);
-    ctx.beginPath();
+    
 
-    ctx.fillStyle = p.contents.some(c=> c.name=="player")
-            ? "yellow"
-            : (p.contents.some(c=> c.type=="enemy" ||c.type=="boss" )
-            ? "red"
-            : "blue");
-
-    ctx.arc(
+	if (p.contents.some(c=> c.name=="player"))
+	{ctx.beginPath();
+	ctx.fillStyle ="yellow";
+	ctx.arc(
         marker.x,
         marker.y,
-        12,
+        19,
         0,
         Math.PI * 2
     );
-
     ctx.fill();
+	}if (p.contents.some(c=> (c.type=="token" ) &&c.name!="player"))
+	{ctx.beginPath();
+	ctx.fillStyle ="dodgerblue";
+	ctx.arc(
+        marker.x,
+        marker.y,
+        16,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+	}
+	if (p.contents.some(c=> (scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== c.name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== c.name)))
+	{ctx.beginPath();
+	ctx.fillStyle ="cyan";
+	ctx.arc(
+        marker.x,
+        marker.y,
+        13,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+	}
+	if (p.contents.some(c=> (c.type=="enemy" ||c.type=="boss" ) &&!((scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== c.name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== c.name))))
+	{ctx.beginPath();
+	ctx.fillStyle ="red";
+	ctx.arc(
+        marker.x,
+        marker.y,
+        10,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+	}
+    
 
     ctx.fillStyle = "black";
     ctx.font = "12px Arial";
@@ -989,13 +1050,10 @@ function updateLegend()
                 "legend-item";
 			placement.index = index;
             row.innerHTML =
-			`<strong>Marker ${placement.index} </strong> ` +
+			`<strong>Marker ${placement.index} </strong><br>` +
 			Object.entries(grouped)
 				.map(
-					([name,count]) =>
-						count > 1
-							? `${name} ×${count}`
-							: name
+					([name,count]) =>(count > 1 ? `${name} ×${count}` : name).concat((scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== name)?" (Ally)":"")
 				)
 				.join("<br>");
 
@@ -1082,7 +1140,7 @@ function applyWeights(applier)
 
 function weightedPickByTrait(trait, type="either"){
 	
-	return weightedPick(enemies.filter(e => (e.traits.some(t => t.toUpperCase()==trait.toUpperCase()) ||e.keywords.some(t => t.toUpperCase()==trait.toUpperCase()))).filter(e =>type=="either"||type==e.type));
+	return weightedPick(enemies.filter(e => (e.traits.some(t => trait == ""||t.toUpperCase()==trait.toUpperCase()) ||e.keywords.some(t => t.toUpperCase()==trait.toUpperCase()))).filter(e =>type=="either"||type==e.type));
 }
 function weightedPick(items){
     const total =
@@ -1422,14 +1480,14 @@ function markerWeight(
             marker.quadrant)
     )
     {
-        weight *= 4;
+        weight *= 5;
     }
 	else if (
         dispreferredQuadrants.includes(
             marker.quadrant)
     )
     {
-        weight *= 0.3;
+        weight *= 0.1;
     }
 
     return weight;
