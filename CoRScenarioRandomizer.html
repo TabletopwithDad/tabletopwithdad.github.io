@@ -6,121 +6,50 @@
 <title>Unofficial Scenario Randomizer for Champions of Rokugan</title>
 
 <style>
+@font-face{font-family:'L5RSymbols';src:url('./fonts/L5RSymbols.ttf') format('truetype');font-display:swap;}
+@font-face{font-family:'BTTTRIAL';src:url('https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf') format('opentype');font-display:swap;}
 
-@font-face {
-  font-family: 'L5RSymbols';
-  src: url('./fonts/L5RSymbols.ttf') format('ttf');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'BTTTRIAL';
-  src: url('https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf') format('otf');
-  font-display: swap;
-}
-h1{font:700 26px "BTTTRIAL",sans-serif;margin:0;color:var(--headtext);}
-h2{font:700 23px "BTTTRIAL",sans-serif;margin:0 0 14px}
 :root{
-    --bg:#E4E3E1;
-	--head:#005741;
-    --panel:#E6E0D2;
-    --panel2:#f6f0e6;
-    --border:#444;
-    --text:#111;
-    --headtext:#fff;
-    --accent:#c89b3c;
-}
-#debug{
-    display:none;
-}
-*{
-    box-sizing:border-box;
+    --bg:#E4E3E1;--head:#005741;--panel:#E6E0D2;--panel2:#f6f0e6;
+    --border:#444;--text:#111;--headtext:#fff;--accent:#c89b3c;
 }
 
-body{
-    margin:0;
-    padding:0px;
-    background:var(--bg);
-    color:var(--text);
-    font-family:Arial,sans-serif;
-}
-section{ 
-    margin:2px 4px;
-}
-#app{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-.flavor {
-    color:var(--head);
-}
-/* Generic panel */
-header{background:var(--head); display:flex;space-between;gap:16px;padding:18px 24px;}
-.panel{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:10px;
-}
+*{box-sizing:border-box;}
+body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;}
+h1{font:700 26px "BTTTRIAL",sans-serif;margin:0;color:var(--headtext);}
+h2{font:700 23px "BTTTRIAL",sans-serif;margin:0;}
+section{margin:2px 4px;}
 
-.panel h2{
-    margin-top:0;
-}
+#debug{display:none;}
+#app{display:flex;flex-direction:column;gap:10px;}
+.flavor{color:var(--head);}
 
-.controls{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    align-items:center;
-}
+header{background:var(--head);display:flex;gap:16px;padding:18px 24px;}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px;}
+.panel h2{margin-top:0;}
 
-.controls label{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.controls label{display:flex;flex-direction:column;gap:4px;}
 
-.filters{
-    display:flex;
-    flex-wrap:wrap;
-    gap:20px;
-}
+.filters{display:flex;flex-wrap:wrap;gap:20px;}
 
-.requirements{
-    display:grid;
-    gap:8px;
-}
+.requirements,.story{display:grid;gap:8px;}
+.story{gap:10px;}
 
-.requirement{
-    background:var(--panel2);
-    padding:8px;
-    border-radius:4px;
-}
-.story{
-    display:grid;
-    gap:10px;
-}
-
-.story-header{
-    min-height:80px;
-}
-
-.story-columns{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:10px;
-}
-
-.story-box{
+.requirement,
+.story-box,
+.legend-item{
     background:var(--panel2);
     border-radius:4px;
-    padding:10px;
-    min-height:120px;
-}
-.map-container{
-    text-align:center;
 }
 
+.requirement{padding:8px;}
+.story-box{padding:10px;min-height:120px;}
+.story-header{min-height:80px;}
+
+.story-columns{display:grid;grid-template-columns:1fr;gap:10px;}
+
+.map-container{text-align:center;}
 #mapCanvas{
     width:100%;
     max-width:900px;
@@ -128,184 +57,116 @@ header{background:var(--head); display:flex;space-between;gap:16px;padding:18px 
     background:#111;
 }
 
-.legend-items{
-    display:grid;
-    flex-direction:column;
-    gap:2px;
-        grid-template-columns:
-            1fr
-            1fr;
+.legend-items{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.legend-item{padding:4px 8px;}
+
+@media (min-width:1000px){
+    .story-columns{grid-template-columns:1fr 1fr;}
+    .desktop-layout{display:flex;flex-direction:column;gap:10px;}
 }
 
-.legend-item{
-    background:var(--panel2);
-    padding:4px 8px;
-    border-radius:4px;
-}
-
-@media (min-width: 1000px){
-
-    .story-columns{
-        grid-template-columns:
-            1fr
-            1fr;
-    }
-.desktop-layout{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-@media (min-width: 1200px){
-
-	.requirements{
-		display:grid;
-		gap:8px;
-		grid-template-columns:
-				1fr 
-				1fr 
-				1fr;
-
-			align-items:start;
-	}
-    .desktop-layout{
-        display:grid;
-        gap:10px;
-
-        grid-template-columns:
-            2fr   /* story */
-            3fr   /* map */
-            2fr;  /* legend */
-
+@media (min-width:1200px){
+    .requirements{
+        grid-template-columns:1fr 1fr 1fr;
         align-items:start;
     }
 
+    .desktop-layout{
+        display:grid;
+        gap:10px;
+        grid-template-columns:2fr 3fr 2fr;
+        align-items:start;
+    }
 }
 }
 </style>
 </head>
 <body>
-
 <header><h1>Unofficial Scenario Randomizer for Champions of Rokugan</h1></header>
 <div id="app">
+<section class="panel">
+    <h2>Settings</h2>
 
+    <div class="controls">
+        <label>
+            Difficulty
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Hard</option>
+            </select>
+        </label>
 
-    <section class="panel">
-
-        <h2>Settings</h2>
-
-        <div class="controls">
-
-            <label>
-                Difficulty
-                <select id="difficulty">
-                    <option value="easy">Easy</option>
-                    <option value="normal" selected>Normal</option>
-                    <option value="hard">Hard</option>
-                </select>
-            </label>
-
-            <label>
-                Replace Seed? 
-                <input id="seed" type="text">
-            </label>
+        <label>
+            Replace Seed?
+            <input id="seed" type="text">
+        </label>
 
         <div class="filters">
-
             <div>
                 <strong>Maps</strong>
                 <div id="mapFilters">
-        <select multiple id="mapSelect" style="width:250px;"size="8"></select></div>
+                    <select multiple id="mapSelect" style="width:250px;" size="8"></select>
+                </div>
             </div>
 
             <div>
                 <strong>Enemies</strong>
                 <div id="enemyFilters">
-        <select multiple id="eneSelect" style="width:250px;"size="8"></select></div>
+                    <select multiple id="eneSelect" style="width:250px;" size="8"></select>
+                </div>
             </div>
-			
+
             <div>
                 <strong>Objectives</strong>
                 <div id="objectiveFilters">
-        <select multiple id="objSelect" style="width:250px;"size="8"></select></div>
+                    <select multiple id="objSelect" style="width:250px;" size="8"></select>
+                </div>
             </div>
-
         </div>
-            <button id="randomizeBtn">
-                Generate Scenario
-            </button>
 
+        <button id="randomizeBtn">Generate Scenario</button>
 
         <label>Generated Seed</label>
-		<div
-            id="seeded"
-            >
-        </div>
-        </div>
+        <div id="seeded"></div>
+    </div>
 
+    <div id="debug">
+        <h2>Debug</h2>
 
-		<div id="debug">
-		<h2>Debug</h2>
-		<label>Map</label>
-		<input
-    type="file"
-    id="mapFile"
-    accept=".json">
-		<label>Enemies</label>
-		<input
-    type="file"
-    id="eneFile"
-    accept=".json">
-		<label>Objectives</label>
-		<input
-    type="file"
-    id="objFile"
-    accept=".json">
-		</div>
-    </section>
+        <label>Map</label>
+        <input type="file" id="mapFile" accept=".json">
 
+        <label>Enemies</label>
+        <input type="file" id="eneFile" accept=".json">
 
-    <section class="panel">
+        <label>Objectives</label>
+        <input type="file" id="objFile" accept=".json">
+    </div>
+</section>
 
-        <h2>Requirements</h2>
+<section class="panel">
+    <h2>Requirements</h2>
 
-        <div class="requirements">
-
-            <div class="requirement"> Map Type: <span id="typeName">
-Adventure     </span>     </div>
-            <div class="requirement"> Game Board:  : <span id="boardName">
-                Town</span>    
-            </div>
-
-
-            <div class="requirement"> Mandatory Champions:  : <span id="mandChamps">
-               None</span>    
-            </div>
-
-            <div class="requirement"> Forbidden Champions:  : <span id="forbChamps">
-                None</span>    
-            </div>
-
-            <div class="requirement"> Modified Honor needed:  : <span id="honorReq">
-                default </span>    
-            </div>
-            <div class="requirement"> Clan Objectives:  : <span id="clanObjReq">
-                X completed </span>    
-            </div>
-
-        </div>
-
-    </section>
+    <div class="requirements">
+        <div class="requirement">Map Type: <span id="typeName">Adventure</span></div>
+        <div class="requirement">Game Board: <span id="boardName">Town</span></div>
+        <div class="requirement">Mandatory Champions: <span id="mandChamps">None</span></div>
+        <div class="requirement">Forbidden Champions: <span id="forbChamps">None</span></div>
+        <div class="requirement">Modified Honor needed: <span id="honorReq">default</span></div>
+        <div class="requirement">Clan Objectives: <span id="clanObjReq">X completed</span></div>
+    </div>
+</section>
 
 <div class="desktop-layout">
 
     <section class="panel story">
-
-       
         <div class="story-columns">
-			<div class="story-header story-box flavor">
-				<h2>Introduction</h2>
-				<i><div id="narrativeIntro" ></div>
-			</div></i>
+
+            <div class="story-header story-box flavor">
+                <h2>Introduction</h2>
+                <i><div id="narrativeIntro"></div></i>
+            </div>
 
             <div class="story-box">
                 <h2>Objectives</h2>
@@ -323,127 +184,68 @@ Adventure     </span>     </div>
             </div>
 
         </div>
-
     </section>
-
 
     <section class="panel map-container">
-
         <h2>Scenario Map</h2>
-
-        <canvas
-            id="mapCanvas"
-            width="900"
-            height="900">
-        </canvas>
-
+        <canvas id="mapCanvas" width="900" height="900"></canvas>
     </section>
-
 
     <section class="panel">
-
         <h2>Setup</h2>
-
-        <div
-            id="legend"
-            class="legend-items">
-        </div>
-
+        <div id="legend" class="legend-items"></div>
     </section>
 
 </div>
+
 This tool was created by a fan for fans to support the community. It is not affiliated with, endorsed by, or sponsored by the creators, publishers, or rights holders of Champions of Rokugan and Legend of the Five Rings. Champions of Rokugan and Legend of the Five Rings, and all associated names, logos, artwork, and setting elements are the property of their respective owners.
+
 </div>
-
 <script>
+const f1=new FontFace('L5RSymbols','url(./fonts/L5RSymbols.ttf)');
+const f3=new FontFace('BTTTRIAL','url(https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf)');
 
-var f1 = new FontFace('L5RSymbols', 'url(./fonts/L5RSymbols.ttf)');
-var f3 = new FontFace('BTTTRIAL', 'url("https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf")');
-
-f1.load().then(function(font) {console.log('font ready');
-document.fonts.add(font);
-f3.load().then(function(font3) {console.log('font ready');
-document.fonts.add(font3);
+f1.load().then(font=>{
+    console.log('font ready');
+    document.fonts.add(font);
+    f3.load().then(font3=>{
+        console.log('font ready');
+        document.fonts.add(font3);
+    });
 });
-});
-const SOURCE_IMAGE =
-    "https://imgcdn.gamefound.com/richtextimage/richtext/b3c8214a-901a-4ebe-a5ca-08ad91201eba.png";
 
-const mapSelect =
-    document.getElementById("mapSelect");
-const objSelect =
-    document.getElementById("objSelect");
-const eneSelect =
-    document.getElementById("eneSelect");
-let maps = [];
-let objectives = [];
-let enemies = [];
-let orderedenemies = [];
-const quadrantInfo = {
+const SOURCE_IMAGE="https://imgcdn.gamefound.com/richtextimage/richtext/b3c8214a-901a-4ebe-a5ca-08ad91201eba.png";
 
-    NW: {
-        close:["N","W","C"],
-        far:["NE","E","SE","S","SW"]
-    },
+const mapSelect=document.getElementById("mapSelect"),
+      objSelect=document.getElementById("objSelect"),
+      eneSelect=document.getElementById("eneSelect");
 
-    N: {
-        close:["NW","NE","C"],
-        far:["W","E","SW","S","SE"]
-    },
+let maps=[],objectives=[],enemies=[],orderedenemies=[];
 
-    NE: {
-        close:["N","E","C"],
-        far:["NW","W","SW","S","SE"]
-    },
-
-    W: {
-        close:["NW","SW","C"],
-        far:["N","NE","E","SE","S"]
-    },
-
-    C: {
-        close:["N","E","S","W"],
-        far:["NW","NE","SW","SE"]
-    },
-
-    E: {
-        close:["NE","SE","C"],
-        far:["N","NW","W","SW","S"]
-    },
-
-    SW: {
-        close:["W","S","C"],
-        far:["NW","N","NE","E","SE"]
-    },
-
-    S: {
-        close:["SW","SE","C"],
-        far:["NW","N","NE","W","E"]
-    },
-
-    SE: {
-        close:["S","E","C"],
-        far:["NW","N","NE","W","SW"]
-    }
-
+const quadrantInfo={
+    NW:{close:["N","W","C"],far:["NE","E","SE","S","SW"]},
+    N:{close:["NW","NE","C"],far:["W","E","SW","S","SE"]},
+    NE:{close:["N","E","C"],far:["NW","W","SW","S","SE"]},
+    W:{close:["NW","SW","C"],far:["N","NE","E","SE","S"]},
+    C:{close:["N","E","S","W"],far:["NW","NE","SW","SE"]},
+    E:{close:["NE","SE","C"],far:["N","NW","W","SW","S"]},
+    SW:{close:["W","S","C"],far:["NW","N","NE","E","SE"]},
+    S:{close:["SW","SE","C"],far:["NW","N","NE","W","E"]},
+    SE:{close:["S","E","C"],far:["NW","N","NE","W","SW"]}
 };
-const canvas =
-    document.getElementById("mapCanvas");
 
-const ctx =
-    canvas.getContext("2d");
-	
-let currentMap = null;
-let currentMarker = null;
+const canvas=document.getElementById("mapCanvas"),
+      ctx=canvas.getContext("2d");
 
-const img =
-    new Image();
+let currentMap=null,currentMarker=null;
 
-img.src = SOURCE_IMAGE;
+const img=new Image();
+img.src=SOURCE_IMAGE;
+
 const difficulty={
-	easy:{budget:20,secondaryOffeset:-1,honor:-3,objs:5},
-	normal:{budget:25,secondaryOffeset:0,honor:0,objs:7},
-	hard:{budget:30,secondaryOffeset:1,honor:3,objs:9}
+    easy:{budget:20,secondaryOffeset:-1,honor:-3,objs:5},
+    normal:{budget:25,secondaryOffeset:0,honor:0,objs:7},
+    hard:{budget:30,secondaryOffeset:1,honor:3,objs:9}
 };
 const clans={
  crab:{name:'Crab',deep:'#2D395A',mon:'1'},
@@ -458,29 +260,24 @@ const clans={
  nezumi:{name:'Nezumi',flavor:"Tattered Ear Tribe",bg:'#b8d7b3',deep:'#544d42',pale:'#eef5e8',mon:'8',ink:'#0B5E3D',inkText:'#ffffff'},
  neutral:{name:'ronin',flavor:"rônin",bg:'#d5c7b1',deep:'#544d42',pale:'#f1ece2',mon:'8',ink:'#676053',inkText:'#ffffff'}
 };
-
-const scenario = {
-
+const scenario={
     map:null,
-
     mainObjective:null,
     secondaryObjective:null,
     bonusObjective:null,
-	clan:null,
+    clan:null,
     enemyBudget:25,
-
     markers:[],
     enemies:[],
     tokens:[],
     placements:[],
     reserves:[],
     dict:[],
-    forbiddenChampions: [],
+    forbiddenChampions:[],
     intro:"",
     objectivesText:"",
     rules:[],
     outro:""
-
 };
 function resetScenario() {
     scenario.map = null;
@@ -1022,100 +819,64 @@ const drawn = new Set();
 
 }
 
+function groupContents(contents)
+{
+    const grouped={};
+
+    contents.forEach(item=>{
+        const name=item.type!=="token"
+            ? item.name
+            : item.name==="player"
+                ? "Champion Setup"
+                : `${item.name} token`;
+
+        grouped[name]=(grouped[name]||0)+1;
+    });
+
+    return grouped;
+}
 
 function updateLegend()
 {
-    const legend =
-        document.getElementById(
-            "legend"
-        );
+    const legend=document.getElementById("legend");
+    legend.innerHTML="";
 
-    legend.innerHTML = "";
-	let index = 1;
-    scenario.placements.forEach(
-        placement =>
-        {
-            const row =
-                document.createElement(
-                    "div"
-                );
-			const grouped = {};
+    let index=1;
 
-			placement.contents.forEach(
-				item =>
-				{
-					const name =
-						item.type !== "token"
-						? item.name
-						: (
-							item.name === "player"
-							? "Champion Setup"
-							: item.name + " token"
-						);
+    scenario.placements.forEach(placement=>{
+        const row=document.createElement("div");
+        const grouped=groupContents(placement.contents);
 
-					grouped[name] =
-						(grouped[name] || 0) + 1;
-				}
-			);
-            row.className =
-                "legend-item";
-			placement.index = index;
-            row.innerHTML =
-			`<strong>Marker ${placement.index} </strong><br>` +
-			Object.entries(grouped)
-				.map(
-					([name,count]) =>(count > 1 ? `${name} ×${count}` : name).concat((scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== name)?" (Ally)":"")
-				)
-				.join("<br>");
+        placement.index=index++;
+        row.className="legend-item";
 
-            legend.appendChild(
-                row
-            );
-			index +=1;
-        })
-		if (scenario.reserves.length ==0) return;
-		const rw =
-                document.createElement(
-                    "div"
-                );
+        row.innerHTML=
+            `<strong>Marker ${placement.index}</strong><br>`+
+            Object.entries(grouped).map(([name,count])=>
+                `${count>1?`• ${name} ×${count}`:`• ${name}`}${
+                    (scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name==name) ||
+                    (scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name==name)
+                        ? " (Ally)"
+                        : ""
+                }`
+            ).join("<br>");
 
-			const grouped2 = {};
+        legend.appendChild(row);
+    });
 
-			scenario.reserves.forEach(
-				item =>
-				{
-					const name =
-						item.type !== "token"
-						? item.name
-						: (
-							item.name === "player"
-							? "Champion Setup"
-							: item.name + " token"
-						);
+    if(!scenario.reserves.length) return;
 
-					grouped2[name] =
-						(grouped2[name] || 0) + 1;
-				}
-			);
-            rw.className =
-                "legend-item";
-            rw.innerHTML =
-                `<strong>Reserved for later </strong> ` +
-                Object.entries(grouped2)
-				.map(
-					([name,count]) =>
-						count > 1
-							? `${name} ×${count}`
-							: name
-				)
-                    .join("<br>");
+    const row=document.createElement("div");
+    row.className="legend-item";
 
-            legend.appendChild(
-                rw
-            );
-    
+    row.innerHTML=
+        "<strong>Reserved for later</strong><br>"+
+        Object.entries(groupContents(scenario.reserves))
+            .map(([name,count])=>count>1?`• ${name} ×${count}`:`• ${name}`)
+            .join("<br>");
+
+    legend.appendChild(row);
 }
-
 
 function resetWeights()
 { 
@@ -1503,55 +1264,22 @@ function markerWeight(
 
     return weight;
 }
-
-function pickMarker(
-    rules = {} 
-)
+function pickMarker(rules={})
 {
-    const {
-        size = 0,
-        quadrants = null
-    } = rules;
+    const {size=0, quadrants=null}=rules;
 
-    let candidates =
-        freeMarkers(size);
+    let candidates=freeMarkers(size);
 
-    if(
-        quadrants &&
-        quadrants.length
-    )
-    {
-        candidates =
-            markersInArea(
-                quadrants,
-                candidates
-            );
-    }
+    if(quadrants?.length)
+        candidates=markersInArea(quadrants,candidates);
 
-    const weighted =
-        candidates
-            .map(marker => ({
-                marker,
-                weight:
-                    markerWeight(
-                        marker,
-                        rules
-                    )
-            }))
-            .filter(
-                x => x.weight > 0
-            );
+    const weighted=candidates
+        .map(marker=>({marker,weight:markerWeight(marker,rules)}))
+        .filter(x=>x.weight>0);
 
-    if(
-        weighted.length === 0
-    )
-    {
-        return null;
-    }
-
-    return weightedPick(
-        weighted
-    ).marker;
+    return weighted.length
+        ? weightedPick(weighted).marker
+        : null;
 }
 
 function placeAtMarker(
@@ -1673,19 +1401,8 @@ option
 });
  
 }
-function showDebug()
-{
-    document.getElementById(
-        "debug"
-    ).style.display = "block";
-}
-
-function hideDebug()
-{
-    document.getElementById(
-        "debug"
-    ).style.display = "none";
-}
+function showDebug(){document.getElementById("debug").style.display="block";}
+function hideDebug(){document.getElementById("debug").style.display="none";}
 document
 .getElementById("mapFile")
 .addEventListener(
