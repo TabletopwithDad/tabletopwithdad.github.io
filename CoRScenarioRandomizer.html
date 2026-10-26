@@ -153,8 +153,8 @@ header{background:var(--head);display:flex;gap:16px;padding:18px 24px;}
         <div class="requirement">Game Board: <span id="boardName">Town</span></div>
         <div class="requirement">Mandatory Champions: <span id="mandChamps">None</span></div>
         <div class="requirement">Forbidden Champions: <span id="forbChamps">None</span></div>
-        <div class="requirement">Modified Honor needed: <span id="honorReq">default</span></div>
-        <div class="requirement">Clan Objectives: <span id="clanObjReq">X completed</span></div>
+        <div class="requirement"id="honorDiff">Honorable victory threshold modified by: <span id="honorReq">default</span></div>
+        <div class="requirement"id="clanObjDiff">Clan Objectives: <span id="clanObjReq">X completed</span></div>
     </div>
 </section>
 
@@ -765,6 +765,7 @@ const drawn = new Set();
     );
     ctx.fill();
 	radius -=3;
+    ctx.fillStyle = "black";
 	}if (p.contents.some(c=> (c.type=="token" ) &&c.name!="player"))
 	{ctx.beginPath();
 	ctx.fillStyle ="dodgerblue";
@@ -777,6 +778,7 @@ const drawn = new Set();
     );
     ctx.fill();
 	radius -=4;
+    ctx.fillStyle = "black";
 	}
 	if (p.contents.some(c=> (scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== c.name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== c.name)))
 	{ctx.beginPath();
@@ -790,6 +792,7 @@ const drawn = new Set();
     );
     ctx.fill();
 	radius -=3;
+    ctx.fillStyle = "black";
 	}
 	if (p.contents.some(c=> (c.type=="enemy" ||c.type=="boss" ) &&!((scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== c.name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== c.name))))
 	{ctx.beginPath();
@@ -803,10 +806,10 @@ const drawn = new Set();
     );
     ctx.fill();
 	radius -=3;
+    ctx.fillStyle = "white";
 	}
     
 
-    ctx.fillStyle = "black";
     ctx.font = "16px Arial";
     ctx.textAlign = "center";
     ctx.fillText(
@@ -851,7 +854,7 @@ function updateLegend()
         row.className="legend-item";
 
         row.innerHTML=
-            `<strong>Marker ${placement.index}</strong><br>`+
+            `<strong>Area ${placement.index}</strong><br>`+
             Object.entries(grouped).map(([name,count])=>
                 `${count>1?`• ${name} ×${count}`:`• ${name}`}${
                     (scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name==name) ||
