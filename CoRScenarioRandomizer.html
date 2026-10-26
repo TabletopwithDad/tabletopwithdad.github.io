@@ -17,13 +17,16 @@
   src: url('https://static.wfonts.com/data/2014/10/26/brushtiptexe/BTTTRIAL.otf') format('otf');
   font-display: swap;
 }
-h1{font:700 26px "BTTTRIAL",sans-serif;margin:0}
+h1{font:700 26px "BTTTRIAL",sans-serif;margin:0;color:var(--headtext);}
 h2{font:700 23px "BTTTRIAL",sans-serif;margin:0 0 14px}
 :root{
-    --bg:#1b1b1b;
-    --panel:#2a2a2a;
+    --bg:#E4E3E1;
+	--head:#005741;
+    --panel:#E6E0D2;
+    --panel2:#f6f0e6;
     --border:#444;
-    --text:#eee;
+    --text:#111;
+    --headtext:#fff;
     --accent:#c89b3c;
 }
 #debug{
@@ -35,20 +38,24 @@ h2{font:700 23px "BTTTRIAL",sans-serif;margin:0 0 14px}
 
 body{
     margin:0;
-    padding:10px;
+    padding:0px;
     background:var(--bg);
     color:var(--text);
     font-family:Arial,sans-serif;
 }
-
+section{ 
+    margin:2px 4px;
+}
 #app{
     display:flex;
     flex-direction:column;
     gap:10px;
 }
-
+.flavor {
+    color:var(--head);
+}
 /* Generic panel */
-
+header{background:var(--head); display:flex;space-between;gap:16px;padding:18px 24px;}
 .panel{
     background:var(--panel);
     border:1px solid var(--border);
@@ -85,7 +92,7 @@ body{
 }
 
 .requirement{
-    background:#333;
+    background:var(--panel2);
     padding:8px;
     border-radius:4px;
 }
@@ -105,7 +112,7 @@ body{
 }
 
 .story-box{
-    background:#333;
+    background:var(--panel2);
     border-radius:4px;
     padding:10px;
     min-height:120px;
@@ -131,7 +138,7 @@ body{
 }
 
 .legend-item{
-    background:#333;
+    background:var(--panel2);
     padding:4px 8px;
     border-radius:4px;
 }
@@ -207,19 +214,19 @@ body{
             <div>
                 <strong>Maps</strong>
                 <div id="mapFilters">
-        <select multiple id="mapSelect" style="width:170px;"></select></div>
+        <select multiple id="mapSelect" style="width:250px;"size="8"></select></div>
             </div>
 
             <div>
                 <strong>Enemies</strong>
                 <div id="enemyFilters">
-        <select multiple id="eneSelect" style="width:170px;"></select></div>
+        <select multiple id="eneSelect" style="width:250px;"size="8"></select></div>
             </div>
 			
             <div>
                 <strong>Objectives</strong>
                 <div id="objectiveFilters">
-        <select multiple id="objSelect" style="width:170px;"></select></div>
+        <select multiple id="objSelect" style="width:250px;"size="8"></select></div>
             </div>
 
         </div>
@@ -295,7 +302,7 @@ Adventure     </span>     </div>
 
        
         <div class="story-columns">
-			<div class="story-header story-box">
+			<div class="story-header story-box flavor">
 				<h2>Introduction</h2>
 				<i><div id="narrativeIntro" ></div>
 			</div></i>
@@ -310,7 +317,7 @@ Adventure     </span>     </div>
                 <div id="rulesText"></div>
             </div>
 
-            <div class="story-box">
+            <div class="story-box flavor">
                 <h2>Conclusion</h2>
                 <i><div id="narrativeOutro"></div></i>
             </div>
