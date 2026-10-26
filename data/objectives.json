@@ -184,7 +184,7 @@
     {
         "name": "who plans to kill [secondaryTarget]. Don't let [secondaryTarget] die.",
         "type": "secondary objective",
-        "requiredMainObjective": "",
+        "requiredMainObjective": "Eliminate the plotting [mainTarget] of [clan]",
         "rules": "[mainTarget] follows the assassination behavior. [secondaryTarget] is an ally. Their target is the [secondaryTarget].",
         "narrative": "",
         "neededTokens": "none",
@@ -202,13 +202,14 @@
         "randomClanAdversary": true
     },
     {
-        "name": "that schemes against your clans. Don't let their messengers escapes.",
+        "name": "that schemes against your clans. Don't let their messengers, [secondaryTarget], escape.",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the plotting [mainTarget] of [clan]",
         "rules": "[secondaryTarget] follows the escape behaviour and will move towards the marked exit point and then escape.",
         "narrative": "",
-        "neededTokens": "arrow",
+        "neededTokens": "",
         "neededEnemy": "human",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [

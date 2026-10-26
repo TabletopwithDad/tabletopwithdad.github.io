@@ -77,7 +77,7 @@
     {
         "name": "Goblin spearman",
         "type": "enemy",
-        "pointCost": 1,
+        "pointCost": 0.5,
         "amount": 8,
         "size": 1,
         "traits": [
@@ -127,7 +127,7 @@
     {
         "name": "Skeleton Archer",
         "type": "enemy",
-        "pointCost": 1,
+        "pointCost": 0.5,
         "amount": 8,
         "size": 1,
         "traits": [
@@ -234,7 +234,7 @@
     {
         "name": "Zombie peasant",
         "type": "enemy",
-        "pointCost": 1,
+        "pointCost": 0.5,
         "amount": 8,
         "size": 1,
         "traits": [
@@ -292,7 +292,7 @@
     {
         "name": "Goblin warrior",
         "type": "enemy",
-        "pointCost": 1,
+        "pointCost": 0.5,
         "amount": 8,
         "size": 1,
         "traits": [
@@ -471,7 +471,7 @@
     {
         "name": "Ashigaru Archer",
         "type": "enemy",
-        "pointCost": 1,
+        "pointCost": 0.5,
         "amount": 4,
         "size": 1,
         "traits": [
@@ -494,7 +494,7 @@
         "size": 1,
         "traits": [
             "Human",
-            "Toturi",
+            "ronin",
             "hasAlly",
             "bushi"
         ],
@@ -526,7 +526,7 @@
         "size": 1,
         "traits": [
             "Human",
-            "Toturi",
+            "ronin",
             "hasAlly",
             "bushi"
         ],
@@ -559,7 +559,7 @@
     {
         "name": "Nezumi Scavenger",
         "type": "enemy",
-        "pointCost": 1,
+        "pointCost": 0.5,
         "amount": 8,
         "size": 1,
         "traits": [
@@ -576,7 +576,7 @@
     {
         "name": "Ashigaru spearman",
         "type": "enemy",
-        "pointCost": 1,
+        "pointCost": 0.5,
         "amount": 4,
         "size": 1,
         "traits": [
