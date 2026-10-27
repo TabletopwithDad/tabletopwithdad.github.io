@@ -3,14 +3,25 @@
         "name": "Flaming",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "When you enter or start a turn in a flaming space, make a test, instead of picking dice, fire count as offensive successes against you and water as your defensive successes.\nWhen you roll four or more [f], regain a spent ki point.",
         "narrative": "The night was interrupted when flames spread across [map].",
         "neededTokens": "flaming",
         "neededEnemy": "",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "Flaming",
+        "specialRules": [
+            {
+                "title": "Flaming",
+                "type": "special",
+                "text": "When you enter or start a turn in a flaming space, make a test, instead of picking dice, fire count as offensive successes against you and water as your defensive successes."
+            },
+            {
+                "title": "Affinity for Fire",
+                "type": "special",
+                "text": "When you roll four or more [f], regain a spent ki point."
+            }
+        ],
         "neededTokenCount": 8,
         "neededEnemyCount": 0,
         "neededEnemyType": "either",
@@ -20,14 +31,20 @@
         "name": "Eliminate the conjuring [mainTarget]",
         "type": "main objective",
         "requiredMainObjective": "",
-        "rules": "Until the end of turn 3, they follow the Guardian behavior (Sentinel). They switch to Assault behavior at the beginning of turn 4.",
         "narrative": "",
         "neededTokens": "none",
         "neededEnemy": "Elementalist",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "[mainTarget]",
+        "specialRules": [
+            {
+                "title": "[mainTarget]",
+                "type": "behavior",
+                "text": "Until the end of turn 3, they follow the Guardian behavior (Sentinel). They switch to Assault behavior at the beginning of turn 4."
+            }
+        ],
         "neededTokenCount": 0,
         "neededEnemyCount": 4,
         "neededEnemyType": "either",
@@ -37,7 +54,6 @@
         "name": "and the summoned [secondaryTarget].",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the conjuring [mainTarget]",
-        "rules": "At the end of turn 3, the [secondaryTarget] is summoned in the indicated area. All other miniatures in that area are moved adjacent to one or more areas that can accommodate them.",
         "narrative": "",
         "neededTokens": "oni",
         "neededEnemy": "oni",
@@ -49,7 +65,13 @@
         "prohibitedEnemies": [
             "monk"
         ],
-        "ruleTitle": "[secondaryTarget]",
+        "specialRules": [
+            {
+                "title": "[secondaryTarget]",
+                "type": "special",
+                "text": "At the end of turn 3, the [secondaryTarget] is summoned in the indicated area. All other miniatures in that area are moved adjacent to one or more areas that can accommodate them."
+            }
+        ],
         "neededTokenCount": 1,
         "neededEnemyCount": 4,
         "neededEnemyType": "either",
@@ -59,10 +81,10 @@
         "name": "and cleanse the corrupted shrine.",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the conjuring [mainTarget]",
-        "rules": "The objective markers are shrines in the area, you need to detect the one (1) that was corrupted and cleanse it. Place the three objective markers randomly face down in marked spaces. Place a corruption 1 at the side of the board. While the [mainTarget] lives and the corruption has not been reduced to 0, increase the corruption token by 1 at the end of the turn.\nWhile concentrating in an area with an objective marker, you may flip an objective marker over instead of regaining ki.\nCleanse [3 action points]: If in the area with the corrupted shrine, make a test, reduce its corruption by 1 for every success above 2. This action cost 1 less if you are an elementalist.",
         "narrative": "",
         "neededTokens": "objective",
         "neededEnemy": "",
+        "needEnemyPlace": "start",
         "commonEnemies": [
             "shadowlands"
         ],
@@ -70,7 +92,13 @@
         "prohibitedEnemies": [
             "monk"
         ],
-        "ruleTitle": "Corrupted Shrine",
+        "specialRules": [
+            {
+                "title": "Corrupted Shrine",
+                "type": "special",
+                "text": "The objective markers are shrines in the area, you need to detect the one (1) that was corrupted and cleanse it. Place the three objective markers randomly face down in marked spaces. Place a corruption 1 at the side of the board. While the [mainTarget] lives and the corruption has not been reduced to 0, increase the corruption token by 1 at the end of the turn.\nWhile concentrating in an area with an objective marker, you may flip an objective marker over instead of regaining ki.\nWhile in the area with the corrupted shrine you can make a complex interaction to cleanse the shrine and reduce its corruption by 1 for every success above 2. This action cost 1 less if you are an elementalist."
+            }
+        ],
         "neededTokenCount": 3,
         "neededEnemyCount": 0,
         "neededEnemyType": "either",
@@ -80,7 +108,6 @@
         "name": "and all the [secondaryTarget] that walks again.",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the conjuring [mainTarget]",
-        "rules": "In this scenario, [secondaryTarget] have the Reinforcement Keyword. In addition to the normal rule, they will also appear at the start of the very first Enemy Activation Phase. Deploy a [secondaryTarget] on each Reinforcement token. When the [mainTarget] is Eliminated, remove all Reinforcement tokens from the game board.",
         "narrative": "",
         "neededTokens": "reinforcement",
         "neededEnemy": "Undead",
@@ -88,7 +115,18 @@
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "[secondaryTarget]",
+        "specialRules": [
+            {
+                "title": "[secondaryTarget]",
+                "type": "special",
+                "text": "In this scenario, [secondaryTarget] have the Reinforcement Keyword. In addition to the normal rule, they will also appear at the start of the very first Enemy Activation Phase. Deploy a [secondaryTarget] on each Reinforcement token. "
+            },
+            {
+                "title": "[mainTarget]",
+                "type": "special",
+                "text": "When the [mainTarget] is Eliminated, remove all Reinforcement tokens from the game board."
+            }
+        ],
         "neededTokenCount": 4,
         "neededEnemyCount": 4,
         "neededEnemyType": "enemy",
@@ -98,7 +136,6 @@
         "name": "Enveloping Mist",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "The mist lies thick over the battlefield. The Line of Sight cannot cross:\nx 1 red border.\nx 1 double white border in total.\nx 1 split border in total.\nIf the path crosses only 1 single white borders within the firing\nrange, it is a Direct Line of Sight. Any Line of Sight that crosses\nmore than 1 single white borders is called Indirect.",
         "narrative": "When the morning arrived, the [map] was drenched in a thick fog that veiled everything close and consumed what was far.",
         "neededTokens": "none",
         "neededEnemy": "",
@@ -106,7 +143,13 @@
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "Enveloping Mist",
+        "specialRules": [
+            {
+                "title": "Enveloping Mist",
+                "type": "special",
+                "text": "The mist lies thick over the battlefield. The Line of Sight cannot cross:\nx 1 red border.\nx 1 double white border in total.\nx 1 split border in total.\nIf the path crosses only 1 single white borders within the firing\nrange, it is a Direct Line of Sight. Any Line of Sight that crosses\nmore than 1 single white borders is called Indirect."
+            }
+        ],
         "neededTokenCount": 0,
         "neededEnemyCount": 0,
         "neededEnemyType": "either",
@@ -116,7 +159,6 @@
         "name": "Reinforcement",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "In this scenario, enemies can use their Reinforcement Keyword. In addition to the normal rule, they will also appear at the start of the very first Enemy Activation Phase. Deploy a one on each Reinforcement token.",
         "narrative": "[ruleUnit] have been spotted on the road here, and now they were abound, around every corner, behind every bush.",
         "neededTokens": "reinforcement",
         "neededEnemy": "Reinforcement",
@@ -124,7 +166,13 @@
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "Reinforcement",
+        "specialRules": [
+            {
+                "title": "Reinforcement",
+                "type": "special",
+                "text": "In this scenario, enemies can use their Reinforcement Keyword. In addition to the normal rule, they will also appear at the start of the very first Enemy Activation Phase. Deploy a one on each Reinforcement token."
+            }
+        ],
         "neededTokenCount": 6,
         "neededEnemyCount": 6,
         "neededEnemyType": "enemy",
@@ -134,14 +182,20 @@
         "name": "Everything is calm",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "The battle is as normal.\nWhen you roll four or more [v], regain a spent ki point.",
         "narrative": "It was a nice day, fresh air spun freely around, what could go wrong then.",
         "neededTokens": "none",
         "neededEnemy": "",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "Everything is calm",
+        "specialRules": [
+            {
+                "title": "Everything is calm",
+                "type": "special",
+                "text": "You don't lose any die from Calling of the Void."
+            }
+        ],
         "neededTokenCount": 0,
         "neededEnemyCount": 0,
         "neededEnemyType": "either",
@@ -151,7 +205,6 @@
         "name": "Assassins",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "Place the event tokens face down randomly in marked areas. At the end of turn 1, flip them up and place a [ruleUnit] on each event token starting from 1. [ruleUnit] follows the assassination behavior. Their target is the champion closest to event token 8.",
         "narrative": "An ominous feeling has followed you the last few days,",
         "neededTokens": "event",
         "neededEnemy": "hidden",
@@ -159,7 +212,18 @@
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "[ruleUnit] Assassins",
+        "specialRules": [
+            {
+                "title": "[ruleUnit]",
+                "type": "special",
+                "text": "Place the event tokens face down randomly in marked areas. At the end of turn 1, flip them up and place a [ruleUnit] on each event token starting from 1. "
+            },
+            {
+                "title": "[ruleUnit]",
+                "type": "behavior",
+                "text": "[ruleUnit] follows the assassination behavior. Their target is the champion closest to event token 8."
+            }
+        ],
         "neededTokenCount": 8,
         "neededEnemyCount": 4,
         "neededEnemyType": "either",
@@ -169,14 +233,20 @@
         "name": "Eliminate the plotting [mainTarget] of [clan]",
         "type": "main objective",
         "requiredMainObjective": "",
-        "rules": "",
         "narrative": "",
         "neededTokens": "none",
         "neededEnemy": "human",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "[mainTarget]",
+        "specialRules": [
+            {
+                "title": "[mainTarget]",
+                "type": "behavior",
+                "text": "They follow the Guardian behavior (Sentinel). At the end of the turn, roll a white die. If it has # results, they switch to Assault behavior at the beginning of the next turn."
+            }
+        ],
         "neededTokenCount": 0,
         "neededEnemyCount": 0,
         "neededEnemyType": "boss",
@@ -186,7 +256,6 @@
         "name": "who plans to kill [secondaryTarget]. Don't let [secondaryTarget] die.",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the plotting [mainTarget] of [clan]",
-        "rules": "[mainTarget] follows the assassination behavior. [secondaryTarget] is an ally. Their target is the [secondaryTarget].",
         "narrative": "",
         "neededTokens": "none",
         "neededEnemy": "hasAlly",
@@ -196,7 +265,18 @@
         "prohibitedEnemies": [
             "shadowlands"
         ],
-        "ruleTitle": "[mainTarget]",
+        "specialRules": [
+            {
+                "title": "[mainTarget]",
+                "type": "behavior",
+                "text": "[mainTarget] follows the assassination behavior. Their target is the [secondaryTarget]."
+            },
+            {
+                "title": "[secondaryTarget]",
+                "type": "special",
+                "text": "[secondaryTarget] is an ally. "
+            }
+        ],
         "neededTokenCount": 0,
         "neededEnemyCount": 0,
         "neededEnemyType": "boss",
@@ -206,9 +286,8 @@
         "name": "that schemes against your clans. Don't let their messengers, [secondaryTarget], escape.",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the plotting [mainTarget] of [clan]",
-        "rules": "[secondaryTarget] follows the escape behaviour and will move towards the marked exit point and then escape.",
         "narrative": "",
-        "neededTokens": "",
+        "neededTokens": "arrow",
         "neededEnemy": "human",
         "needEnemyPlace": "start",
         "commonEnemies": [],
@@ -216,7 +295,13 @@
         "prohibitedEnemies": [
             "shadowlands"
         ],
-        "ruleTitle": "[secondaryTarget]",
+        "specialRules": [
+            {
+                "title": "[secondaryTarget]",
+                "type": "behavior",
+                "text": "[secondaryTarget] follows the escape behaviour and will move towards the marked exit point and then escape."
+            }
+        ],
         "neededTokenCount": 1,
         "neededEnemyCount": 4,
         "neededEnemyType": "enemy",
@@ -225,15 +310,26 @@
     {
         "name": "and the colluding [secondaryTarget] as they want to overthrow the emperor.",
         "type": "secondary objective",
-        "requiredMainObjective": "",
-        "rules": "Until the end of turn 3, [mainTarget] and [secondaryTarget] follows the the Guardian behavior (Sentinel). [mainTarget] switch to Assault behavior and [secondaryTarget] to escape at the beginning of turn 4.",
+        "requiredMainObjective": "Eliminate the plotting [mainTarget] of [clan]",
         "narrative": "",
         "neededTokens": "arrow",
         "neededEnemy": "human",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "[secondaryTarget]",
+        "specialRules": [
+            {
+                "title": "[secondaryTarget]",
+                "type": "behavior",
+                "text": "Until the end of turn 3, [secondaryTarget] follows the the Guardian behavior (Sentinel). [secondaryTarget] to escape at the beginning of turn 4."
+            },
+            {
+                "title": "[mainTarget]",
+                "type": "behavior",
+                "text": "Until the end of turn 3, [mainTarget] follows the the Guardian behavior (Sentinel). [mainTarget] switch to Assault behavior at the beginning of turn 4."
+            }
+        ],
         "neededTokenCount": 1,
         "neededEnemyCount": 0,
         "neededEnemyType": "boss",
@@ -243,14 +339,25 @@
         "name": "Guarded",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "[ruleUnit] follows the patrol behaviour.",
         "narrative": "It was clear that [mainTarget] is cautious, the grounds were well guarded and patrols walked by at regular intervals.",
         "neededTokens": "patrol",
         "neededEnemy": "",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "[ruleUnit]",
+        "specialRules": [
+            {
+                "title": "[ruleUnit]",
+                "type": "behavior",
+                "text": "[ruleUnit] follows the patrol behaviour."
+            },
+            {
+                "title": "Patrol",
+                "type": "special",
+                "text": "Randomly place the patrol tokens as specified."
+            }
+        ],
         "neededTokenCount": 4,
         "neededEnemyCount": 3,
         "neededEnemyType": "either",
@@ -260,14 +367,20 @@
         "name": "Weapons of war",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "",
         "narrative": "It was clear that they are preparing for war, these implements only tell one story.",
         "neededTokens": "none",
         "neededEnemy": "contraption",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "[ruleUnit]",
+        "specialRules": [
+            {
+                "title": "[ruleUnit]",
+                "type": "special",
+                "text": "When [ruleUnit] is eliminated, leave it in its area. Champions in that area may use it to make ranged attacks."
+            }
+        ],
         "neededTokenCount": 0,
         "neededEnemyCount": 1,
         "neededEnemyType": "enemy",
@@ -277,7 +390,6 @@
         "name": "and save those you can from being turned to [secondaryTarget] by the corrupting taint.",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the conjuring [mainTarget]",
-        "rules": "The objective markers are civilians in the area, you need to save them from being turned by [mainTarget]. Place the objective markers randomly face down in the marked spaces. Place a cube on the turn marker. At the end of the turn, if the [mainTarget] was eliminated this turn, leave the cube at the current turn on the turn track. As a simple interaction, you can flip an objective marker face up. If its number is less than the cube on the turn track, it has been tainted and turned into a [secondaryTarget] and you lose 2 honor. The secondary objective is complete when all objective tokens have been flipped.",
         "narrative": "",
         "neededTokens": "objective",
         "neededEnemy": "turned",
@@ -290,7 +402,13 @@
             "bushi"
         ],
         "prohibitedEnemies": [],
-        "ruleTitle": "Taint",
+        "specialRules": [
+            {
+                "title": "Taint",
+                "type": "special",
+                "text": "The objective markers are civilians in the area, you need to save them from being turned by [mainTarget]. Place the objective markers randomly face down in the marked spaces. Place a cube on the turn marker. At the end of the turn, if the [mainTarget] was eliminated this turn, leave the cube at the current turn on the turn track. As a simple interaction, you can flip an objective marker face up. If its number is less than the cube on the turn track, it has been tainted and turned into a [secondaryTarget] and you lose 2 honor. The secondary objective is complete when all objective tokens have been flipped."
+            }
+        ],
         "neededTokenCount": 8,
         "neededEnemyCount": 4,
         "neededEnemyType": "enemy",
@@ -300,14 +418,25 @@
         "name": "Downpour",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "The rain reduces the range for ranged combat by 1 when in an outdoor area.\nWhen you roll four or more [w], regain a spent ki point.",
         "narrative": "",
         "neededTokens": "none",
         "neededEnemy": "",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "Downpour",
+        "specialRules": [
+            {
+                "title": "Downpour",
+                "type": "special",
+                "text": "The rain reduces the range for ranged combat by 1 when in an outdoor area."
+            },
+            {
+                "title": "Affinity for Water",
+                "type": "special",
+                "text": "When you roll four or more [w], regain a spent ki point."
+            }
+        ],
         "neededTokenCount": 0,
         "neededEnemyCount": 0,
         "neededEnemyType": "either",
@@ -317,14 +446,25 @@
         "name": "Fortuitious Winds",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "The wind increases the range for ranged combat by 1.\nWhen you roll four or more [a], regain a spent ki point.",
         "narrative": "",
         "neededTokens": "none",
         "neededEnemy": "",
+        "needEnemyPlace": "start",
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "Fortuitious Winds",
+        "specialRules": [
+            {
+                "title": "Fortuitious Winds",
+                "type": "special",
+                "text": "The wind increases the range for ranged combat by 1."
+            },
+            {
+                "title": "Affinity for Air",
+                "type": "special",
+                "text": "When you roll four or more [a], regain a spent ki point."
+            }
+        ],
         "neededTokenCount": 0,
         "neededEnemyCount": 0,
         "neededEnemyType": "either",
@@ -334,7 +474,6 @@
         "name": "The Ground Shifts Below",
         "type": "special rule",
         "requiredMainObjective": "",
-        "rules": "At the end of turn, roll a black die and place a number of event tokens equal to the [#] results next to the board. When 5 tokens have been placed, the earth quakes. Try to move all miniatures one step towards a random board edge, start with the miniatures closest to that board edge. If there is a red boarder to the area that a miniature would move, they are at that board edge or if the area is already saturated, they take damage equal to the [#] results of the rolled die. *Defense* reduces this damage.\nWhen you roll four or more [e], regain a spent ki point.",
         "narrative": "Something stirred the very ground below you.",
         "neededTokens": "event",
         "neededEnemy": "",
@@ -342,8 +481,110 @@
         "commonEnemies": [],
         "uncommonEnemies": [],
         "prohibitedEnemies": [],
-        "ruleTitle": "The Ground Shifts Below",
+        "specialRules": [
+            {
+                "title": "The Ground Shifts Below",
+                "type": "special",
+                "text": "At the end of turn, roll a black die and place a number of event tokens equal to the [#] results next to the board. When 5 tokens have been placed, the earth quakes. Try to move all miniatures one step towards a random board edge, start with the miniatures closest to that board edge. If there is a red boarder to the area that a miniature would move, they are at that board edge or if the area is already saturated, they take damage equal to the [#] results of the rolled die. *Defense* reduces this damage."
+            },
+            {
+                "title": "Affinity for Earth",
+                "type": "special",
+                "text": "When you roll four or more [e], regain a spent ki point."
+            }
+        ],
         "neededTokenCount": 0,
+        "neededEnemyCount": 0,
+        "neededEnemyType": "either",
+        "randomClanAdversary": false
+    },
+    {
+        "name": "Eliminate the rampaging [mainTarget]",
+        "type": "main objective",
+        "requiredMainObjective": "",
+        "narrative": "",
+        "neededTokens": "patrol",
+        "neededEnemy": "oni",
+        "needEnemyPlace": "start",
+        "commonEnemies": [
+            "shadowlands"
+        ],
+        "uncommonEnemies": [],
+        "prohibitedEnemies": [],
+        "specialRules": [
+            {
+                "title": "[mainTarget]",
+                "type": "behavior",
+                "text": "[mainTarget] follows the patrol behavior."
+            },
+            {
+                "title": "Patrol",
+                "type": "special",
+                "text": "Randomly place the patrol tokens as specified."
+            }
+        ],
+        "neededTokenCount": 3,
+        "neededEnemyCount": 0,
+        "neededEnemyType": "boss",
+        "randomClanAdversary": false
+    },
+    {
+        "name": "before they burn down [map]",
+        "type": "secondary objective",
+        "requiredMainObjective": "Eliminate the rampaging [mainTarget]",
+        "narrative": "",
+        "neededTokens": "flaming",
+        "neededEnemy": "shadowlands",
+        "needEnemyPlace": "start",
+        "commonEnemies": [],
+        "uncommonEnemies": [],
+        "prohibitedEnemies": [],
+        "specialRules": [
+            {
+                "title": "[mainTarget]",
+                "type": "special",
+                "text": "[mainTarget] switches to the search behaviour when they have direct line of sight to a flammable token. It flips a flammable token in its area as a simple manipulation. It then returns to its patrol behaviour."
+            },
+            {
+                "title": "Flaming",
+                "type": "special",
+                "text": "Place the flaming tokens with the flammable side up. If 5 flammable tokens have been flipped, the objective is lost."
+            },
+            {
+                "title": "[secondaryTarget]",
+                "type": "behavior",
+                "text": "[secondaryTarget] follows the assault behaviour. [secondaryTarget] switches to the search behaviour when they have direct line of sight to a flammable token. It flips a flammable token in its area as a simple manipulation. It then returns to its assault behaviour."
+            }
+        ],
+        "neededTokenCount": 7,
+        "neededEnemyCount": 3,
+        "neededEnemyType": "enemy",
+        "randomClanAdversary": false
+    },
+    {
+        "name": "and collect all their [artifact]s",
+        "type": "secondary objective",
+        "requiredMainObjective": "Eliminate the rampaging [mainTarget]",
+        "narrative": "",
+        "neededTokens": "item",
+        "neededEnemy": "",
+        "needEnemyPlace": "start",
+        "commonEnemies": [],
+        "uncommonEnemies": [],
+        "prohibitedEnemies": [],
+        "specialRules": [
+            {
+                "title": "[artifact]",
+                "type": "special",
+                "text": "You can pick a [artifact] up by a simple action."
+            },
+            {
+                "title": "[mainTarget]",
+                "type": "special",
+                "text": "[mainTarget] switches to assassination behaviour as soon as a [artifact] is picked up by a champion. Their target is the champion that last picked up a [artifact]."
+            }
+        ],
+        "neededTokenCount": 5,
         "neededEnemyCount": 0,
         "neededEnemyType": "either",
         "randomClanAdversary": false
