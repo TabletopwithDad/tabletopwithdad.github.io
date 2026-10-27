@@ -1141,9 +1141,20 @@
       }
     ],
     "flavorNames": [
-      "the outskirts of Otosan Uchi",
+      "Otosan Uchi",
+      "Toshi Ranbo",
       "Iron Turtle Market Square",
-      "Three Hills village"
+      "Three Hills Village",
+      "Ryoko Owari Toshi"
+    ],
+    "flavorPrefix": [
+      "the outskirts of",
+      "the merchant quarters of",
+      "a backstreet of",
+      "some slums in southern",
+      "at the tea house in",
+	  "deep in",
+	  ""
     ]
   },
   {
