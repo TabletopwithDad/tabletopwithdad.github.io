@@ -303,10 +303,10 @@ const tokenNames = {
         "Champion Setup"
 };
 const artifacts=[
-	"sacred scrolls",
-	"ancestral blades",
-	"imperial tax records",
-	"talismans"
+	"sacred scroll",
+	"ancestral blade",
+	"imperial tax record",
+	"talisman"
 ];
 const scenario={
     map:null,
@@ -490,7 +490,9 @@ function generateScenario(){
 	enemies = [...orderedenemies];
 	shuffle(enemies);
 	scenario.map = pickMap();
-	scenario.dict.push(["[map]",getMapFlavorName()]);
+	let m = getMapFlavorName();
+	scenario.dict.push(["[map]",m]);
+	scenario.dict.push(["[place]",getPlaceFlavorName(m)]);
 	scenario.dict.push(["[artifact]",artifacts[Math.floor(getRand()*artifacts.length)]]);
 	scenario.mainObjective= pickObjective("main objective");
 	if (scenario.mainObjective.randomClanAdversary)
@@ -507,8 +509,6 @@ function generateScenario(){
 	applyWeights(scenario.secondaryObjective);
 	applyWeights(scenario.bonusObjective);
 	let mainQuad = "";
-	// add select targets
-	// add each to dict
 	if (scenario.mainObjective.neededEnemy) 
 	{
 		scenario.mainTarget = weightedPickByTrait(scenario.mainObjective.neededEnemy,scenario.mainObjective.neededEnemyType);
@@ -628,7 +628,6 @@ function generateScenario(){
 				let m = pickMarker(r);
 				placeAtMarker(m.id,{name:scenario.bonusObjective.neededTokens, type:"token"});
 	}
-	// add select enemies up to remaining budget.
 	generateEnemyRoster();
 	
 	for (const enemy of scenario.enemies)
@@ -637,8 +636,6 @@ function generateScenario(){
 				let m = pickMarker(r);
 				placeAtMarker(m.id,enemy);
 			}	
-		
-	//place playerspawn
 	
 	for (let i = 0; i<5;i++)
 	{
@@ -649,7 +646,10 @@ function generateScenario(){
 
 	scenario.objectivesText = richTextUpdate(`${scenario.mainObjective.name} ${scenario.secondaryObjective.name}`);
 	
-	scenario.intro = richTextUpdate(`${scenario.bonusObjective.narrative} ${scenario.mainObjective.narrative}  ${scenario.secondaryObjective.narrative} `);
+	scenario.dict.push (["[ruleIntro]",richTextUpdate(scenario.bonusObjective.narrative)]);
+	scenario.intro = richTextUpdate(`${scenario.mainObjective.narrative}  ${scenario.secondaryObjective.narrative} `);
+	
+	scenario.outro = richTextUpdate(`${scenario.mainObjective.outro}`);
 	writeToSpecialRule(scenario.mainObjective);
 	writeToSpecialRule(scenario.secondaryObjective);
 	writeToSpecialRule(scenario.bonusObjective);
@@ -754,6 +754,25 @@ function getMapFlavorName()
         )
     ];
 }
+function getPlaceFlavorName(mapName)
+{
+    const map =
+        maps[scenario.map];
+
+    if(
+        !map.flavorPrefix ||
+        map.flavorPrefix.length === 0
+    )
+    {
+        return mapName;
+    }
+
+    return map.flavorPrefix[
+        randomIndex(
+            map.flavorPrefix
+        )
+    ].concat(" ",mapName);
+}
 function richTextUpdate(text)
 {
 	scenario.dict.forEach(d =>
@@ -851,12 +870,12 @@ document.getElementById(
 	
     document.getElementById(
         "narrativeIntro"
-    ).textContent =
+    ).innerHTML =
         scenario.intro;
 
     document.getElementById(
         "objectiveText"
-    ).textContent =
+    ).innerHTML =
         scenario.objectivesText;
 
     document.getElementById(
@@ -865,7 +884,7 @@ document.getElementById(
 
     document.getElementById(
         "narrativeOutro"
-    ).textContent =
+    ).innerHTML =
         scenario.outro;
 
 	document.getElementById(
