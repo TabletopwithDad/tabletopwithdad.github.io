@@ -19,7 +19,11 @@ body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Arial
 h1{font:700 26px "BTTTRIAL",sans-serif;margin:0;color:var(--headtext);}
 h2{font:700 23px "BTTTRIAL",sans-serif;margin:0;}
 section{margin:2px 4px;}
-
+.iconL5R {font-family:L5RSymbols;
+    font-size: xx-large;
+    line-height: 11px;
+    letter-spacing: -19px;
+	vertical-align: sub;}
 #debug{display:none;}
 #app{display:flex;flex-direction:column;gap:10px;}
 .flavor{color:var(--head);}
@@ -150,9 +154,10 @@ header{background:var(--head);display:flex;gap:16px;padding:18px 24px;}
 
     <div class="requirements">
         <div class="requirement">Map Type: <span id="typeName">Adventure</span></div>
-        <div class="requirement">Game Board: <span id="boardName">Town</span></div>
+        <div class="requirement">Game Board: <span id="boardName">Town</span> board</div>
         <div class="requirement">Mandatory Champions: <span id="mandChamps">None</span></div>
         <div class="requirement">Forbidden Champions: <span id="forbChamps">None</span></div>
+        <div class="requirement">Duration: <span id="turnLimit">7</span> turns</div>
         <div class="requirement"id="honorDiff">Honorable victory threshold modified by: <span id="honorReq">default</span></div>
         <div class="requirement"id="clanObjDiff">Clan Objectives: <span id="clanObjReq">X completed</span></div>
     </div>
@@ -192,6 +197,12 @@ header{background:var(--head);display:flex;gap:16px;padding:18px 24px;}
     </section>
 
     <section class="panel">
+	
+		<h2>Components Needed</h2>
+
+		<div id="components"class="legend-items">
+		</div>
+
         <h2>Setup</h2>
         <div id="legend" class="legend-items"></div>
     </section>
@@ -247,6 +258,16 @@ const difficulty={
     normal:{budget:25,secondaryOffeset:0,honor:0,objs:7},
     hard:{budget:30,secondaryOffeset:1,honor:3,objs:9}
 };
+const icons={
+ "[a]":{symbol:"A",color:""},
+ "[e]":{symbol:"E",color:""},
+ "[f]":{symbol:"F",color:""},
+ "[v]":{symbol:"V",color:""},
+ "[w]":{symbol:"W",color:""},
+ "[@]":{symbol:"D",color:""},
+ "[#]":{symbol:"O",color:""},
+ "[&]":{symbol:"S",color:""}
+ };
 const clans={
  crab:{name:'Crab',deep:'#2D395A',mon:'1'},
  crane:{name:'Crane',deep:'#88c6f2',mon:'2'},
@@ -260,6 +281,33 @@ const clans={
  nezumi:{name:'Nezumi',flavor:"Tattered Ear Tribe",bg:'#b8d7b3',deep:'#544d42',pale:'#eef5e8',mon:'8',ink:'#0B5E3D',inkText:'#ffffff'},
  neutral:{name:'ronin',flavor:"rônin",bg:'#d5c7b1',deep:'#544d42',pale:'#f1ece2',mon:'8',ink:'#676053',inkText:'#ffffff'}
 };
+const tokenNames = {
+    objective:"Objective Token",
+    reinforcement:
+        "Reinforcement Token",
+    oni:
+        "Oni Summoning Token",
+    event:
+        "Event Token",
+    patrol:
+        "Patrol Token",
+    arrow:
+        "Escape Token",
+    persona:
+        "Persona Token",
+    item:
+        "Item Token",
+    flaming:
+        "Flaming Token",
+    player:
+        "Champion Setup"
+};
+const artifacts=[
+	"sacred scrolls",
+	"ancestral blades",
+	"imperial tax records",
+	"talismans"
+];
 const scenario={
     map:null,
     mainObjective:null,
@@ -442,8 +490,8 @@ function generateScenario(){
 	enemies = [...orderedenemies];
 	shuffle(enemies);
 	scenario.map = pickMap();
-	
-	scenario.dict.push (["[map]",maps[scenario.map].name]);
+	scenario.dict.push(["[map]",getMapFlavorName()]);
+	scenario.dict.push(["[artifact]",artifacts[Math.floor(getRand()*artifacts.length)]]);
 	scenario.mainObjective= pickObjective("main objective");
 	if (scenario.mainObjective.randomClanAdversary)
 	{
@@ -617,36 +665,174 @@ function generateScenario(){
     updateDisplay();
 
 }
+function getTokenName(name)
+{
+    return tokenNames[name] ||
+        name;
+}
+function updateComponents()
+{
+    const components =
+        document.getElementById(
+            "components"
+        );
 
+    const miniatures = {};
+    const tokens = {};
+
+    function addItem(item)
+    {
+        const target =
+            item.type === "token"
+                ? tokens
+                : miniatures;
+
+        target[item.name] =
+            (target[item.name] || 0) + 1;
+    }
+
+    scenario.placements.forEach(
+        placement =>
+        {
+            placement.contents.forEach(
+                addItem
+            );
+        }
+    );
+
+    scenario.reserves.forEach(
+        addItem
+    );
+
+    const miniatureText =
+        Object.keys(miniatures)
+        .sort()
+        .map(
+            name =>
+                `${name} ×${miniatures[name]}`
+        )
+        .join("<br>");
+
+    const tokenText =
+        Object.keys(tokens)
+        .sort()
+        .map(
+            name =>
+                `${getTokenName(name)} ×${tokens[name]}`
+        )
+        .join("<br>");
+
+    components.innerHTML =
+        `
+        <div class="legend-item">
+            <strong>Miniatures:</strong><br>
+            ${miniatureText || "None"}
+        </div>
+
+        <div class="legend-item">
+            <strong>Tokens:</strong><br>
+            ${tokenText || "None"}
+        </div>
+        `;
+}
+function getMapFlavorName()
+{
+    const map =
+        maps[scenario.map];
+
+    if(
+        !map.flavorNames ||
+        map.flavorNames.length === 0
+    )
+    {
+        return map.name;
+    }
+
+    return map.flavorNames[
+        randomIndex(
+            map.flavorNames
+        )
+    ];
+}
 function richTextUpdate(text)
 {
-	//add rich text handling, replace for icons and dictionary terms.
 	scenario.dict.forEach(d =>
 	{
 		text=text.replaceAll(d[0],d[1]);
 	});
+	
+	let italic = false;
+	while (text.includes("*"))
+	{
+		if (!italic)
+			text = text.replace("*","<i>");
+		else
+			text = text.replace("*","</i>");
+		
+		italic = !italic;
+	}
+	
+	Object.keys(icons).forEach(i=>{
+	
+		text = text.replaceAll(i,`<span class="iconL5R" style="color: ${icons[i].color}">${icons[i].symbol}</span>`);
+	});
+	
 	return text;
 }
 
 function writeToSpecialRule(objective)
 {
-	if (objective.ruleTitle == "") return;
-	let r = scenario.rules.find(ru=> ru[0] == objective.ruleTitle);
+	objective.specialRules.forEach (sR =>{
+	if (sR.title == "") return;
+	let r = scenario.rules.find(ru=> ru[0] == sR.title &&ru[2] == sR.type);
 	
 	if (typeof r == "undefined")
-		scenario.rules.push([objective.ruleTitle,objective.rules]);
+		scenario.rules.push([sR.title,sR.text,sR.type]);
+	else if (sR.type=="behavior")
+		r[1] = sR.text;
 	else
-		r[1] = r[1].concat(objective.rules);
+		r[1] = r[1].concat("<br>",sR.text);
+	});
 }
 function writeSpecialRules()
 {
-	let temp = "";
-	
-	for (const ru of scenario.rules)
-	{
-		temp = temp.concat(`<h3>${ru[0]}</h3><div>${ru[1]}</div>`);
-}
-	return richTextUpdate(temp);
+    let temp = "";
+
+    const grouped = {};
+
+    for(const rule of scenario.rules)
+    {
+        const [title, text, type] = rule;
+
+        if(!grouped[title])
+        {
+            grouped[title] = {
+                behavior: [],
+                special: []
+            };
+        }
+
+        grouped[title][type].push(
+            text
+        );
+    }
+
+    for(const title in grouped)
+    {
+        temp += `<b>${title}</b><div>`;
+
+        temp += grouped[title]
+            .behavior
+            .concat(
+                grouped[title]
+                .special
+            )
+            .join("<br>");
+
+        temp += `</div><br>`;
+    }
+
+    return richTextUpdate(temp);
 }
 function updateDisplay(){
 
@@ -689,7 +875,7 @@ document.getElementById(
 			? scenario.forbiddenChampions.join(", ")
 			: "None";
     updateLegend();
-	
+	updateComponents();
 	
     loadMap(scenario.map);
 
@@ -827,12 +1013,8 @@ function groupContents(contents)
     const grouped={};
 
     contents.forEach(item=>{
-        const name=item.type!=="token"
-            ? item.name
-            : item.name==="player"
-                ? "Champion Setup"
-                : `${item.name} token`;
-
+        const name=(item.type!=="token" ? item.name: getTokenName(item.name));
+		if (name == "none"||name == "") return;
         grouped[name]=(grouped[name]||0)+1;
     });
 
@@ -849,7 +1031,7 @@ function updateLegend()
     scenario.placements.forEach(placement=>{
         const row=document.createElement("div");
         const grouped=groupContents(placement.contents);
-
+		
         placement.index=index++;
         row.className="legend-item";
 
