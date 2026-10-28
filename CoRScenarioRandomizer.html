@@ -562,6 +562,8 @@ function generateScenario(){
 				placeAtMarker(m.id,scenario.secondaryTarget); }
 				else if (scenario.secondaryObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.secondaryTarget);
 			}
+			
+			scenario.enemyBudget+=Math.floor(scenario.bonusTarget.placed*scenario.bonusTarget.pointCost/2);
 		}
 		else
 		{
@@ -597,6 +599,8 @@ function generateScenario(){
 				placeAtMarker(m.id,scenario.bonusTarget); 
 				}else if (scenario.bonusObjective.needEnemyPlace == "reserve") scenario.reserves.push (scenario.bonusTarget);
 			}
+			
+			scenario.enemyBudget+=scenario.bonusTarget.placed*scenario.bonusTarget.pointCost;
 		}
 		else
 		{
@@ -1006,7 +1010,7 @@ const drawn = new Set();
 	radius -=4;
     ctx.fillStyle = "black";
 	}
-	if (p.contents.some(c=> (scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== c.name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== c.name)))
+	if (p.contents.some(c=> (scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== c.name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== c.name)||(scenario.bonusObjective.neededEnemy=="hasAlly" && scenario.bonusTarget.name== c.name)))
 	{ctx.beginPath();
 	ctx.fillStyle ="cyan";
 	ctx.arc(
@@ -1020,7 +1024,7 @@ const drawn = new Set();
 	radius -=3;
     ctx.fillStyle = "black";
 	}
-	if (p.contents.some(c=> (c.type=="enemy" ||c.type=="boss" ) &&!((scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== c.name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== c.name))))
+	if (p.contents.some(c=> (c.type=="enemy" ||c.type=="boss" ) &&!((scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name== c.name)||(scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name== c.name)||(scenario.bonusObjective.neededEnemy=="hasAlly" && scenario.bonusTarget.name== c.name))))
 	{ctx.beginPath();
 	ctx.fillStyle ="orangered";
 	ctx.arc(
@@ -1080,7 +1084,8 @@ function updateLegend()
             Object.entries(grouped).map(([name,count])=>
                 `${count>1?`• ${name} ×${count}`:`• ${name}`}${
                     (scenario.mainObjective.neededEnemy=="hasAlly" && scenario.mainTarget.name==name) ||
-                    (scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name==name)
+                    (scenario.secondaryObjective.neededEnemy=="hasAlly" && scenario.secondaryTarget.name==name)||
+					(scenario.bonusObjective.neededEnemy=="hasAlly" && scenario.bonusTarget.name==name)
                         ? " (Ally)"
                         : ""
                 }`
