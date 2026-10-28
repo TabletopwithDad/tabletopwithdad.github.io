@@ -28,11 +28,11 @@
         "randomClanAdversary": false
     },
     {
-        "name": "Eliminate the conjuring [mainTarget]",
+        "name": "Eliminate the conjuring [mainTargets]",
         "type": "main objective",
         "requiredMainObjective": "",
         "narrative": "",
-        "outro": "The invocation by the [mainTarget] was thwarted and serenity soon returned to [place].",
+        "outro": "The invocation by the [mainTargets] was thwarted and serenity soon returned to [place].",
         "neededTokens": "none",
         "neededEnemy": "Elementalist",
         "needEnemyPlace": "start",
@@ -52,10 +52,10 @@
         "randomClanAdversary": false
     },
     {
-        "name": "and the summoned [secondaryTarget].",
+        "name": "and the summoned [secondaryTargets].",
         "type": "secondary objective",
-        "requiredMainObjective": "Eliminate the conjuring [mainTarget]",
-        "narrative": "A jade magistrate sent you to [map] investigating reports of someone planning a dark ritual.<br>\n<br>\n[ruleIntro] As you stepped closer you hear [mainTarget] chanting calling to Jigoku. Vile energies pulsates and the barrier between worlds weaken as an oni is drawn into Rokugan.",
+        "requiredMainObjective": "Eliminate the conjuring [mainTargets]",
+        "narrative": "A jade magistrate sent you to [map] investigating reports of someone planning a dark ritual.<br>\n<br>\n[ruleIntro] As you stepped closer you hear [mainTargets] chanting calling to Jigoku. Vile energies pulsates and the barrier between worlds weaken as an oni is drawn into Rokugan.",
         "outro": "",
         "neededTokens": "oni",
         "neededEnemy": "oni",
@@ -71,7 +71,7 @@
             {
                 "title": "[secondaryTarget]",
                 "type": "special",
-                "text": "At the end of turn 3, the [secondaryTarget] is summoned in the indicated area. All other miniatures in that area are moved adjacent to one or more areas that can accommodate them."
+                "text": "At the end of turn 3, the [secondaryTargets] is summoned in the indicated area. All other miniatures in that area are moved adjacent to one or more areas that can accommodate them."
             }
         ],
         "neededTokenCount": 1,
@@ -82,7 +82,7 @@
     {
         "name": "and cleanse the corrupted shrine.",
         "type": "secondary objective",
-        "requiredMainObjective": "Eliminate the conjuring [mainTarget]",
+        "requiredMainObjective": "Eliminate the conjuring [mainTargets]",
         "narrative": "The shrines of [map] watched over the region for generations. <br>[ruleIntro] The air tasted of iron and sulfur, as the local kamis have cried out in duress. A forbidden rite meant to defile the sacred place had begun.",
         "outro": "",
         "neededTokens": "objective",
@@ -99,7 +99,7 @@
             {
                 "title": "Corrupted Shrine",
                 "type": "special",
-                "text": "The objective markers are shrines in the area, you need to detect the one (1) that was corrupted and cleanse it. Place the three objective markers randomly face down in marked spaces. Place a corruption 1 at the side of the board. While the [mainTarget] lives and the corruption has not been reduced to 0, increase the corruption token by 1 at the end of the turn.\nWhile concentrating in an area with an objective marker, you may flip an objective marker over instead of regaining ki.\nWhile in the area with the corrupted shrine you can make a complex interaction to cleanse the shrine and reduce its corruption by 1 for every success above 2. This action cost 1 less if you are an elementalist."
+                "text": "The objective markers are shrines in the area, you need to detect the one (1) that was corrupted and cleanse it. Place the three objective markers randomly face down in marked spaces. Place a corruption 1 at the side of the board. While the [mainTargets] lives and the corruption has not been reduced to 0, increase the corruption token by 1 at the end of the turn.\nWhile concentrating in an area with an objective marker, you may flip an objective marker over instead of regaining ki.\nWhile in the area with the corrupted shrine you can make a complex interaction to cleanse the shrine and reduce its corruption by 1 for every success above 2. This action cost 1 less if you are an elementalist."
             }
         ],
         "neededTokenCount": 3,
@@ -108,9 +108,9 @@
         "randomClanAdversary": false
     },
     {
-        "name": "and all the [secondaryTarget] that walks again.",
+        "name": "and all the [secondaryTargets] that walks again.",
         "type": "secondary objective",
-        "requiredMainObjective": "Eliminate the conjuring [mainTarget]",
+        "requiredMainObjective": "Eliminate the conjuring [mainTargets]",
         "narrative": "The ancestors buried in [place] have been denied their rightful rest. While [ruleIntro], [mainTarget]'s search for power has led to unbinding the mortal remains of the already dead.",
         "outro": "",
         "neededTokens": "reinforcement",
@@ -123,12 +123,12 @@
             {
                 "title": "[secondaryTarget]",
                 "type": "special",
-                "text": "In this scenario, [secondaryTarget] have the Reinforcement Keyword. In addition to the normal rule, they will also appear at the start of the very first Enemy Activation Phase. Deploy a [secondaryTarget] on each Reinforcement token. "
+                "text": "In this scenario, [secondaryTargets] have the Reinforcement Keyword. In addition to the normal rule, they will also appear at the start of the very first Enemy Activation Phase. Deploy [a-an][secondaryTarget] on each Reinforcement token. "
             },
             {
                 "title": "[mainTarget]",
                 "type": "special",
-                "text": "When the [mainTarget] is Eliminated, remove all Reinforcement tokens from the game board."
+                "text": "When the [mainTargets] is Eliminated, remove all Reinforcement tokens from the game board."
             }
         ],
         "neededTokenCount": 4,
@@ -163,7 +163,7 @@
         "name": "Reinforcement",
         "type": "special rule",
         "requiredMainObjective": "",
-        "narrative": "[ruleUnit] have been spotted on the road here, and now they were abound, around every corner, behind every bush.",
+        "narrative": "[ruleUnits] have been spotted on the road here, and now they were abound, around every corner, behind every bush.",
         "neededTokens": "reinforcement",
         "neededEnemy": "Reinforcement",
         "needEnemyPlace": "reserve",
@@ -210,6 +210,7 @@
         "type": "special rule",
         "requiredMainObjective": "",
         "narrative": "An ominous feeling has followed you the last few days,",
+        "outro": "",
         "neededTokens": "event",
         "neededEnemy": "hidden",
         "needEnemyPlace": "reserve",
@@ -220,7 +221,7 @@
             {
                 "title": "[ruleUnit]",
                 "type": "special",
-                "text": "Place the event tokens face down randomly in marked areas. At the end of turn 1, flip them up and place a [ruleUnit] on each event token starting from 1. "
+                "text": "Place the event tokens face down randomly in marked areas. At the end of turn 1, flip them up and place [a-an][ruleUnit] on each event token starting from 1. "
             },
             {
                 "title": "[ruleUnit]",
@@ -234,7 +235,7 @@
         "randomClanAdversary": false
     },
     {
-        "name": "Eliminate the plotting [mainTarget] of [clan]",
+        "name": "Eliminate the plotting [mainTarget][clan]",
         "type": "main objective",
         "requiredMainObjective": "",
         "narrative": "",
@@ -260,8 +261,8 @@
     {
         "name": "who plans to kill [secondaryTarget]. Don't let [secondaryTarget] die.",
         "type": "secondary objective",
-        "requiredMainObjective": "Eliminate the plotting [mainTarget] of [clan]",
-        "narrative": "[secondaryTarget] has sent you an messenger, asking for help. They worried for what [mainTarget] was scheming.<br>\n<br>\n[ruleIntro] You sensed that the moment was precious and sprung to their aid.",
+        "requiredMainObjective": "Eliminate the plotting [mainTarget][clan]",
+        "narrative": "[secondaryTarget] has sent you an messenger, asking for help. They are worried over what [mainTarget] schemes.<br>\n<br>\n[ruleIntro] You sensed that the moment was precious and sprung to their aid.",
         "outro": "",
         "neededTokens": "none",
         "neededEnemy": "hasAlly",
@@ -291,7 +292,7 @@
     {
         "name": "that schemes against your clans. Don't let their messengers, [secondaryTarget], escape.",
         "type": "secondary objective",
-        "requiredMainObjective": "Eliminate the plotting [mainTarget] of [clan]",
+        "requiredMainObjective": "Eliminate the plotting [mainTarget][clan]",
         "narrative": "Rumors of treachery have led your investigation to [mainTarget], respected of their clan, but their loyalty masks far darker ambitions. As their plans begin to unravel, messengers have been sent to warn fellow conspirators. Eliminate [mainTarget] and ensure that none of their agents escape with news of your arrival.",
         "outro": "",
         "neededTokens": "arrow",
@@ -306,7 +307,7 @@
             {
                 "title": "[secondaryTarget]",
                 "type": "behavior",
-                "text": "[secondaryTarget] follows the escape behaviour and will move towards the marked exit point and then escape."
+                "text": "[secondaryTargets] follows the escape behaviour and will move towards the marked exit point and then escape."
             }
         ],
         "neededTokenCount": 1,
@@ -317,7 +318,7 @@
     {
         "name": "and the colluding [secondaryTarget] as they want to overthrow the emperor.",
         "type": "secondary objective",
-        "requiredMainObjective": "Eliminate the plotting [mainTarget] of [clan]",
+        "requiredMainObjective": "Eliminate the plotting [mainTarget][clan]",
         "narrative": "Evidence gathered in [map] points to a dangerous alliance between [mainTarget] and [secondaryTarget]. Bound by ambition and treachery, the two conspirators seek nothing less than the overthrow of the Emerald Empire's rightful ruler. Both must be eliminated before their scheme can bear fruit.",
         "outro": "",
         "neededTokens": "arrow",
@@ -330,12 +331,12 @@
             {
                 "title": "[secondaryTarget]",
                 "type": "behavior",
-                "text": "Until the end of turn 3, [secondaryTarget] follows the the Guardian behavior (Sentinel). [secondaryTarget] to escape at the beginning of turn 4."
+                "text": "Until the end of turn 3, [secondaryTarget] follows the the Guardian behavior (Sentinel). [secondaryTarget] switches to escape at the beginning of turn 4."
             },
             {
                 "title": "[mainTarget]",
                 "type": "behavior",
-                "text": "Until the end of turn 3, [mainTarget] follows the the Guardian behavior (Sentinel). [mainTarget] switch to Assault behavior at the beginning of turn 4."
+                "text": "Until the end of turn 3, [mainTarget] follows the the Guardian behavior (Sentinel). [mainTarget] switches to Assault behavior at the beginning of turn 4."
             }
         ],
         "neededTokenCount": 1,
@@ -358,7 +359,7 @@
             {
                 "title": "[ruleUnit]",
                 "type": "behavior",
-                "text": "[ruleUnit] follows the patrol behaviour."
+                "text": "[ruleUnits] follows the patrol behaviour."
             },
             {
                 "title": "Patrol",
@@ -387,7 +388,7 @@
             {
                 "title": "[ruleUnit]",
                 "type": "special",
-                "text": "When [ruleUnit] is eliminated, leave it in its area. Champions in that area may use it to make ranged attacks."
+                "text": "When [a-an][ruleUnit] is eliminated, leave it in its area. Flip the card to the ally side. Champions in that area may make ranged attacks as if they are the [ruleUnit]."
             }
         ],
         "neededTokenCount": 0,
@@ -396,10 +397,10 @@
         "randomClanAdversary": false
     },
     {
-        "name": "and save those you can from being turned to [secondaryTarget] by the corrupting taint.",
+        "name": "and save those you can from being turned to [secondaryTargets] by the corrupting taint.",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the conjuring [mainTarget]",
-        "narrative": "One by one, the people disappear into [map] through the hands of [mainTarget]. Those who succumb to the shugenja's corruption emerge transformed into [secondaryTarget], servants of a growing darkness. The ritual must be stopped before the entire settlement is consumed.",
+        "narrative": "One by one, the people disappear into [map] through the hands of [mainTarget]. Those who succumb to the shugenja's corruption emerge transformed into [secondaryTargets], servants of a growing darkness. The ritual must be stopped before the entire settlement is consumed.",
         "outro": "",
         "neededTokens": "objective",
         "neededEnemy": "turned",
@@ -416,7 +417,7 @@
             {
                 "title": "Taint",
                 "type": "special",
-                "text": "The objective markers are civilians in the area, you need to save them from being turned by [mainTarget]. Place the objective markers randomly face down in the marked spaces. Place a cube on the turn marker. At the end of the turn, if the [mainTarget] was eliminated this turn, leave the cube at the current turn on the turn track. As a simple interaction, you can flip an objective marker face up. If its number is less than the cube on the turn track, it has been tainted and turned into a [secondaryTarget] and you lose 2 honor. The secondary objective is complete when all objective tokens have been flipped."
+                "text": "The objective markers are civilians in the area, you need to save them from being turned by [mainTarget]. Place the objective markers randomly face down in the marked spaces. Place a cube on the turn marker. At the end of the turn, if the [mainTarget] was eliminated this turn, leave the cube at the current turn on the turn track. As a simple interaction, you can flip an objective marker face up. If its number is less than the cube on the turn track, it has been tainted and turned into [a-an][secondaryTarget] and you lose 2 honor. The secondary objective is complete when all objective tokens have been flipped."
             }
         ],
         "neededTokenCount": 8,
@@ -567,7 +568,7 @@
             {
                 "title": "[secondaryTarget]",
                 "type": "behavior",
-                "text": "[secondaryTarget] follows the assault behaviour. [secondaryTarget] switches to the search behaviour when they have direct line of sight to a flammable token. It flips a flammable token in its area as a simple manipulation. It then returns to its assault behaviour."
+                "text": "[secondaryTargets] follows the assault behaviour. [secondaryTargets] switches to the search behaviour when they have direct line of sight to a flammable token. It flips a flammable token in its area as a simple manipulation. It then returns to its assault behaviour."
             }
         ],
         "neededTokenCount": 7,
@@ -579,7 +580,7 @@
         "name": "and collect all their [artifact]s",
         "type": "secondary objective",
         "requiredMainObjective": "Eliminate the rampaging [mainTarget]",
-        "narrative": "The arrival of [mainTarget] has thrown [map] into turmoil. As buildings crumble and the people flee, reports suggest the oni has claimed the [artifact] for itself. Whether taken as a trophy or simply stolen amidst the chaos, they must be recovered and the creature destroyed.",
+        "narrative": "The arrival of [mainTarget] has thrown [map] into turmoil. As buildings crumble and the people flee, reports suggest the oni has claimed the [artifact]s for itself. Whether taken as a trophy or simply stolen amidst the chaos, they must be recovered and the creature destroyed.",
         "outro": "",
         "neededTokens": "item",
         "neededEnemy": "",
@@ -591,12 +592,12 @@
             {
                 "title": "[artifact]",
                 "type": "special",
-                "text": "You can pick a [artifact] up by a simple action."
+                "text": "You can pick [a-an][artifact] up by a simple action."
             },
             {
                 "title": "[mainTarget]",
                 "type": "special",
-                "text": "[mainTarget] switches to assassination behaviour as soon as a [artifact] is picked up by a champion. Their target is the champion that last picked up a [artifact]."
+                "text": "[mainTarget] switches to assassination behaviour as soon as [a-an][artifact] is picked up by a champion. Their target is the champion that last picked up [a-an][artifact]."
             }
         ],
         "neededTokenCount": 5,
