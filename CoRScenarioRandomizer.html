@@ -269,17 +269,17 @@ const icons={
  "[&]":{symbol:"S",color:""}
  };
 const clans={
- crab:{name:'Crab',deep:'#2D395A',mon:'1'},
- crane:{name:'Crane',deep:'#88c6f2',mon:'2'},
- dragon:{name:'Dragon',bg:'#a8c6b1',deep:'#5B8E52',pale:'#edf2e8',mon:'3',ink:'#61451d',inkText:'#ffffff'},
- lion:{name:'Lion',bg:'#e6c56e',deep:'#C8A000',pale:'#f8f0d9',mon:'4',ink:'#61451d',inkText:'#ffffff'},
- phoenix:{name:'Phoenix',bg:'#e6a17d',deep:'#f0571a',pale:'#fbede0',mon:'5',ink:'#e6a910',inkText:'#ffffff'},
- scorpion:{name:'Scorpion',bg:'#d69b9d',deep:'#94000B',pale:'#f5e9e5',mon:'6',ink:'#302025',inkText:'#ffffff'},
- unicorn:{name:'Unicorn',bg:'#c9b6df',deep:'#654991',pale:'#f3edf7',mon:'7',ink:'#d2bce6',inkText:'#000000'},
- naga:{name:'Naga',bg:'#b8c8a2',deep:'#7D9256',pale:'#eef1e2',mon:'9',ink:'#3c4d23',inkText:'#ffffff'},
- mantis:{name:'Mantis',bg:'#b8d7b3',deep:'#1C6B4A',pale:'#eef5e8',mon:'=',ink:'#0B5E3D',inkText:'#ffffff'},
- nezumi:{name:'Nezumi',flavor:"Tattered Ear Tribe",bg:'#b8d7b3',deep:'#544d42',pale:'#eef5e8',mon:'8',ink:'#0B5E3D',inkText:'#ffffff'},
- neutral:{name:'ronin',flavor:"rônin",bg:'#d5c7b1',deep:'#544d42',pale:'#f1ece2',mon:'8',ink:'#676053',inkText:'#ffffff'}
+ crab:{name:'Crab',flavor:" of the Crab",deep:'#2D395A',mon:'1'},
+ crane:{name:'Crane',flavor:" of the Crane",deep:'#88c6f2',mon:'2'},
+ dragon:{name:'Dragon',flavor:" of the Dragon",bg:'#a8c6b1',deep:'#5B8E52',pale:'#edf2e8',mon:'3',ink:'#61451d',inkText:'#ffffff'},
+ lion:{name:'Lion',flavor:" of the Lion",bg:'#e6c56e',deep:'#C8A000',pale:'#f8f0d9',mon:'4',ink:'#61451d',inkText:'#ffffff'},
+ phoenix:{name:'Phoenix',flavor:" of the Phoenix",bg:'#e6a17d',deep:'#f0571a',pale:'#fbede0',mon:'5',ink:'#e6a910',inkText:'#ffffff'},
+ scorpion:{name:'Scorpion',flavor:" of the Scorpion",bg:'#d69b9d',deep:'#94000B',pale:'#f5e9e5',mon:'6',ink:'#302025',inkText:'#ffffff'},
+ unicorn:{name:'Unicorn',flavor:" of the Unicorn",bg:'#c9b6df',deep:'#654991',pale:'#f3edf7',mon:'7',ink:'#d2bce6',inkText:'#000000'},
+ naga:{name:'Naga',flavor:" of the Naga",bg:'#b8c8a2',deep:'#7D9256',pale:'#eef1e2',mon:'9',ink:'#3c4d23',inkText:'#ffffff'},
+ mantis:{name:'Mantis',flavor:" of the Mantis",bg:'#b8d7b3',deep:'#1C6B4A',pale:'#eef5e8',mon:'=',ink:'#0B5E3D',inkText:'#ffffff'},
+ nezumi:{name:'Nezumi',flavor:" of the Tattered Ear Tribe",bg:'#b8d7b3',deep:'#544d42',pale:'#eef5e8',mon:'8',ink:'#0B5E3D',inkText:'#ffffff'},
+ neutral:{name:'ronin',flavor:"",bg:'#d5c7b1',deep:'#544d42',pale:'#f1ece2',mon:'8',ink:'#676053',inkText:'#ffffff'}
 };
 const tokenNames = {
     objective:"Objective Token",
@@ -512,9 +512,10 @@ function generateScenario(){
 	if (scenario.mainObjective.neededEnemy) 
 	{
 		scenario.mainTarget = weightedPickByTrait(scenario.mainObjective.neededEnemy,scenario.mainObjective.neededEnemyType);
-		scenario.dict.push (["[mainTarget]",scenario.mainTarget.name]);
 		scenario.mainTarget.placed = scenario.mainTarget.type=="boss"?1:Math.min(scenario.mainObjective.neededEnemyCount,scenario.mainTarget.amount-scenario.mainTarget.placed);
 		scenario.enemyBudget-=scenario.mainTarget.placed*scenario.mainTarget.pointCost;
+		scenario.dict.push (["[mainTarget]",scenario.mainTarget.name]);
+		scenario.dict.push (["[mainTargets]",isEnemyPlural(scenario.mainTarget)]);
 		if(scenario.mainTarget.traits?.includes("bushi") && !scenario.forbiddenChampions.includes(scenario.mainTarget.name))
 		{
 			scenario.forbiddenChampions.push(scenario.mainTarget.name);
@@ -545,8 +546,9 @@ function generateScenario(){
 	if (scenario.secondaryObjective.neededEnemy) 
 	{
 		scenario.secondaryTarget = weightedPickByTrait(scenario.secondaryObjective.neededEnemy,scenario.secondaryObjective.neededEnemyType);
-		scenario.dict.push (["[secondaryTarget]",scenario.secondaryTarget.name]);
 		scenario.secondaryTarget.placed = scenario.secondaryTarget.type=="boss"?1:Math.min(scenario.secondaryObjective.neededEnemyCount+difficulty[ document.getElementById("difficulty").value].secondaryOffeset,scenario.secondaryTarget.amount-scenario.secondaryTarget.placed);
+		scenario.dict.push (["[secondaryTarget]",scenario.secondaryTarget.name]);
+		scenario.dict.push (["[secondaryTargets]",isEnemyPlural(scenario.secondaryTarget)]);
 		if(scenario.secondaryTarget.traits?.includes("bushi") && !scenario.forbiddenChampions.includes(scenario.secondaryTarget.name))
 		{
 			scenario.forbiddenChampions.push(scenario.secondaryTarget.name);
@@ -579,8 +581,9 @@ function generateScenario(){
 	{
 		scenario.bonusTarget = weightedPickByTrait(scenario.bonusObjective.neededEnemy,scenario.bonusObjective.neededEnemyType);
 		
-		scenario.dict.push (["[ruleUnit]",scenario.bonusTarget.name]);
 		scenario.bonusTarget.placed = scenario.bonusTarget.type=="boss"?1:Math.min(scenario.bonusObjective.neededEnemyCount,scenario.bonusTarget.amount-scenario.bonusTarget.placed);
+		scenario.dict.push (["[ruleUnit]",scenario.bonusTarget.name]);
+		scenario.dict.push (["[ruleUnits]",isEnemyPlural(scenario.bonusTarget)]);
 		if(scenario.bonusTarget.traits?.includes("bushi") && !scenario.forbiddenChampions.includes(scenario.bonusTarget.name))
 		{
 			scenario.forbiddenChampions.push(scenario.bonusTarget.name);
@@ -773,6 +776,10 @@ function getPlaceFlavorName(mapName)
         )
     ].concat(" ",mapName);
 }
+function isEnemyPlural(enemy)
+{
+	return (enemy.placed!=1)?enemy.name.concat("s"):enemy.name;
+}
 function richTextUpdate(text)
 {
 	scenario.dict.forEach(d =>
@@ -796,9 +803,23 @@ function richTextUpdate(text)
 		text = text.replaceAll(i,`<span class="iconL5R" style="color: ${icons[i].color}">${icons[i].symbol}</span>`);
 	});
 	
+	if (text.includes("[a-an]"))
+	{
+		let parts = text.split("[a-an]");
+		text = parts[0];
+		for (let i =1;i < parts.length;i++)
+		{
+			text = text.concat(
+			("aeiou".indexOf(parts[i].charAt(0).toLowerCase()) != -1)?"an ":"a ",
+			parts[i]
+			);
+		}
+	}
 	return text;
 }
-
+function capitalize(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
 function writeToSpecialRule(objective)
 {
 	objective.specialRules.forEach (sR =>{
@@ -838,7 +859,7 @@ function writeSpecialRules()
 
     for(const title in grouped)
     {
-        temp += `<b>${title}</b><div>`;
+        temp += `<b>${capitalize(title)}</b><div>`;
 
         temp += grouped[title]
             .behavior
