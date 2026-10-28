@@ -604,5 +604,29 @@
         "neededEnemyCount": 0,
         "neededEnemyType": "either",
         "randomClanAdversary": false
+    },
+    {
+        "name": "Ally",
+        "type": "special rule",
+        "requiredMainObjective": "",
+        "narrative": "",
+        "outro": "",
+        "neededTokens": "none",
+        "neededEnemy": "hasAlly",
+        "needEnemyPlace": "start",
+        "commonEnemies": [],
+        "uncommonEnemies": [],
+        "prohibitedEnemies": [],
+        "specialRules": [
+            {
+                "title": "[ruleUnit] is an ally.",
+                "type": "special",
+                "text": "[ruleUnit] is an ally."
+            }
+        ],
+        "neededTokenCount": 0,
+        "neededEnemyCount": 2,
+        "neededEnemyType": "either",
+        "randomClanAdversary": false
     }
 ]
